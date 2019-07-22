@@ -122,7 +122,6 @@ void translaterTask::Show301(int i){
         layout->addWidget(taskClass);
         layout->addWidget(intro);
         layout->addWidget(tasks);
-        layout->addWidget(date);
         layout->addWidget(money);
         layout->addWidget(label1);
         layout->addWidget(comment);

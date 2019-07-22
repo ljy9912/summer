@@ -233,6 +233,7 @@ void leaderTask::Show203(int i){
             }
         }
     }
+    ui->stackedWidget->addWidget(window);
 }
 
 void leaderTask::Show301(int i){
@@ -251,74 +252,130 @@ void leaderTask::Show301(int i){
     for(int j=0;j<m_translaterTaskList.size();j++){
         //如果flag是1或3，表明译者完成翻译或者完成修改
        if(m_translaterTaskList[j].GetFlagToLeader()==1||
-                m_translaterTaskList[j].GetFlagToLeader()==3)
-        int idUser=m_translaterTaskList[j].GetTranslater();
-        QString userName;
-        for(int t=0;t<m_List.User.size();t++){
-            if(m_List.User[t].GetID()==idUser){
-                userName=m_List.User[t].GetName();
+                m_translaterTaskList[j].GetFlagToLeader()==3){
+            int idUser=m_translaterTaskList[j].GetTranslater();
+            QString userName;
+            for(int t=0;t<m_List.User.size();t++){
+                if(m_List.User[t].GetID()==idUser){
+                    userName=m_List.User[t].GetName();
+                }
             }
-        }
-        QWidget *window=new QWidget;
-        QLabel *title=new QLabel(tr("译者%1的翻译如下，请点评！").arg(userName));
-        QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_translaterTaskList[j].GetEndYear()).arg(m_translaterTaskList[i].GetEndMonth()).arg(m_translaterTaskList[i].GetEndDay()));
-        QLabel *inform1=new QLabel(tr("翻译原文："));
-        QLabel *inform2=new QLabel(tr("译者翻译结果"));
-        QLabel *inform3=new QLabel(tr("历史评价："));
-        QLabel *inform4=new QLabel(tr("我的评价："));
-        QTextBrowser *Task=new QTextBrowser;
-        Task->setText(m_translaterTaskList[j].GetTask());
-        QTextBrowser *Result=new QTextBrowser;
-        Result->setText(m_translaterTaskList[j].GetResult());
-        QTextBrowser *comment=new QTextEdit;
-        comment->setText(m_translaterTaskList[j].GetComment());
-        QTextEdit *newComment=new QTextEdit;
-        newComment->setText(m_translaterTaskList[j].GetCommentEditting());
-        QPushButton *saveBtn=new QPushButton(tr("暂存"));
-        QPushButton *confrmBtn=new QPushButton(tr("确定"));
-        QPushButton *endBtn=new QPushButton(tr("收稿"));
-        QVBoxLayout *layout=new QVBoxLayout;
-        layout->addWidget(title);
-        layout->addWidget(date);
-        layout->addWidget(inform1);
-        layout->addWidget(Task);
-        layout->addWidget(inform2);
-        layout->addWidget(Result);
-        layout->addWidget(inform3);
-        layout->addWidget(comment);
-        layout->addWidget(inform4);
-        layout->addWidget(newComment);
-        QHBoxLayout *Btn=new QHBoxLayout;
-        Btn->addWidget(saveBtn);
-        Btn->addWidget(confrmBtn);
-        Btn->addWidget(endBtn);
-        layout->addLayout(Btn);
-        window->setLayout(layout);
-        Tab->addTab(window,userName);
-        //如果点击提交，改变flag使得译者可见，负责人页面不必显示
-        //修改list当中译者的历史评价的内容
-        if(confrmBtn->isEnabled()){
-            m_translaterTaskList[j].AddComment(comment->toPlainText());
-            m_translaterTaskList[j].EditCommentEditting(NULL);
-            m_translaterTaskList[j].EditFlagToLeader(2);
-            m_List.updateList(m_translaterTaskList[j]);
-        }
-        //如果点击暂存，维持flag不变并储存译者
-        else if(saveBtn->isEnabled()){
-            m_translaterTaskList[j].EditCommentEditting(comment->toPlainText());
-            m_translaterTaskList[j].EditFlagToLeader(3);
-            m_List.updateList(m_translaterTaskList[j]);
-        }
-        else if(endBtn->isEnabled()){
-            m_translaterTaskList[j].EditFlagToLeader(5);
-            m_List.up
+            QWidget *window=new QWidget;
+            QLabel *title=new QLabel(tr("译者%1的翻译如下，请点评！").arg(userName));
+            QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_translaterTaskList[j].GetEndYear()).arg(m_translaterTaskList[i].GetEndMonth()).arg(m_translaterTaskList[i].GetEndDay()));
+            QLabel *inform1=new QLabel(tr("翻译原文："));
+            QLabel *inform2=new QLabel(tr("译者翻译结果"));
+            QLabel *inform3=new QLabel(tr("历史评价："));
+            QLabel *inform4=new QLabel(tr("我的评价："));
+            QTextBrowser *Task=new QTextBrowser;
+            Task->setText(m_translaterTaskList[j].GetTask());
+            QTextBrowser *Result=new QTextBrowser;
+            Result->setText(m_translaterTaskList[j].GetResult());
+            QTextBrowser *comment=new QTextBrowser;
+            comment->setText(m_translaterTaskList[j].GetComment());
+            QTextEdit *newComment=new QTextEdit;
+            newComment->setText(m_translaterTaskList[j].GetCommentEditting());
+            QPushButton *saveBtn=new QPushButton(tr("暂存"));
+            QPushButton *confrmBtn=new QPushButton(tr("确定"));
+            QPushButton *endBtn=new QPushButton(tr("收稿"));
+            QVBoxLayout *layout=new QVBoxLayout;
+            layout->addWidget(title);
+            layout->addWidget(date);
+            layout->addWidget(inform1);
+            layout->addWidget(Task);
+            layout->addWidget(inform2);
+            layout->addWidget(Result);
+            layout->addWidget(inform3);
+            layout->addWidget(comment);
+            layout->addWidget(inform4);
+            layout->addWidget(newComment);
+            QHBoxLayout *Btn=new QHBoxLayout;
+            Btn->addWidget(saveBtn);
+            Btn->addWidget(confrmBtn);
+            Btn->addWidget(endBtn);
+            layout->addLayout(Btn);
+            window->setLayout(layout);
+            Tab->addTab(window,userName);
+            //如果点击提交，改变flag使得译者可见，负责人页面不必显示
+            //修改list当中译者的历史评价的内容
+            if(confrmBtn->isEnabled()){
+                m_translaterTaskList[j].AddComment(comment->toPlainText());
+                m_translaterTaskList[j].EditCommentEditting(NULL);
+                m_translaterTaskList[j].EditFlagToLeader(2);
+                m_List.updateList(m_translaterTaskList[j]);
+            }
+            //如果点击暂存，维持flag不变并储存译者
+            else if(saveBtn->isEnabled()){
+                m_translaterTaskList[j].EditCommentEditting(comment->toPlainText());
+                m_translaterTaskList[j].EditFlagToLeader(3);
+                m_List.updateList(m_translaterTaskList[j]);
+            }
+            else if(endBtn->isEnabled()){
+                m_translaterTaskList[j].EditFlagToLeader(5);
+                m_List.updateList(m_translaterTaskList[j]);
+                //发送信息告诉译者任务通过，不用修改，等酬金
+                //检测是否所有任务都已经通过
+                int flag=1;
+                for(int t=0;t<m_List.TaskTranslater.size();i++){
+                    if(m_List.TaskTranslater[j].GetIDTask()==
+                            m_translaterTaskList[j].GetIDTask()){
+                        if(m_List.TaskTranslater[j].GetFlagToLeader()!=5){
+                            flag=0;
+                        }
+                    }
+                }
+                if(flag==1){
+                    m_translaterTaskList[j].EditFlag(302);
+                    m_List.updateList(m_translaterTaskList[j]);
+                }
+            }
+            ui->stackedWidget->addWidget(Tab);
         }
     }
-    ui->stackedWidget->addWidget(Tab);
 }
 
 void leaderTask::Show302(int i){
-    //负责人最终整合译文
+    ui->listWidget->insertItem(i,tr("<所有译者的翻译均已通过，请整合译文！>%1").arg(m_taskList[i].GetIntroduction()));
+    m_translaterTaskList=m_List.SearchTaskForTranslater(m_taskList[i].GetID());
+    QLabel *inform1=new QLabel(tr("所有译者的翻译均已通过，请整合译文！"));
+    QLabel *inform2=new QLabel(tr("译文："));
+    QLabel *inform3=new QLabel(tr("所有译文："));
+    QTextEdit *myResult=new QTextEdit;
+    QPushButton *saveBtn=new QPushButton;
+    QPushButton *confrmBtn=new QPushButton;
+    QWidget *window=new QWidget;
+    QVBoxLayout *layout=new QVBoxLayout();
+    QTableWidget *table=new QTableWidget(m_translaterTaskList.size(),4);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->setWindowTitle("翻译原文及译文");
+    QStringList header;
+    header<<"账号"<<"用户名"<<"原文"<<"译文";
+    table->setHorizontalHeaderLabels(header);
+    for(int j=0;j<m_translaterTaskList.size();j++){
+        table->setItem(i,0,new QTableWidgetItem(QString::number
+                                                (m_translaterTaskList[j].GetTranslater())));
+        QString userName;
+        for(int t=0;t<m_List.User.size();t++){
+            if(m_List.User[t].GetID()==m_translaterTaskList[j].GetTranslater()){
+                userName=m_List.User[t].GetName();
+            }
+        }
+        table->setItem(i,1,new QTableWidgetItem(userName));
+        table->setItem(i,2,new QTableWidgetItem(m_translaterTaskList[j].GetTask()));
+        table->setItem(i,3,new QTableWidgetItem(m_translaterTaskList[j].GetResult()));
+    }
+    layout->addWidget(inform1);
+    layout->addWidget(inform2);
+    layout->addWidget(table);
+    layout->addWidget(inform3);
+    layout->addWidget(myResult);
+    QHBoxLayout *Btn=new QHBoxLayout;
+    Btn->addWidget(saveBtn);
+    Btn->addWidget(confrmBtn);
+    layout->addLayout(Btn);
+    window->setLayout(layout);
+    ui->stackedWidget->addWidget(window);
+
 }
 
 void leaderTask::on_main_clicked()
