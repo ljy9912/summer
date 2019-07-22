@@ -115,12 +115,19 @@ void user::EditPassWrd(QString newPassWrd){
 void user::EditEnglish(QString newEnglish){
     m_English=newEnglish;
 }
-void user::EditMoney(int iNewMoney){
-    m_dMoney=iNewMoney;
+void user::EditMoney(double dNewMoney){
+    m_dMoney=dNewMoney;
 }
-void user::EditRewrdPoint(double dNewRewrdPoint){
-    m_iRewrdPoint=dNewRewrdPoint;
+void user::EditRewrdPoint(int iNewRewrdPoint){
+    m_iRewrdPoint=iNewRewrdPoint;
 }
+void user::AddMoney(double dAdd){
+    m_dMoney+=dAdd;
+}
+void user::AddPoint(int iNewPoint){
+    m_iRewrdPoint+=iNewPoint;
+}
+
 
 /*************************************************************************
 【函数名称】attachIDToUser

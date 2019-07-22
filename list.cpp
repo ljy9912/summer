@@ -196,3 +196,34 @@ void list::TaskLeaderAppend(taskPublisher myLeader){
     leader.EditTime(myLeader.GetTime());
     TaskLeader.append(leader);
 }
+
+void list::Delete(int idTask){
+    for(int i=0;i<TaskPublisher.size();i++){
+        if(TaskPublisher[i].GetID()==idTask){
+            TaskPublisher.removeAt(i);
+        }
+    }
+    for(int i=0;i<TaskLeader.size();i++){
+        if(TaskLeader[i].GetID()==idTask){
+            TaskLeader.removeAt(i);
+        }
+    }
+    int iSize=TaskTranslater.size();
+    for(int i=iSize-1;i>=0;i++){
+        if(TaskTranslater[i].GetIDTask()==idTask){
+            TaskTranslater.removeAt(i);
+        }
+    }
+    iSize=SignUpForLeader.size();
+    for(int i=iSize-1;i>=0;i--){
+        if(SignUpForLeader[i].GetIDTask()==idTask){
+            SignUpForLeader.removeAt(i);
+        }
+    }
+    iSize=SignUpForTranslater.size();
+    for(int i=iSize;i>=0;i--){
+        if(SignUpForTranslater[i].GetIDTask()==idTask){
+            SignUpForTranslater.removeAt(i);
+        }
+    }
+}

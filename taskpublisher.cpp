@@ -84,7 +84,6 @@ int taskPublisher::GetLeaderDay(){
     return leaderDay;
 }
 
-
 /*************************************************************************
 【函数名称】Edit**
 【函数功能】 更改类内private的参数
@@ -103,6 +102,7 @@ void taskPublisher::EditLeaderMonth(int mmonth){
 void taskPublisher::EditLeaderDay(int dday){
     leaderDay=dday;
 }
+
 
 /*************************************************************************
 【函数名称】 attachIDToTask

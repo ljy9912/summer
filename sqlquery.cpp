@@ -230,7 +230,7 @@ void SqlQuery::saveTasks(QList<taskPublisher> listTask){
                       "introduction,publisher,time,leaderyear,"
                       "leadermonth,leaderday,money,flag,leader,"
                       "startyear,startmonth,startday)"
-                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
         query.addBindValue(listTask[i].GetID());
         query.addBindValue(listTask[i].GetTaskClass());
         query.addBindValue(listTask[i].GetTask());

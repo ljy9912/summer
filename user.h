@@ -35,13 +35,15 @@ public:
     double GetMoney();
 
     void EditID(int iID);
-    void EditName(QString sNewName);
-    void EditPhoneNum(QString sNewPhoneNum);
-    void EditIDNum(QString sNewIDNum);
-    void EditPassWrd(QString sNewPassWrd);
-    void EditEnglish(QString sNewEnglish);
-    void EditMoney(int sNewMoney);
-    void EditRewrdPoint(double sNewRewrdPoint);
+    void EditName(QString NewName);
+    void EditPhoneNum(QString NewPhoneNum);
+    void EditIDNum(QString NewIDNum);
+    void EditPassWrd(QString NewPassWrd);
+    void EditEnglish(QString NewEnglish);
+    void EditMoney(double dNewMoney);
+    void EditRewrdPoint(int iNewRewrdPoint);
+    void AddMoney(double dAdd);
+    void AddPoint(int iNewPoint);
 
     bool userWithPasswrd(int iID,QString dPasswrd);
 

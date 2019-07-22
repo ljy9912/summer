@@ -44,6 +44,8 @@ public:
     QList <taskTranslater> TaskTranslater;
     
     void TaskLeaderAppend(taskPublisher myLeader);
+
+    void Delete(int idTask);
 };
 
 #endif // LIST_H

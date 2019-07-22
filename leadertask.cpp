@@ -180,7 +180,7 @@ void leaderTask::Show203(int i){
                           ,tr("确定"));
         int iNum=ui->listWidget->currentRow();
         int iSize=m_List.SignUpForTranslater.size();
-        for(int j=iSize-1;j>=0;j++){
+        for(int j=iSize-1;j>=0;j--){
             if(m_List.SignUpForTranslater[j].GetIDTask()==m_taskList[iNum].GetID()){
                 m_List.SignUpForTranslater.removeAt(j);
             }
@@ -190,46 +190,48 @@ void leaderTask::Show203(int i){
         m_List.updateList(m_taskList[iNum]);
         for(int j=0;j<m_translaterList.size();j++){
             //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
-            taskTranslater myTask;
-            myTask.EditIDTask(m_taskList[i].GetID());
-            myTask.EditTaskClass(m_taskList[i].GetTaskClass());
-            QString newTask=table->item(j,4)->text();
-            myTask.EditTask(newTask);
-            myTask.EditIntroduction(m_taskList[i].GetIntroduction());
-            myTask.EditTime(m_taskList[i].GetTime());
-            myTask.EditStartYear(m_taskList[i].GetStartYear());
-            myTask.EditStartMonth(m_taskList[i].GetStartMonth());
-            myTask.EditStartDay(m_taskList[i].GetStartDay());
-            myTask.EditMoney(m_taskList[i].GetMoney());
-            myTask.EditFlag(301);
-            myTask.EditPublisher(m_taskList[i].GetPublisher());
-            myTask.EditLeader(m_taskList[i].GetLeader());
-            myTask.EditTranslater(m_translaterList[j].GetID());
-            int iID;
-            if(m_List.TaskTranslater.isEmpty()){
-                iID=0;
-            }
-            else{
-                iID=m_List.TaskTranslater.last().GetID()+1;
-            }
-            myTask.EditID(iID);
-            //从表格中用户填写的截至日期当中提取截至的年月日
-            QString cEndDate=table->item(j,5)->text();
-            int iEndYear=cEndDate.mid(0,4).toInt();
-            int iEndMonth=cEndDate.mid(5,2).toInt();
-            int iEndDay=cEndDate.mid(8,2).toInt();
-            myTask.EditEndYear(iEndYear);
-            myTask.EditEndMonth(iEndMonth);
-            myTask.EditEndDay(iEndDay);
-            //将译者任务对象插入list中
-            m_List.TaskTranslater.append(myTask);
-            int iSize=m_List.SignUpForTranslater.size();
-            //删除译者报名表中的所有该任务的报名信息
-            for(int j=iSize-1;j>=0;i++){
-                if(m_List.SignUpForTranslater[j].GetIDTask()==
-                        m_taskList[iNum].GetID()){
-                    m_List.SignUpForTranslater.removeAt(j);
+            if(table->item(j,4)->text()!=NULL){
+                taskTranslater myTask;
+                myTask.EditIDTask(m_taskList[i].GetID());
+                myTask.EditTaskClass(m_taskList[i].GetTaskClass());
+                QString newTask=table->item(j,4)->text();
+                myTask.EditTask(newTask);
+                myTask.EditIntroduction(m_taskList[i].GetIntroduction());
+                myTask.EditTime(m_taskList[i].GetTime());
+                myTask.EditStartYear(m_taskList[i].GetStartYear());
+                myTask.EditStartMonth(m_taskList[i].GetStartMonth());
+                myTask.EditStartDay(m_taskList[i].GetStartDay());
+                myTask.EditMoney(m_taskList[i].GetMoney());
+                myTask.EditFlag(301);
+                myTask.EditPublisher(m_taskList[i].GetPublisher());
+                myTask.EditLeader(m_taskList[i].GetLeader());
+                myTask.EditTranslater(m_translaterList[j].GetID());
+                int iID;
+                if(m_List.TaskTranslater.isEmpty()){
+                    iID=0;
                 }
+                else{
+                    iID=m_List.TaskTranslater.last().GetID()+1;
+                }
+                myTask.EditID(iID);
+                //从表格中用户填写的截至日期当中提取截至的年月日
+                QString cEndDate=table->item(j,5)->text();
+                int iEndYear=cEndDate.mid(0,4).toInt();
+                int iEndMonth=cEndDate.mid(5,2).toInt();
+                int iEndDay=cEndDate.mid(8,2).toInt();
+                myTask.EditEndYear(iEndYear);
+                myTask.EditEndMonth(iEndMonth);
+                myTask.EditEndDay(iEndDay);
+                //将译者任务对象插入list中
+                m_List.TaskTranslater.append(myTask);
+            }
+        }
+        //删除译者报名表中的所有该任务的报名信息
+        iSize=m_List.SignUpForTranslater.size();
+        for(int j=iSize-1;j>=0;j--){
+            if(m_List.SignUpForTranslater[j].GetIDTask()==
+                    m_taskList[iNum].GetID()){
+                m_List.SignUpForTranslater.removeAt(j);
             }
         }
     }
