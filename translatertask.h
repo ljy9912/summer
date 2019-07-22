@@ -19,7 +19,6 @@ public:
     void EditUser(user myNewUser);
     void ShowValue();
     void Show301(int i);
-    void Show302(int i);
     void Show401(int i);
 
 private:

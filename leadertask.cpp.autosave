@@ -311,7 +311,16 @@ void leaderTask::Show301(int i){
         }
         else if(endBtn->isEnabled()){
             m_translaterTaskList[j].EditFlagToLeader(5);
-            m_List.up
+            m_List.updateList(m_translaterTaskList[j]);
+            //发送信息告诉译者任务通过，不用修改，等酬金
+            //检测是否所有任务都已经通过
+            int flag=1;
+            for(int t=0;t<m_List.TaskTranslater.size();i++){
+                if(m_List.TaskTranslater[j].GetIDTask()==
+                        m_translaterTaskList[j].GetIDTask()){
+                    if()
+                }
+            }
         }
     }
     ui->stackedWidget->addWidget(Tab);

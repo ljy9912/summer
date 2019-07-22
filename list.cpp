@@ -153,6 +153,16 @@ QList <taskTranslater> list::SearchTaskForTranslater(user myUser){
     return translaterTask;
 }
 
+QList <taskTranslater> list::SearchTaskForTranslater(int idTask){
+    QList <taskTranslater> translaterTask;
+    for(int i=0;i<TaskTranslater.size();i++){
+        if(TaskTranslater[i].GetIDTask()==idTask&&TaskTranslater[i].GetFlagToLeader()==0){
+            translaterTask.append(TaskTranslater[i]);
+        }
+    }
+    return translaterTask;
+}
+
 QList <signUpForLeader> list::SearchLeaderForTask(taskPublisher myTask){
     QList <signUpForLeader> myLeader;
     for(int i=0;i<SignUpForLeader.size();i++){

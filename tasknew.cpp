@@ -64,7 +64,13 @@ void taskNew::on_confrmBtn_clicked()
     myTask.EditLeaderDay(ui->leaderDay->text().toInt());
     myTask.EditMoney(ui->money->text().toDouble());
     myTask.EditPublisher(myUser.GetID());
-    int lastID=List.TaskPublisher.last().GetID()+1;
+    int lastID;
+    if(List.TaskPublisher.isEmpty()){
+        lastID=0;
+    }
+    else{
+        lastID=List.TaskPublisher.last().GetID()+1;
+    }
     myTask.EditID(lastID);
     List.insertIntoList(myTask);
     close();

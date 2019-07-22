@@ -33,6 +33,7 @@ private:
     list m_List;
     QList<taskLeader> m_taskList;
     QList<signUpForTranslater> m_translaterList;
+    QList<taskTranslater> m_translaterTaskList;
 };
 
 #endif // LEADERTASK_H

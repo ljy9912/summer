@@ -1,5 +1,6 @@
 #include "tasktranslater.h"
 #include <QSqlQuery>
+#include <QDateTime>
 
 taskTranslater::taskTranslater()
 {
@@ -31,6 +32,7 @@ taskTranslater::taskTranslater(const taskTranslater& newTaskTranslater){
     m_result=newTaskTranslater.m_result;
     m_comment=newTaskTranslater.m_comment;
     m_flagToLeader=newTaskTranslater.m_flagToLeader;
+    m_commentEditting=newTaskTranslater.m_commentEditting;
 }
 
 taskTranslater::operator =(const taskTranslater& newTaskTranslater){
@@ -54,6 +56,7 @@ taskTranslater::operator =(const taskTranslater& newTaskTranslater){
     m_result=newTaskTranslater.m_result;
     m_comment=newTaskTranslater.m_comment;
     m_flagToLeader=newTaskTranslater.m_flagToLeader;
+    m_commentEditting=newTaskTranslater.m_commentEditting;
 }
 
 int taskTranslater::GetEndYear(){
@@ -86,7 +89,9 @@ int taskTranslater::GetFlagToLeader(){
     return m_flagToLeader;
 }
 
-
+QString taskTranslater::GetCommentEditting(){
+    return m_commentEditting;
+}
 
 
 void taskTranslater::EditEndYear(int newYear){
@@ -120,6 +125,20 @@ void taskTranslater::EditFlagToLeader(int newFlagToLeader){
     m_flagToLeader=newFlagToLeader;
 }
 
+void taskTranslater::EditCommentEditting(QString newComment){
+    m_commentEditting=newComment;
+}
+
+void taskTranslater::AddComment(QString newComment){
+    QDateTime time;
+    QString myTime=time.currentDateTime().toString();
+    m_comment.append(myTime);
+    m_comment.append("：\n");
+    m_comment.append(newComment);
+    m_comment.append("\n");
+}
+
+
 
 void taskTranslater::attachIDToTask(int ID){
     QSqlQuery query;
@@ -147,5 +166,6 @@ void taskTranslater::attachIDToTask(int ID){
         m_result=query.value(17).toString();
         m_comment=query.value(18).toString();
         m_flagToLeader=query.value(19).toInt();
+        m_commentEditting=query.value(20).toString();
     }
 }
