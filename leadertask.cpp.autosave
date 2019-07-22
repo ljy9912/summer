@@ -318,8 +318,14 @@ void leaderTask::Show301(int i){
             for(int t=0;t<m_List.TaskTranslater.size();i++){
                 if(m_List.TaskTranslater[j].GetIDTask()==
                         m_translaterTaskList[j].GetIDTask()){
-                    if()
+                    if(m_List.TaskTranslater[j].GetFlagToLeader()!=5){
+                        flag=0;
+                    }
                 }
+            }
+            if(flag==1){
+                m_translaterTaskList[j].EditFlag(302);
+                m_List.updateList(m_translaterTaskList[j]);
             }
         }
     }
@@ -327,7 +333,7 @@ void leaderTask::Show301(int i){
 }
 
 void leaderTask::Show302(int i){
-    //负责人最终整合译文
+    ui->listWidget->insertItem(i,tr("<所有译者的翻译均已通过，请整合译文！>%1").arg(m_taskList[i].GetIntroduction()));
 }
 
 void leaderTask::on_main_clicked()
