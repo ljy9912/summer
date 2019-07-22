@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>registerPhoneConfrm</class>
+ <widget class="QDialog" name="registerPhoneConfrm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="main">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>181</y>
+     <width>80</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>返回登陆界面</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ID">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>61</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>账号：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>40</y>
+     <width>81</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>注册成功！</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="phoneNum">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>101</y>
+     <width>271</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>电话号码：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="English">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>141</y>
+     <width>281</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>英语资历：</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

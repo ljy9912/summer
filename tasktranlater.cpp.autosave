@@ -1,0 +1,50 @@
+#include "tasktranlater.h"
+
+taskTranlater::taskTranlater()
+{
+
+}
+
+taskTranlater::~taskTranlater(){
+
+}
+
+taskTranlater::taskTranlater(const taskTranlater& newTaskTranslater){
+    id=newTaskTranslater.id;
+    taskclass=newTaskTranslater.taskclass;
+    translateTask=newTaskTranslater.translateTask;
+    introduction=newTaskTranslater.introduction;
+    publisher=newTaskTranslater.publisher;
+    time=newTaskTranslater.time;
+    m_iEndYear=newTaskTranslater.m_iEndYear;
+    m_iEndMonth=newTaskTranslater.m_iEndMonth;
+    m_iEndDay=newTaskTranslater.m_iEndDay;
+    money=newTaskTranslater.money;
+    flag=newTaskTranslater.flag;
+    leader=newTaskTranslater.leader;
+    startYear=newTaskTranslater.startYear;
+    startMonth=newTaskTranslater.startMonth;
+    startDay=newTaskTranslater.startDay;
+}
+
+taskTranlater::operator =(const taskTranlater& newTaskTranslater){
+    id=newTaskTranslater.id;
+    taskclass=newTaskTranslater.taskclass;
+    translateTask=newTaskTranslater.translateTask;
+    introduction=newTaskTranslater.introduction;
+    publisher=newTaskTranslater.publisher;
+    time=newTaskTranslater.time;
+    m_iEndYear=newTaskTranslater.m_iEndYear;
+    m_iEndMonth=newTaskTranslater.m_iEndMonth;
+    m_iEndDay=newTaskTranslater.m_iEndDay;
+    money=newTaskTranslater.money;
+    flag=newTaskTranslater.flag;
+    leader=newTaskTranslater.leader;
+    startYear=newTaskTranslater.startYear;
+    startMonth=newTaskTranslater.startMonth;
+    startDay=newTaskTranslater.startDay;
+}
+
+int GetYear(){
+    return end
+}

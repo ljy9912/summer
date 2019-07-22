@@ -1,0 +1,24 @@
+#ifndef TASKTRANLATER_H
+#define TASKTRANLATER_H
+#include "task.h"
+
+class taskTranlater : public task
+{
+public:
+    taskTranlater();
+    int GetEndYear();
+    int GetEndMonth();
+    int GetEndDay();
+    
+    void EditEndYear(int newYear);
+    void EditEndMonth(int );
+    void EditEndDay();
+    
+private:
+    int m_iEndYear;
+    int m_iEndMonth;
+    int m_iEndDay;
+    int m_iTranslater;
+};
+
+#endif // TASKTRANLATER_H

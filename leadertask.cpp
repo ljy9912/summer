@@ -1,0 +1,252 @@
+#include "leadertask.h"
+#include "ui_leadertask.h"
+#include "list.h"
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QLineEdit>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include "mainwindow.h"
+#include "signupfortranslater.h"
+#include <QTableWidget>
+#include <QTextBrowser>
+#include <QMessageBox>
+
+leaderTask::leaderTask(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::leaderTask)
+{
+    ui->setupUi(this);
+}
+
+leaderTask::~leaderTask()
+{
+    delete ui;
+}
+
+void leaderTask::EditUser(user myNewUser){
+    m_myUser=myNewUser;
+}
+
+void leaderTask::EditList(list myNewList){
+    m_List=myNewList;
+}
+
+void leaderTask::ShowValue(){
+    m_taskList=m_List.SearchTaskForLeader(m_myUser);
+    for(int i=0;i<m_taskList.size();i++){
+        connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
+        switch(m_taskList[i].GetFlag()){
+        case 201:
+            Show201(i);
+            break;
+        case 202:
+            Show202(i);
+            break;
+        case 203:
+            Show203(i);
+            break;
+        case 301:
+            Show301(i);
+            break;
+        case 302:
+            Show302(i);
+            break;
+        }
+    }
+}
+
+void leaderTask::Show201(int i){
+    ui->listWidget->insertItem(i,tr("<设定译者招募结束日期>%1").arg(m_taskList[i].GetIntroduction()));
+    QWidget *window=new QWidget();
+    QLabel *inform1=new QLabel(tr("恭喜成为负责人！请设定译者招募结束日期"));
+    QLabel *inform2=new QLabel(tr("翻译任务详情如下："));
+    QLabel *taskClass;
+    if(m_taskList[i].GetTaskClass()==0){
+        taskClass=new QLabel(tr("翻译性质：中译英"));
+    }
+    else{
+        taskClass=new QLabel(tr("翻译性质：英译中"));
+    }
+    QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
+    QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(m_taskList[i].GetTask()));
+    QLabel *time=new QLabel(tr("任务周期：%1天").arg(m_taskList[i].GetTime()));
+    QLabel *date1=new QLabel(tr("任务开始日期：%1年%2月%3日").arg(m_taskList[i].GetStartYear()).arg(m_taskList[i].GetStartMonth()).arg(m_taskList[i].GetStartDay()));
+    QLabel *money=new QLabel(tr("任务总金额：%1元").arg(m_taskList[i].GetMoney()));
+    QLabel *date2=new QLabel(tr("译者招募结束日期："));
+    QLabel *year=new QLabel(tr("年"));
+    QLabel *month=new QLabel(tr("月"));
+    QLabel *day=new QLabel(tr("日"));
+    QLineEdit *yearEdit=new QLineEdit;
+    QLineEdit *monthEdit=new QLineEdit;
+    QLineEdit *dayEdit=new QLineEdit;
+    QPushButton *confrmBtn=new QPushButton(tr("确定"));
+    QHBoxLayout *date=new QHBoxLayout;
+    date->addWidget(date2);
+    date->addWidget(yearEdit);
+    date->addWidget(year);
+    date->addWidget(monthEdit);
+    date->addWidget(month);
+    date->addWidget(dayEdit);
+    date->addWidget(day);
+    QVBoxLayout *layout=new QVBoxLayout();
+    layout->addWidget(inform1);
+    layout->addWidget(inform2);
+    layout->addWidget(taskClass);
+    layout->addWidget(intro);
+    layout->addWidget(tasks);
+    layout->addWidget(time);
+    layout->addWidget(date1);
+    layout->addWidget(money);
+    layout->addLayout(date);
+    layout->addWidget(confrmBtn);
+    window->setLayout(layout);
+    ui->stackedWidget->addWidget(window);
+
+    if(confrmBtn->isEnabled()){
+        int iTranslaterYear=yearEdit->text().toInt();
+        int iTranslaterMonth=monthEdit->text().toInt();
+        int iTranslaterDay=dayEdit->text().toInt();
+        int iNum=ui->listWidget->currentRow();
+        m_taskList[iNum].EditTranslaterYear(iTranslaterYear);
+        m_taskList[iNum].EditTranslaterMonth(iTranslaterMonth);
+        m_taskList[iNum].EditTranslaterDay(iTranslaterDay);
+        m_List.updateList(m_taskList[iNum]);
+    }
+}
+
+void leaderTask::Show202(int i){
+    ui->listWidget->insertItem(i,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetIntroduction()));
+    m_translaterList=m_List.SearchTranslaterForTask(m_taskList[i]);
+    QWidget *window=new QWidget;
+    QVBoxLayout *layout=new QVBoxLayout();
+    QLabel *label=new QLabel(tr("已报名译者："));
+    QTableWidget *table=new QTableWidget(m_translaterList.size(),4);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->setWindowTitle("已报名译者");
+    QStringList header;
+    header<<"账号"<<"用户名"<<"英语资历"<<"积分";
+    table->setHorizontalHeaderLabels(header);
+    for(int j=0;j<m_translaterList.size();j++){
+        table->setItem(i,0,new QTableWidgetItem(QString::number(m_translaterList[j].GetID())));
+        table->setItem(i,1,new QTableWidgetItem(m_translaterList[j].GetName()));
+        table->setItem(i,2,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
+        table->setItem(i,3,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
+    }
+    layout->addWidget(label);
+    layout->addWidget(table);
+    window->setLayout(layout);
+    ui->stackedWidget->addWidget(window);
+}
+
+void leaderTask::Show203(int i){
+    ui->listWidget->insertItem(i,tr("<译者报名完毕，请分配任务！>%1").arg(m_taskList[i].GetIntroduction()));
+    m_translaterList=m_List.SearchTranslaterForTask(m_taskList[i]);
+    QWidget *window=new QWidget;
+    QVBoxLayout *layout=new QVBoxLayout();
+    QLabel *label1=new QLabel(tr("翻译原文"));
+    QLabel *time=new QLabel(tr("任务周期：%1天").arg(m_taskList[i].GetTime()));
+    QLabel *date1=new QLabel(tr("任务开始日期：%1年%2月%3日").arg(m_taskList[i].GetStartYear()).arg(m_taskList[i].GetStartMonth()).arg(m_taskList[i].GetStartDay()));
+    QLabel *label2=new QLabel(tr("已报名译者："));
+    QTextBrowser *Task=new QTextBrowser;
+    Task->setText(m_taskList[i].GetTask());
+    QTableWidget *table=new QTableWidget(m_translaterList.size(),4);
+    table->setWindowTitle("分配任务");
+    QStringList header;
+    header<<"账号"<<"用户名"<<"英语资历"<<"积分"<<"任务"<<"任务截止日期（年-月-日）";
+    table->setHorizontalHeaderLabels(header);
+    for(int j=0;j<m_translaterList.size();j++){
+        table->setItem(i,0,new QTableWidgetItem(QString::number(m_translaterList[j].GetID())));
+        table->setItem(i,1,new QTableWidgetItem(m_translaterList[j].GetName()));
+        table->setItem(i,2,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
+        table->setItem(i,3,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
+    }
+    layout->addWidget(label1);
+    layout->addWidget(Task);
+    layout->addWidget(time);
+    layout->addWidget(date1);
+    layout->addWidget(label2);
+    layout->addWidget(table);
+    QPushButton *confrmBtn=new QPushButton(tr("确定"));
+    layout->addWidget(confrmBtn);
+    window->setLayout(layout);
+    ui->stackedWidget->addWidget(window);
+    //如果负责人分配任务完成，确认按钮被点击，将表格中的内容存储
+    if(confrmBtn->isEnabled()){
+        
+        QMessageBox::information(this, tr("提示"),
+                           tr("分配任务成功！")
+                          ,tr("确定"));
+        int iNum=ui->listWidget->currentRow();
+        int iSize=m_List.SignUpForTranslater.size();
+        for(int j=iSize-1;j>=0;j++){
+            if(m_List.SignUpForTranslater[j].GetIDTask()==m_taskList[iNum].GetID()){
+                m_List.SignUpForTranslater.removeAt(j);
+            }
+        }
+        m_taskList[iNum].EditFlag(301);
+        m_List.updateList(m_taskList[iNum]);
+        for(int j=0;j<m_translaterList.size();j++){
+            //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
+            taskTranslater myTask;
+            myTask.EditIDTask(m_taskList[i].GetID());
+            myTask.EditTaskClass(m_taskList[i].GetTaskClass());
+            QString newTask=table->item(j,4)->text();
+            myTask.EditTask(newTask);
+            myTask.EditIntroduction(m_taskList[i].GetIntroduction());
+            myTask.EditTime(m_taskList[i].GetTime());
+            myTask.EditStartYear(m_taskList[i].GetStartYear());
+            myTask.EditStartMonth(m_taskList[i].GetStartMonth());
+            myTask.EditStartDay(m_taskList[i].GetStartDay());
+            myTask.EditMoney(m_taskList[i].GetMoney());
+            myTask.EditFlag(301);
+            myTask.EditPublisher(m_taskList[i].GetPublisher());
+            myTask.EditLeader(m_taskList[i].GetLeader());
+            myTask.EditTranslater(m_translaterList[j].GetID());
+            int iID;
+            if(m_List.TaskTranslater.isEmpty()){
+                iID=0;
+            }
+            else{
+                iID=m_List.TaskTranslater.last().GetID()+1;
+            }
+            myTask.EditID(iID);
+            //从表格中用户填写的截至日期当中提取截至的年月日
+            QString cEndDate=table->item(j,5)->text();
+            int iEndYear=cEndDate.mid(0,4).toInt();
+            int iEndMonth=cEndDate.mid(5,2).toInt();
+            int iEndDay=cEndDate.mid(8,2).toInt();
+            myTask.EditEndYear(iEndYear);
+            myTask.EditEndMonth(iEndMonth);
+            myTask.EditEndDay(iEndDay);
+            //将译者任务对象插入list中
+            m_List.TaskTranslater.append(myTask);
+        }
+    }
+}
+
+void leaderTask::Show301(int i){
+    ui->listWidget->insertItem(i,tr("<译者的翻译出炉！请点评！>%1").arg(m_taskList[i].GetIntroduction()));
+    QList<taskTranslater> myTask;
+    //筛选已经提交的文章或已经修改并且提交的文章
+    for(int j=0;j<m_List.TaskTranslater.size();j++){
+        if(m_List.TaskTranslater[j].GetIDTask()==m_taskList[i].GetID()
+                &&m_List.TaskTranslater[j].GetFlagToLeader()==1){
+            myTask.append(m_List.TaskTranslater[j]);
+        }
+    }
+    //用标签分开，每个页面是一个译者的翻译和点评
+}
+
+void leaderTask::Show302(int i){
+    //负责人最终整合译文
+}
+
+void leaderTask::on_main_clicked()
+{
+    MainWindow *r=new MainWindow;
+    r->EditList(m_List);
+    r->EditUser(m_myUser);
+    r->show();
+    close();
+}

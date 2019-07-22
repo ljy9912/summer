@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>taskPublish</class>
+ <widget class="QDialog" name="taskPublish">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="editBtn">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>260</y>
+     <width>80</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>编辑</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="leaderDate">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>210</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>负责人报名截至日期：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="taskclass">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>10</y>
+     <width>261</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>翻译性质：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="money">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>230</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>任务总金额：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="time">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>190</y>
+     <width>141</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>任务周期：</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="publishBtn">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>260</y>
+     <width>80</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>发布</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="leaderMonth">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>210</y>
+     <width>41</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>月</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="task">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>80</y>
+     <width>301</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>翻译任务：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="leaderYear">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>210</y>
+     <width>41</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>年</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="leaderDay">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>210</y>
+     <width>41</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>日</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="intro">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>30</y>
+     <width>301</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>任务简介：</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
