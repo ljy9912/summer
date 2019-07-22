@@ -62,12 +62,12 @@ void translaterTask::Show301(int i){
         QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_taskList[i].GetEndYear()).arg(m_taskList[i].GetEndMonth()).arg(m_taskList[i].GetEndDay()));
         QLabel *money=new QLabel(tr("任务总金额：%1元").arg(m_taskList[i].GetMoney()));
         QLabel *label2=new QLabel(tr("我的译文："));
-        QTextBrowser *comment=new QTextBrowser;
         QTextEdit *result=new QTextEdit;
         QPushButton *saveBtn=new QPushButton;
         QPushButton *confrmBtn=new QPushButton;
         //对window添加排版
         QVBoxLayout *layout=new QVBoxLayout();
+        layout->addWidget(label);
         layout->addWidget(taskClass);
         layout->addWidget(intro);
         layout->addWidget(tasks);
@@ -120,6 +120,7 @@ void translaterTask::Show301(int i){
         QPushButton *confrmBtn=new QPushButton;
         //对window添加排版
         QVBoxLayout *layout=new QVBoxLayout();
+        layout->addWidget(label);
         layout->addWidget(taskClass);
         layout->addWidget(intro);
         layout->addWidget(tasks);
