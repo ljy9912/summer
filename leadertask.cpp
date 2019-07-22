@@ -341,8 +341,12 @@ void leaderTask::Show302(int i){
     QLabel *inform2=new QLabel(tr("译文："));
     QLabel *inform3=new QLabel(tr("所有译文："));
     QTextEdit *myResult=new QTextEdit;
-    QPushButton *saveBtn=new QPushButton;
+    myResult->setText(m_taskList[i].GetResultEditting());
     QPushButton *confrmBtn=new QPushButton;
+    QPushButton *saveBtn=new QPushButton;
+    QHBoxLayout *Btn=new QHBoxLayout;
+    Btn->addWidget(confrmBtn);
+    Btn->addWidget(saveBtn);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QTableWidget *table=new QTableWidget(m_translaterTaskList.size(),4);
@@ -369,13 +373,20 @@ void leaderTask::Show302(int i){
     layout->addWidget(table);
     layout->addWidget(inform3);
     layout->addWidget(myResult);
-    QHBoxLayout *Btn=new QHBoxLayout;
-    Btn->addWidget(saveBtn);
-    Btn->addWidget(confrmBtn);
     layout->addLayout(Btn);
     window->setLayout(layout);
     ui->stackedWidget->addWidget(window);
-
+    //如果负责人点击暂存，暂存负责人整合的任务
+    if(saveBtn->isEnabled()){
+        m_taskList[i].EditResultEditting(myResult->toPlainText());
+        m_List.updateList(m_taskList[i]);
+    }
+    //如果负责人点击提交，将完成的任务交给负责人，并编辑任务状态为401
+    else if(confrmBtn->isEnabled()){
+        m_taskList[i].EditResult(myResult->toPlainText());
+        m_taskList[i].EditFlag(401);
+        m_List.updateList(m_taskList[i]);
+    }
 }
 
 void leaderTask::on_main_clicked()

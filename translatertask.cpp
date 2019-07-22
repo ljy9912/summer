@@ -6,6 +6,7 @@
 #include <QTextBrowser>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include "mainwindow.h"
 
 translaterTask::translaterTask(QWidget *parent) :
     QDialog(parent),
@@ -151,4 +152,13 @@ void translaterTask::Show301(int i){
 
 void translaterTask::Show401(int i){
 
+}
+
+void translaterTask::on_main_clicked()
+{
+    MainWindow *r=new MainWindow;
+    r->EditList(m_List);
+    r->EditUser(m_User);
+    r->show();
+    close();
 }

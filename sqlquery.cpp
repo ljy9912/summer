@@ -71,7 +71,8 @@ void SqlQuery::createTaskLeader(){
                "task varchar(1000),introduction varchar(1000),"
                "publisher int,time int,translateryear int,"
                "translatermonth int,translaterday int,money double,flag int,leader int,"
-                  "startyear int,startmonth int,startday int)");//flag=0为编辑状态，
+                  "startyear int,startmonth int,startday int,result varchar(1000),"
+                  "resulteditting varchar(1000))");//flag=0为编辑状态，
     //101为发布状态，102为选择负责人状态，201为负责人定日期状态，202为负责人招募译者状态，203为负责人分配任务状态
     //301为译者翻译状态与负责人审查,译者修改译文，302为负责人修改并整合译文，401为发布人验收状态
     if(!query.exec())
@@ -306,8 +307,8 @@ void SqlQuery::saveTaskLeader(QList<taskLeader> listTask){
         query.prepare("insert into tasks(id,taskclass,task,"
                       "introduction,publisher,time,translateryear,"
                       "translatermonth,translaterday,money,flag,leader,"
-                      "startyear,startmonth,startday)"
-                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                      "startyear,startmonth,startday,result,resulteditting)"
+                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         query.addBindValue(listTask[i].GetID());
         query.addBindValue(listTask[i].GetTaskClass());
         query.addBindValue(listTask[i].GetTask());
@@ -323,6 +324,8 @@ void SqlQuery::saveTaskLeader(QList<taskLeader> listTask){
         query.addBindValue(listTask[i].GetStartYear());
         query.addBindValue(listTask[i].GetStartMonth());
         query.addBindValue(listTask[i].GetStartDay());
+        query.addBindValue(listTask[i].GetResult());
+        query.addBindValue(listTask[i].GetResultEditting());
         if(!query.exec())
             qDebug() << query.lastError();
           else

@@ -21,6 +21,9 @@ public:
     void Show301(int i);
     void Show401(int i);
 
+private slots:
+    void on_main_clicked();
+
 private:
     Ui::translaterTask *ui;
     list m_List;

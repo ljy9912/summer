@@ -27,6 +27,8 @@ taskLeader::taskLeader(const taskLeader& newTaskLeader){
     startYear=newTaskLeader.startYear;
     startMonth=newTaskLeader.startMonth;
     startDay=newTaskLeader.startDay;
+    m_Result=newTaskLeader.m_Result;
+    m_ResultEditting=newTaskLeader.m_ResultEditting;
 }
 
 taskLeader::operator =(const taskLeader& newTaskLeader){
@@ -45,6 +47,8 @@ taskLeader::operator =(const taskLeader& newTaskLeader){
     startYear=newTaskLeader.startYear;
     startMonth=newTaskLeader.startMonth;
     startDay=newTaskLeader.startDay;
+    m_Result=newTaskLeader.m_Result;
+    m_ResultEditting=newTaskLeader.m_ResultEditting;
 }
 
 int taskLeader::GetTranslaterYear(){
@@ -59,7 +63,13 @@ int taskLeader::GetTranslaterDay(){
     return m_iTranslaterDay;
 }
 
+QString taskLeader::GetResult(){
+    return m_Result;
+}
 
+QString taskLeader::GetResultEditting(){
+    return m_ResultEditting;
+}
 
 
 
@@ -74,6 +84,16 @@ void taskLeader::EditTranslaterMonth(int newMonth){
 void taskLeader::EditTranslaterDay(int newDay){
     m_iTranslaterDay=newDay;
 }
+
+void taskLeader::EditResult(QString newResult){
+    m_Result=newResult;
+}
+
+void taskLeader::EditResultEditting(QString newResult){
+    m_ResultEditting=newResult;
+}
+
+
 
 void taskLeader::attachIDToTask(int ID){
     QSqlQuery query;
@@ -96,5 +116,7 @@ void taskLeader::attachIDToTask(int ID){
         startYear=query.value(12).toInt();
         startMonth=query.value(13).toInt();
         startDay=query.value(14).toInt();
+        m_Result=query.value(15).toString();
+        m_ResultEditting=query.value(16).toString();
     }
 }
