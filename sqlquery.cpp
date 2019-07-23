@@ -91,7 +91,7 @@ void SqlQuery::createTaskTranslater(){
                "endmonth int,endday int,money double,flag int,leader int,"
                   "startyear int,startmonth int,startday int,translater int,taskid int,"
                   "result varchar(1000),comment varchar(1000),flagtoleader int,"
-                  "commenteditting varchar(1000))");//flag=0为编辑状态，
+                  "commenteditting varchar(1000),resulteditting varchar(1000))");//flag=0为编辑状态，
     //101为发布状态，102为选择负责人状态，201为负责人定日期状态，202为负责人招募译者状态，203为负责人分配任务状态
     //301为译者翻译状态与负责人审查,译者修改译文，302为负责人修改并整合译文，401为发布人验收状态
     if(!query.exec())
@@ -135,7 +135,7 @@ const QList<taskPublisher> SqlQuery::GetTasks(){
         myTask.attachIDToTask(id);
         //myTask.EditFlag(203);
         //listTask.append(myTask);
-        //myTask.EditFlag(101);
+        //myTask.EditFlag(201);
         listTask.append(myTask);
     }
     return listTask;
@@ -191,7 +191,7 @@ const QList<taskLeader> SqlQuery::GetTaskLeader(){
         int id=query.value(0).toInt();
         taskLeader myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlag(203);
+        myTask.EditFlag(203);
         listTask.append(myTask);
     }
     return listTask;
@@ -355,8 +355,8 @@ void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
                       "introduction,publisher,time,endyear,"
                       "endmonth,endday,money,flag,leader,"
                       "startyear,startmonth,startday,translater,taskid,result,comment,"
-                      "flagtoleader,commenteditting)"
-                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                      "flagtoleader,commenteditting,resulteditting)"
+                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         query.addBindValue(listTask[i].GetID());
         query.addBindValue(listTask[i].GetTaskClass());
         query.addBindValue(listTask[i].GetTask());
@@ -378,6 +378,7 @@ void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
         query.addBindValue(listTask[i].GetComment());
         query.addBindValue(listTask[i].GetFlagToLeader());
         query.addBindValue(listTask[i].GetCommentEditting());
+        query.addBindValue(listTask[i].GetResultEditting());
         if(!query.exec())
             qDebug() << query.lastError();
           else

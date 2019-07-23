@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include "mainwindow.h"
+#include <QMessageBox>
 
 translaterTask::translaterTask(QWidget *parent) :
     QDialog(parent),
@@ -18,6 +19,12 @@ translaterTask::translaterTask(QWidget *parent) :
 translaterTask::~translaterTask()
 {
     delete ui;
+    delete m_confrmBtn;
+    m_confrmBtn=NULL;
+    delete m_saveBtn;
+    m_saveBtn=NULL;
+    delete m_result;
+    m_result=NULL;
 }
 
 void translaterTask::EditList(list myNewList){
@@ -30,9 +37,13 @@ void translaterTask::EditUser(user myNewUser){
 
 void translaterTask::ShowValue(){
     m_taskList=m_List.SearchTaskForTranslater(m_User);
+    m_result=new QTextEdit[m_taskList.size()];
+    m_saveBtn=new QPushButton[m_taskList.size()];
+    m_confrmBtn=new QPushButton[m_taskList.size()];
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,
                 SLOT(setCurrentIndex(int)));
+        m_iPage=i;
         if(m_taskList[i].GetFlag()==301){
             //译者第一次翻译的界面，没有负责人的评价
             if(m_taskList[i].GetFlagToLeader()==0){
@@ -49,41 +60,34 @@ void translaterTask::ShowValue(){
                     taskClass=new QLabel(tr("翻译性质：英译中"));
                 }
                 QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
-                QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(m_taskList[i].GetTask()));
+                QLabel *tasks=new QLabel(tr("翻译内容："));
+                QTextBrowser *myTask=new QTextBrowser;
+                myTask->setText(m_taskList[i].GetTask());
                 QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_taskList[i].GetEndYear()).arg(m_taskList[i].GetEndMonth()).arg(m_taskList[i].GetEndDay()));
                 QLabel *money=new QLabel(tr("任务总金额：%1元").arg(m_taskList[i].GetMoney()));
                 QLabel *label2=new QLabel(tr("我的译文："));
-                QTextEdit *result=new QTextEdit;
-                QPushButton *saveBtn=new QPushButton;
-                QPushButton *confrmBtn=new QPushButton;
                 //对window添加排版
                 QVBoxLayout *layout=new QVBoxLayout();
                 layout->addWidget(label);
                 layout->addWidget(taskClass);
                 layout->addWidget(intro);
                 layout->addWidget(tasks);
+                layout->addWidget(myTask);
                 layout->addWidget(date);
                 layout->addWidget(money);
                 layout->addWidget(label2);
-                layout->addWidget(result);
+                (m_result+i)->setText(m_taskList[i].GetResultEditting());
+                layout->addWidget(m_result+i);
                 QHBoxLayout *btn=new QHBoxLayout;
-                btn->addWidget(saveBtn);
-                btn->addWidget(confrmBtn);
+                (m_saveBtn+i)->setText(tr("暂存"));
+                (m_confrmBtn+i)->setText(tr("提交"));
+                btn->addWidget(m_saveBtn+i);
+                btn->addWidget(m_confrmBtn+i);
                 layout->addLayout(btn);
                 window->setLayout(layout);
                 ui->stackedWidget->addWidget(window);
-                if(saveBtn->isEnabled()){
-                    QString myResult=result->toPlainText();
-                    m_taskList[i].EditResult(myResult);
-                    m_taskList[i].EditFlagToLeader(0);
-                    m_List.updateList(m_taskList[i]);
-                }
-                else if(confrmBtn->isEnabled()){
-                    QString myResult=result->toPlainText();
-                    m_taskList[i].EditResult(myResult);
-                    m_taskList[i].EditFlagToLeader(1);
-                    m_List.updateList(m_taskList[i]);
-                }
+                connect(m_saveBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301save()));
+                connect(m_confrmBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301confrm()));
             }
             //译者修改翻译的界面，显示译者原来的翻译和历史评价
             else if(m_taskList[i].GetFlagToLeader()==2){
@@ -106,10 +110,7 @@ void translaterTask::ShowValue(){
                 QLabel *label2=new QLabel(tr("我的译文："));
                 QTextBrowser *comment=new QTextBrowser;
                 comment->setText(m_taskList[i].GetComment());
-                QTextEdit *result=new QTextEdit;
                 comment->setText(m_taskList[i].GetResult());
-                QPushButton *saveBtn=new QPushButton;
-                QPushButton *confrmBtn=new QPushButton;
                 //对window添加排版
                 QVBoxLayout *layout=new QVBoxLayout();
                 layout->addWidget(label);
@@ -120,25 +121,16 @@ void translaterTask::ShowValue(){
                 layout->addWidget(label1);
                 layout->addWidget(comment);
                 layout->addWidget(label2);
-                layout->addWidget(result);
+                (m_result+i)->setText(m_taskList[i].GetResultEditting());
+                layout->addWidget(m_result+i);
                 QHBoxLayout *btn=new QHBoxLayout;
-                btn->addWidget(saveBtn);
-                btn->addWidget(confrmBtn);
+                btn->addWidget(m_saveBtn+i);
+                btn->addWidget(m_confrmBtn+i);
                 layout->addLayout(btn);
                 window->setLayout(layout);
                 ui->stackedWidget->addWidget(window);
-                if(saveBtn->isEnabled()){
-                    QString myResult=result->toPlainText();
-                    m_taskList[i].EditResult(myResult);
-                    m_taskList[i].EditFlagToLeader(2);
-                    m_List.updateList(m_taskList[i]);
-                }
-                else if(confrmBtn->isEnabled()){
-                    QString myResult=result->toPlainText();
-                    m_taskList[i].EditResult(myResult);
-                    m_taskList[i].EditFlagToLeader(3);
-                    m_List.updateList(m_taskList[i]);
-                }
+                connect(m_saveBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301save()));
+                connect(m_confrmBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301confrm()));
             }
         }
     }
@@ -151,4 +143,38 @@ void translaterTask::on_main_clicked()
     r->EditUser(m_User);
     r->show();
     close();
+}
+
+void translaterTask::OnClicked_301save(int i){
+    QMessageBox::information(this, tr("提示"),
+                       tr("翻译暂存成功！")
+                      ,tr("确定"));
+    QString myResult=(m_result+i)->toPlainText();
+    m_taskList[i].EditResultEditting(myResult);
+    m_List.updateList(m_taskList[i]);
+}
+
+void translaterTask::OnClicked_301confrm(int i){
+    QMessageBox::information(this, tr("提示"),
+                       tr("翻译提交成功！")
+                      ,tr("确定"));
+    QString myResult=(m_result+i)->toPlainText();
+    m_taskList[i].EditResult(myResult);
+    if(m_taskList[i].GetFlagToLeader()==0){
+        m_taskList[i].EditFlagToLeader(1);
+    }
+    else if(m_taskList[i].GetFlagToLeader()==2){
+        m_taskList[i].EditFlagToLeader(3);
+    }
+    m_List.updateList(m_taskList[i]);
+}
+
+void translaterTask::GetPage301save(){
+    connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked_301save(int)));
+    emit SendPage(m_iPage);
+}
+
+void translaterTask::GetPage301confrm(){
+    connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked_301confrm(int)));
+    emit SendPage(m_iPage);
 }

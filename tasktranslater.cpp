@@ -30,6 +30,7 @@ taskTranslater::taskTranslater(const taskTranslater& newTaskTranslater){
     m_iTranslater=newTaskTranslater.m_iTranslater;
     m_iIDTask=newTaskTranslater.m_iIDTask;
     m_result=newTaskTranslater.m_result;
+    m_resultEditting=newTaskTranslater.m_resultEditting;
     m_comment=newTaskTranslater.m_comment;
     m_flagToLeader=newTaskTranslater.m_flagToLeader;
     m_commentEditting=newTaskTranslater.m_commentEditting;
@@ -54,6 +55,7 @@ taskTranslater::operator =(const taskTranslater& newTaskTranslater){
     m_iTranslater=newTaskTranslater.m_iTranslater;
     m_iIDTask=newTaskTranslater.m_iIDTask;
     m_result=newTaskTranslater.m_result;
+    m_resultEditting=newTaskTranslater.m_resultEditting;
     m_comment=newTaskTranslater.m_comment;
     m_flagToLeader=newTaskTranslater.m_flagToLeader;
     m_commentEditting=newTaskTranslater.m_commentEditting;
@@ -92,6 +94,11 @@ int taskTranslater::GetFlagToLeader(){
 QString taskTranslater::GetCommentEditting(){
     return m_commentEditting;
 }
+
+QString taskTranslater::GetResultEditting(){
+    return m_resultEditting;
+}
+
 
 
 void taskTranslater::EditEndYear(int newYear){
@@ -138,6 +145,9 @@ void taskTranslater::AddComment(QString newComment){
     m_comment.append("\n");
 }
 
+void taskTranslater::EditResultEditting(QString newResult){
+    m_resultEditting=newResult;
+}
 
 
 void taskTranslater::attachIDToTask(int ID,QList<taskTranslater> TaskList){
@@ -163,6 +173,7 @@ void taskTranslater::attachIDToTask(int ID,QList<taskTranslater> TaskList){
     m_iEndDay=TaskList[i].GetEndDay();
     m_iTranslater=TaskList[i].GetTranslater();
     m_iIDTask=TaskList[i].GetIDTask();
+    m_resultEditting=TaskList[i].GetResultEditting();
 }
 
 void taskTranslater::attachIDToTask(int ID){
@@ -192,5 +203,6 @@ void taskTranslater::attachIDToTask(int ID){
         m_comment=query.value(18).toString();
         m_flagToLeader=query.value(19).toInt();
         m_commentEditting=query.value(20).toString();
+        m_resultEditting=query.value(21).toString();
     }
 }

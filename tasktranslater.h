@@ -15,6 +15,7 @@ public:
     int GetTranslater();
     int GetIDTask();
     QString GetResult();
+    QString GetResultEditting();
     QString GetComment();
     QString GetCommentEditting();
     int GetFlagToLeader();
@@ -25,6 +26,7 @@ public:
     void EditTranslater(int newTranslater);
     void EditIDTask(int newIDTask);
     void EditResult(QString newResult);
+    void EditResultEditting(QString newResult);
     void EditComment(QString newComment);
     void EditCommentEditting(QString newComment);
     void EditFlagToLeader(int newFlagToLeader);
@@ -40,6 +42,7 @@ private:
     int m_iTranslater;
     int m_iIDTask;
     QString m_result;
+    QString m_resultEditting;
     QString m_comment;
     QString m_commentEditting;
     int m_flagToLeader;//0为译者翻译，1为译者提交与负责人进行评价，2为负责人评价提交与译者进行修改，

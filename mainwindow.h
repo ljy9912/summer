@@ -32,9 +32,10 @@ private slots:
     void on_exitBtn_clicked();
     
     void on_publisher_clicked();
+
+    void on_myTaskBtn_clicked();
     
 private:
-    void on_myTaskBtn_clicked();
     
     Ui::MainWindow *ui;
     user myUser;

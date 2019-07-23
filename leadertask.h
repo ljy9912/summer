@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTableWidget>
+#include <QTextEdit>
 
 namespace Ui {
 class leaderTask;
@@ -34,8 +35,15 @@ private slots:
     void on_main_clicked();
     void GetPage201();
     void GetPage203();
+    void GetPage301save();
+    void GetPage301confrm();
+    void GetPage301end();
+
     void OnClicked_201(int i);
     void OnClicked_203(int i);
+    void OnClicked_301save(int i);
+    void OnClicked_301confrm(int i);
+    void OnClicked_301end(int i);
 
 private:
     Ui::leaderTask *ui;
@@ -49,7 +57,10 @@ private:
     QLineEdit *m_monthEdit;
     QLineEdit *m_dayEdit;
     QPushButton *m_confrmBtn;
+    QPushButton *m_saveBtn;
+    QPushButton* m_endBtn;
     QTableWidget *m_table;
+    QTextEdit* m_NewComment;
 };
 
 #endif // LEADERTASK_H
