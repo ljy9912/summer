@@ -46,6 +46,7 @@ public:
     void TaskLeaderAppend(taskPublisher myLeader);
 
     void Delete(int idTask);
+
 };
 
 #endif // LIST_H

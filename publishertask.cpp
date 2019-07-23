@@ -24,16 +24,42 @@ publisherTask::~publisherTask()
     delete ui;
 }
 
+/*************************************************************************
+【函数名称】EditUser
+【函数功能】外部更改myUser
+【参数】user myNewUser
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 void publisherTask::EditUser(user myNewUser){
     m_myUser=myNewUser;
 }
 
+/*************************************************************************
+【函数名称】EditList
+【函数功能】外部更改list参数
+【参数】list myNewList
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 void publisherTask::EditList(list myNewList){
     m_List=myNewList;
 }
 
+/*************************************************************************
+【函数名称】ShowValue
+【函数功能】显示发布者任务界面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::ShowValue(){
     m_taskList=m_List.SearchTaskForPublisher(m_myUser);
+    m_nameedit=new QLineEdit[m_taskList.size()];
+    m_confrmBtn=new QPushButton[m_taskList.size()];
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
         switch(m_taskList[i].GetFlag()){
@@ -52,6 +78,14 @@ void publisherTask::ShowValue(){
     }
 }
 
+/*************************************************************************
+【函数名称】Show101
+【函数功能】在flag为101状态时的界面的显示，显示已报名负责人
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::Show101(int i){
     ui->listWidget->insertItem(i,tr("<负责人报名火热进行中>%1").arg(m_taskList[i].GetIntroduction()));
     m_leaderList=m_List.SearchLeaderForTask(m_taskList[i]);
@@ -65,10 +99,10 @@ void publisherTask::Show101(int i){
     header<<"账号"<<"用户名"<<"英语资历"<<"积分";
     table->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_leaderList.size();j++){
-        table->setItem(i,0,new QTableWidgetItem(QString::number(m_leaderList[j].GetID())));
-        table->setItem(i,1,new QTableWidgetItem(m_leaderList[j].GetName()));
-        table->setItem(i,2,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
-        table->setItem(i,3,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
+        table->setItem(j,0,new QTableWidgetItem(QString::number(m_leaderList[j].GetID())));
+        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetName()));
+        table->setItem(j,2,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
+        table->setItem(j,3,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(table);
@@ -76,8 +110,16 @@ void publisherTask::Show101(int i){
     ui->stackedWidget->addWidget(window);
 }
 
-
+/*************************************************************************
+【函数名称】Show102
+【函数功能】在flag为102状态时的界面的显示，显示发布者选择负责人的页面
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::Show102(int i){
+    m_Page=i;
     ui->listWidget->insertItem(i,tr("<负责人报名完毕，请选择！>%1").arg(m_taskList[i].GetIntroduction()));
     m_leaderList=m_List.SearchLeaderForTask(m_taskList[i]);
     QWidget *window=new QWidget;
@@ -90,43 +132,33 @@ void publisherTask::Show102(int i){
     header<<"账号"<<"用户名"<<"英语资历"<<"积分";
     table->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_leaderList.size();j++){
-        table->setItem(i,0,new QTableWidgetItem(QString::number(m_leaderList[j].GetID())));
-        table->setItem(i,1,new QTableWidgetItem(m_leaderList[j].GetName()));
-        table->setItem(i,2,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
-        table->setItem(i,3,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
+        table->setItem(j,0,new QTableWidgetItem(QString::number(m_leaderList[j].GetID())));
+        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetName()));
+        table->setItem(j,2,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
+        table->setItem(j,3,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(table);
     QHBoxLayout *layoutName=new QHBoxLayout;
     QLabel *labelName=new QLabel(tr("账号："));
-    QLineEdit *nameEdit=new QLineEdit;
     layoutName->addWidget(labelName);
-    layoutName->addWidget(nameEdit);
+    layoutName->addWidget(m_nameedit+i);
     layout->addLayout(layoutName);
-    QPushButton *confrmBtn=new QPushButton(tr("确定"));
-    layout->addWidget(confrmBtn);
+    m_confrmBtn[i].setText(tr("确定"));
+    layout->addWidget(m_confrmBtn+i);
     window->setLayout(layout);
     ui->stackedWidget->addWidget(window);
-    if(confrmBtn->isEnabled()){
-        int iIdLeader=nameEdit->text().toInt();
-        int iNum=ui->listWidget->currentRow();
-        int iNumInList=m_List.searchTaskInList(m_taskList[iNum]);
-        m_List.TaskPublisher[iNumInList].EditLeader(iIdLeader);
-        QMessageBox::information(this, tr("提示"),
-                           tr("选择负责人成功！")
-                          ,tr("确定"));
-        int iSize=m_List.SignUpForLeader.size();
-        for(int j=iSize-1;j>=0;i++){
-            if(m_List.SignUpForLeader[j].GetIDTask()==m_taskList[iNum].GetID()){
-                m_List.SignUpForLeader.removeAt(j);
-            }
-        }
-        m_taskList[iNum].EditFlag(201);
-        m_List.updateList(m_taskList[iNum]);
-        m_List.TaskLeaderAppend(m_taskList[iNum]);
-    }
+    connect(m_confrmBtn+i,SIGNAL(clicked()),this,SLOT(getPage()));
 }
 
+/*************************************************************************
+【函数名称】Show401
+【函数功能】在flag为401状态时的界面的显示，显示发布者的任务确认页面
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::Show401(int i){
     ui->listWidget->insertItem(i,tr("<任务翻译完毕，请确认！>%1").arg(m_taskList[i].GetIntroduction()));
     QTabWidget *Tab=new QTabWidget;
@@ -197,6 +229,14 @@ void publisherTask::Show401(int i){
     }
 }
 
+/*************************************************************************
+【函数名称】ShowDefault
+【函数功能】任务状态为401时，显示页面，显示发布者耐心等待的页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::ShowDefault(int i){
     ui->listWidget->insertItem(i,tr("<翻译任务进行中！>%1").arg(m_taskList[i].GetIntroduction()));
     QLabel *inform=new QLabel(tr("翻译任务正在火热进行中，请耐心等待！"));
@@ -225,6 +265,14 @@ void publisherTask::ShowDefault(int i){
     ui->stackedWidget->addWidget(window);
 }
 
+/*************************************************************************
+【函数名称】on_main_clicked
+【函数功能】点击main后，返回主页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::on_main_clicked()
 {
     MainWindow *r=new MainWindow;
@@ -232,4 +280,30 @@ void publisherTask::on_main_clicked()
     r->EditUser(m_myUser);
     r->show();
     close();
+}
+
+void publisherTask::OnClicked(int i){
+    int iIdLeader=m_nameedit[i].text().toInt();
+    int iNum=ui->listWidget->currentRow();
+    int iNumInList=m_List.searchTaskInList(m_taskList[iNum]);
+    m_List.TaskPublisher[iNumInList].EditLeader(iIdLeader);
+    m_List.TaskPublisher[iNumInList].EditFlag(201);
+    QMessageBox::information(this, tr("提示"),
+                       tr("选择负责人成功！")
+                      ,tr("确定"));
+    int iSize=m_List.SignUpForLeader.size();
+    for(int j=iSize-1;j>=0;j--){
+        if(m_List.SignUpForLeader[j].GetIDTask()==m_taskList[iNum].GetID()){
+            m_List.SignUpForLeader.removeAt(j);
+        }
+    }
+    m_taskList[iNum].EditLeader(iIdLeader);
+    m_taskList[iNum].EditFlag(201);
+    m_List.updateList(m_taskList[iNum]);
+    m_List.TaskLeaderAppend(m_taskList[iNum]);
+}
+
+void publisherTask::getPage(){
+    connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked(int)));
+    emit SendPage(m_Page);
 }

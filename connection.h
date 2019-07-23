@@ -40,6 +40,7 @@ static bool createConnection()
         else
             qDebug()<<"Table created!";
     }*/
+
     return true;
 }
 

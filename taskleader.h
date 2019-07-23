@@ -22,6 +22,7 @@ public:
     void EditResult(QString newResult);
     void EditResultEditting(QString newResult);
     
+    void attachIDToTask(int id,QList<taskLeader> TaskList);
     void attachIDToTask(int id);
     
 private:

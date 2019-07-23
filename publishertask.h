@@ -4,6 +4,8 @@
 #include <QDialog>
 #include "user.h"
 #include "list.h"
+#include <QLineEdit>
+#include <QPushButton>
 
 namespace Ui {
 class publisherTask;
@@ -26,6 +28,11 @@ public:
 
 private slots:
     void on_main_clicked();
+    void OnClicked(int i);
+    void getPage();
+
+signals:
+    void SendPage(int m_page);
 
 private:
     Ui::publisherTask *ui;
@@ -33,6 +40,10 @@ private:
     list m_List;
     QList<taskPublisher> m_taskList;
     QList<signUpForLeader> m_leaderList;
+    int m_Page;
+
+    QLineEdit *m_nameedit;
+    QPushButton *m_confrmBtn;
 };
 
 #endif // PUBLISHERTASK_H

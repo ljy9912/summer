@@ -8,6 +8,8 @@
 #include "taskspublished.h"
 #include "sqlquery.h"
 #include "publishertask.h"
+#include "leadertask.h"
+#include "translatertask.h".h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -88,21 +90,45 @@ void MainWindow::on_getTask_clicked()
 
 void MainWindow::on_myTaskBtn_clicked()
 {
-    
+    translaterTask *r=new translaterTask;
+    r->EditList(List);
+    r->EditUser(myUser);
+    r->ShowValue();
+    r->show();
+    close();
 }
 
+/*************************************************************************
+【函数名称】EditList
+【函数功能】外部更改list接口
+【参数】list newList
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.20
+【更改记录】
+*************************************************************************/
 void MainWindow::EditList(list newList){
     List=newList;
 }
 
 void MainWindow::on_myTableBtn_clicked()
 {
-
+    leaderTask *r=new leaderTask;
+    r->EditList(List);
+    r->EditUser(myUser);
+    r->ShowValue();
+    r->show();
     close();
 }
 
 
-
+/*************************************************************************
+【函数名称】on_exitBtn_clicked
+【函数功能】当点击退出之后，将所有的List中的数据存储到数据库当中
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void MainWindow::on_exitBtn_clicked()
 {
     SqlQuery query;
@@ -115,6 +141,14 @@ void MainWindow::on_exitBtn_clicked()
     close();
 }
 
+/*************************************************************************
+【函数名称】on_publisher_clicked
+【函数功能】在点击publisher之后，显示发布者任务页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void MainWindow::on_publisher_clicked()
 {
     publisherTask *r=new publisherTask;

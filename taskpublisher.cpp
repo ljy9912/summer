@@ -16,22 +16,13 @@ taskPublisher::taskPublisher(){
     flag=0;
 }
 
-taskPublisher::taskPublisher(const taskPublisher &myNewTask){
-    id=myNewTask.id;
-    taskclass=myNewTask.taskclass;
-    translateTask=myNewTask.translateTask;
-    introduction=myNewTask.introduction;
-    publisher=myNewTask.publisher;
-    time=myNewTask.time;
+taskPublisher::taskPublisher(const taskPublisher &myNewTask)
+    :task(myNewTask){
     leaderYear=myNewTask.leaderYear;
     leaderMonth=myNewTask.leaderMonth;
     leaderDay=myNewTask.leaderDay;
-    startYear=myNewTask.startYear;
-    startMonth=myNewTask.startMonth;
-    startDay=myNewTask.startDay;
-    money=myNewTask.money;
-    flag=myNewTask.flag;
-    leader=myNewTask.leader;
+    m_result=myNewTask.m_result;
+    m_resultEditting=myNewTask.m_resultEditting;
 }
 
 /*************************************************************************
@@ -112,6 +103,29 @@ void taskPublisher::EditLeaderDay(int dday){
 【开发者及日期】李佳芸 2019.7.15
 【更改记录】
 *************************************************************************/
+void taskPublisher::attachIDToTask(int ID,QList<taskPublisher> TaskList){
+    int i=0;
+    for(i=0;i<TaskList.size();i++){
+        if(TaskList[i].GetID()==ID){
+            break;
+        }
+    }
+    taskclass=TaskList[i].GetTaskClass();
+    translateTask=TaskList[i].GetTask();
+    introduction=TaskList[i].GetIntroduction();
+    publisher=TaskList[i].GetPublisher();
+    time=TaskList[i].GetTime();
+    leaderYear=TaskList[i].GetLeaderYear();
+    leaderMonth=TaskList[i].GetLeaderMonth();
+    leaderDay=TaskList[i].GetLeaderDay();
+    money=TaskList[i].GetMoney();
+    flag=TaskList[i].GetFlag();
+    leader=TaskList[i].GetLeader();
+    startYear=TaskList[i].GetStartYear();
+    startMonth=TaskList[i].GetStartMonth();
+    startDay=TaskList[i].GetStartDay();
+}
+
 void taskPublisher::attachIDToTask(int ID){
     QSqlQuery query;
     id=ID;

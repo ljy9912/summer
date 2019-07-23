@@ -36,7 +36,7 @@ void LoginDialog::on_loginBtn_clicked()
             accept();
             flag=1;
             id=idnum;
-            myUser.attachIDToUser(id);
+            myUser.attachIDToUser(id,List.User);
             MainWindow *r=new MainWindow;
             r->EditUser(myUser);
             r->EditList(List);
@@ -95,6 +95,14 @@ void LoginDialog::on_exitBtn_clicked()
     msgbx->show();
 }
 
+/*************************************************************************
+【函数名称】EditList
+【函数功能】外部更改list接口
+【参数】list newList
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.20
+【更改记录】
+*************************************************************************/
 void LoginDialog::EditList(list newList){
     List=newList;
 }

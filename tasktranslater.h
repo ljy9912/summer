@@ -30,6 +30,7 @@ public:
     void EditFlagToLeader(int newFlagToLeader);
     void AddComment(QString newComment);
     
+    void attachIDToTask(int id,QList<taskTranslater> TaskList);
     void attachIDToTask(int id);
     
 private:

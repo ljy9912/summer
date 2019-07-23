@@ -62,7 +62,7 @@ public:
     void EditFlag(int fflag);
     void EditLeader(int iLeader);
 
-    void attachIDToTask(int id);
+    void attachIDToTask(int id,QList<task> TaskList);
 
 
 };

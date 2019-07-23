@@ -24,7 +24,6 @@ public:
     virtual ~user();
     user& operator = (const user& myNewUser);
 
-    void attachIDToUser(int iID);
     int GetID();
     QString GetName();
     QString GetPhoneNum();
@@ -45,6 +44,8 @@ public:
     void AddMoney(double dAdd);
     void AddPoint(int iNewPoint);
 
+    void attachIDToUser(int iID,QList<user> UserList);
+    void attachIDToUser(int iID);
     bool userWithPasswrd(int iID,QString dPasswrd);
 
 };

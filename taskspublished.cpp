@@ -31,16 +31,28 @@ void tasksPublished::EditUser(user myNewUser){
 
 void tasksPublished::on_applyBtn_clicked()
 {
-    if(myUser.GetRewrdPoint()<100){
-        QMessageBox::warning(this, tr("提示"),
-                           tr("积分不足，请努力完成更多翻译任务后再来申请吧！")
-                          ,tr("确定"));
+    int row=ui->listWidget->currentRow();
+    if(myTaskList[row].GetFlag()==101){
+        if(myUser.GetRewrdPoint()<100){
+            QMessageBox::warning(this, tr("提示"),
+                               tr("积分不足，请努力完成更多翻译任务后再来申请吧！")
+                              ,tr("确定"));
+        }
+        else{
+            int idtask=myTaskList[row].GetID();
+            int idthis=List.SignUpForLeader.size();
+            signUpForLeader leader(myUser,idtask,idthis);
+            List.SignUpForLeader.append(leader);
+            QMessageBox::information(this, tr("提示"),
+                               tr("报名成功！")
+                              ,tr("确定"));
+        }
     }
-    else{
-        int row=ui->listWidget->currentRow();
+    else if(myTaskList[row].GetFlag()==202){
         int idtask=myTaskList[row].GetID();
-        signUpForLeader leader(myUser,idtask);
-        List.SignUpForLeader.append(leader);
+        int idthis=List.SignUpForTranslater.size();
+        signUpForTranslater translater(myUser,idtask,idthis);
+        List.SignUpForTranslater.append(translater);
         QMessageBox::information(this, tr("提示"),
                            tr("报名成功！")
                           ,tr("确定"));
@@ -63,11 +75,11 @@ void tasksPublished::EditList(list newList){
 void tasksPublished::showValue(list List){
     for(int i=0;i<List.TaskPublisher.size();i++)
     {
-        if(List.TaskPublisher[i].GetFlag()==101||List.TaskPublisher[i].GetFlag()==202){
+        if(List.TaskPublisher[i].GetFlag()==101
+                ||List.TaskPublisher[i].GetFlag()==202){
             myTaskList.append(List.TaskPublisher[i]);
         }
     }
-
 
     for(int i=0;i<myTaskList.size();i++){
         ui->listWidget->insertItem(i,tr("%1").arg(myTaskList[i].GetIntroduction()));

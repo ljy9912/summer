@@ -4,7 +4,7 @@
 
 taskTranslater::taskTranslater()
 {
-
+    m_flagToLeader=0;
 }
 
 taskTranslater::~taskTranslater(){
@@ -139,6 +139,31 @@ void taskTranslater::AddComment(QString newComment){
 }
 
 
+
+void taskTranslater::attachIDToTask(int ID,QList<taskTranslater> TaskList){
+    int i=0;
+    for(i=0;i<TaskList.size();i++){
+        if(TaskList[i].GetID()==ID){
+            break;
+        }
+    }
+    taskclass=TaskList[i].GetTaskClass();
+    translateTask=TaskList[i].GetTask();
+    introduction=TaskList[i].GetIntroduction();
+    publisher=TaskList[i].GetPublisher();
+    time=TaskList[i].GetTime();
+    money=TaskList[i].GetMoney();
+    flag=TaskList[i].GetFlag();
+    leader=TaskList[i].GetLeader();
+    startYear=TaskList[i].GetStartYear();
+    startMonth=TaskList[i].GetStartMonth();
+    startDay=TaskList[i].GetStartDay();
+    m_iEndYear=TaskList[i].GetEndYear();
+    m_iEndMonth=TaskList[i].GetEndMonth();
+    m_iEndDay=TaskList[i].GetEndDay();
+    m_iTranslater=TaskList[i].GetTranslater();
+    m_iIDTask=TaskList[i].GetIDTask();
+}
 
 void taskTranslater::attachIDToTask(int ID){
     QSqlQuery query;

@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>我的招募和分工</string>
+     <string>我是负责人</string>
     </property>
    </widget>
    <widget class="QPushButton" name="exitBtn">

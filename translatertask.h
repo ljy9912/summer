@@ -18,8 +18,6 @@ public:
     void EditList(list myNewList);
     void EditUser(user myNewUser);
     void ShowValue();
-    void Show301(int i);
-    void Show401(int i);
 
 private slots:
     void on_main_clicked();

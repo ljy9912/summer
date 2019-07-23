@@ -95,6 +95,31 @@ void taskLeader::EditResultEditting(QString newResult){
 
 
 
+void taskLeader::attachIDToTask(int ID,QList<taskLeader> TaskList){
+    int i=0;
+    for(i=0;i<TaskList.size();i++){
+        if(TaskList[i].GetID()==ID){
+            break;
+        }
+    }
+    taskclass=TaskList[i].GetTaskClass();
+    translateTask=TaskList[i].GetTask();
+    introduction=TaskList[i].GetIntroduction();
+    publisher=TaskList[i].GetPublisher();
+    time=TaskList[i].GetTime();
+    money=TaskList[i].GetMoney();
+    flag=TaskList[i].GetFlag();
+    leader=TaskList[i].GetLeader();
+    startYear=TaskList[i].GetStartYear();
+    startMonth=TaskList[i].GetStartMonth();
+    startDay=TaskList[i].GetStartDay();
+    m_iTranslaterYear=TaskList[i].GetTranslaterYear();
+    m_iTranslaterMonth=TaskList[i].GetTranslaterMonth();
+    m_iTranslaterDay=TaskList[i].GetTranslaterDay();
+    m_Result=TaskList[i].GetResult();
+    m_ResultEditting=TaskList[i].GetResultEditting();
+}
+
 void taskLeader::attachIDToTask(int ID){
     QSqlQuery query;
     id=ID;

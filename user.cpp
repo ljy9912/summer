@@ -137,6 +137,23 @@ void user::AddPoint(int iNewPoint){
 【开发者及日期】李佳芸 2019.7.13
 【更改记录】
 *************************************************************************/
+void user::attachIDToUser(int iID,QList<user> UserList){
+    int i=0;
+    for(i=0;i<UserList.size();i++){
+        if(UserList[i].GetID()==iID)   {
+            break;
+        }
+    }
+    m_iID=UserList[i].GetID();
+    m_Name=UserList[i].GetName();
+    m_PhoneNum=UserList[i].GetPhoneNum();
+    m_IDNum=UserList[i].GetIDNum();
+    m_Passwrd=UserList[i].GetPassWrd();
+    m_English=UserList[i].GetEnglish();
+    m_iRewrdPoint=UserList[i].GetRewrdPoint();
+    m_dMoney=UserList[i].GetMoney();
+}
+
 void user::attachIDToUser(int iID){
     QSqlQuery query;
     m_iID=iID;
@@ -153,7 +170,6 @@ void user::attachIDToUser(int iID){
         m_dMoney=query.value(7).toInt();
     }
 }
-
 bool user::userWithPasswrd(int iInputId,QString inputPasswrd){
     if(m_iID==iInputId&&m_Passwrd==inputPasswrd){
         return true;

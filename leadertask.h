@@ -3,6 +3,9 @@
 
 #include <QDialog>
 #include "list.h"
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTableWidget>
 
 namespace Ui {
 class leaderTask;
@@ -24,8 +27,15 @@ public:
     void Show301(int i);
     void Show302(int i);
 
+signals:
+    void SendPage(int i);
+
 private slots:
     void on_main_clicked();
+    void GetPage201();
+    void GetPage203();
+    void OnClicked_201(int i);
+    void OnClicked_203(int i);
 
 private:
     Ui::leaderTask *ui;
@@ -34,6 +44,12 @@ private:
     QList<taskLeader> m_taskList;
     QList<signUpForTranslater> m_translaterList;
     QList<taskTranslater> m_translaterTaskList;
+    int m_iPage;
+    QLineEdit *m_yearEdit;
+    QLineEdit *m_monthEdit;
+    QLineEdit *m_dayEdit;
+    QPushButton *m_confrmBtn;
+    QTableWidget *m_table;
 };
 
 #endif // LEADERTASK_H
