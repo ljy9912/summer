@@ -24,6 +24,7 @@ private:
     Ui::MessageBox *ui;
     user m_User;
     list m_List;
+    QList<Message> m_messageList;
 };
 
 #endif // MESSAGEBOX_H

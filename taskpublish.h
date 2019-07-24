@@ -5,6 +5,8 @@
 #include "task.h"
 #include "user.h"
 #include "list.h"
+#include <QList>
+#include "message.h"
 
 namespace Ui {
 class taskPublish;
@@ -32,6 +34,9 @@ private:
     taskPublisher myTask;
     user myUser;
     list List;
+
+signals:
+    void PublishTask(int iID,QString intro,QList<Message> listMessage);
 };
 
 #endif // TASKWHOLE_H

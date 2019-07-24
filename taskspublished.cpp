@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include "signupforleader.h"
 #include <QTextBrowser>
+#include "messagebackup.h"
 
 tasksPublished::tasksPublished(QWidget *parent) :
     QDialog(parent),
@@ -62,6 +63,10 @@ void tasksPublished::on_applyBtn_clicked()
             QMessageBox::information(this, tr("提示"),
                                tr("报名成功！")
                               ,tr("确定"));
+            MessageBackUp* myMessage=new MessageBackUp;
+            connect(this,SIGNAL(SignUpForLeader(int,QList<Message>&)),myMessage,SLOT(SignUpForLeader(int,QList<Message>&)));
+            delete myMessage;
+            emit SignUpForLeader(myUser.GetID(),List.message);
         }
     }
     else if(myTaskList[row].GetFlag()==202){

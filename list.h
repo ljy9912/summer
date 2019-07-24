@@ -7,6 +7,7 @@
 #include "signupfortranslater.h"
 #include "taskleader.h"
 #include "tasktranslater.h"
+#include "message.h"
 
 class list
 {
@@ -36,6 +37,7 @@ public:
     QList <taskTranslater> SearchTaskForTranslater(user myUser);
     QList <taskTranslater> SearchTaskForTranslater(int idTask);
     QList <taskTranslater> SearchTaskForTranslater_302(int idTask);
+    QList <Message> SearchMessageforUser(int idUser);
     
     QList <taskPublisher> TaskPublisher;
     QList <user> User;
@@ -43,6 +45,7 @@ public:
     QList <signUpForTranslater> SignUpForTranslater;
     QList <taskLeader> TaskLeader;
     QList <taskTranslater> TaskTranslater;
+    QList <Message> message;
     
     void TaskLeaderAppend(taskPublisher myLeader);
 

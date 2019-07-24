@@ -49,7 +49,8 @@ SOURCES += \
     tasktranslater.cpp \
     translatertask.cpp \
     messagebox.cpp \
-    message.cpp
+    message.cpp \
+    messagebackup.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -77,7 +78,8 @@ HEADERS += \
     tasktranslater.h \
     translatertask.h \
     messagebox.h \
-    message.h
+    message.h \
+    messagebackup.h
 
 FORMS += \
         mainwindow.ui \

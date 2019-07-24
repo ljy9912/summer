@@ -33,6 +33,9 @@ private:
     user myUser;
     list List;
     QList <taskPublisher> myTaskList;
+
+signals:
+    void SignUpForLeader(int iID,QList<Message>& myMessage);
 };
 
 #endif // TASKSPUBLISHED_H

@@ -6,6 +6,7 @@
 #include "task.h"
 #include "mainwindow.h"
 #include <QDate>
+#include "messagebackup.h"
 
 taskPublish::taskPublish(QWidget *parent) :
     QDialog(parent),
@@ -113,6 +114,9 @@ void taskPublish::on_publishBtn_clicked()
     r->EditList(List);
     r->show();
     close();
+    MessageBackUp* myMessage;
+    connect(this,SIGNAL(PublishTask(int,QString,QList<Message>)),myMessage,SLOT(PublishTask(int,QString,QList<Message>)));
+    emit PublishTask(myUser.GetID(),myTask.GetIntroduction(),List.message);
 }
 
 void taskPublish::EditList(list newList){

@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include "tasktranslater.h"
+#include "message.h"
 
 SqlQuery::SqlQuery()
 {
@@ -224,11 +225,24 @@ const QList<taskTranslater> SqlQuery::GetTaskTranslater(){
 }
 
 const QList<Message> SqlQuery::GetMessage(){
-
+    query.exec("select * from message");
+    QList <Message> listMessage;
+    query.first();
+    int id=query.value(0).toInt();
+    Message myMessage;
+    myMessage.attachIDToTask(id);
+    listMessage.append(myTask);
+    while(query.next()){
+        int id=query.value(0).toInt();
+        Message myMessage;
+        myMessage.attachIDToTask(id);
+        //myTask.EditFlagToLeader(3);
+        listMessage.append(myMessage);
+    }
+    return listMessage;
 }
 
 void SqlQuery::saveUser(QList<user> listUser){
-    QSqlQuery query;
     query.exec("delete from users");
     for(int i=0;i<listUser.size();i++){
         query.prepare("insert into users(id,name,phonenum,idnum,password,"
@@ -247,7 +261,6 @@ void SqlQuery::saveUser(QList<user> listUser){
 }
 
 void SqlQuery::saveTasks(QList<taskPublisher> listTask){
-    QSqlQuery query;
     query.exec("delete from tasks");
     for(int i=0;i<listTask.size();i++){
         query.prepare("insert into tasks(id,taskclass,task,"
@@ -278,7 +291,6 @@ void SqlQuery::saveTasks(QList<taskPublisher> listTask){
 }
 
 void SqlQuery::saveSignUpForLeader(QList<signUpForLeader> listSignUpForLeader){
-    QSqlQuery query;
     query.exec("delete from signupforleaders");
     for(int i=0;i<listSignUpForLeader.size();i++){
         query.prepare("insert into signupforleaders(id,name,phonenum,idnum,password,"
@@ -302,7 +314,6 @@ void SqlQuery::saveSignUpForLeader(QList<signUpForLeader> listSignUpForLeader){
 }
 
 void SqlQuery::saveSignUpForTranslater(QList<signUpForTranslater> listSignUpForTranslater){
-    QSqlQuery query;
     query.exec("delete from signupfortranslaters");
     for(int i=0;i<listSignUpForTranslater.size();i++){
         query.prepare("insert into signupfortranslaters(id,name,phonenum,idnum,password,"
@@ -327,7 +338,6 @@ void SqlQuery::saveSignUpForTranslater(QList<signUpForTranslater> listSignUpForT
 }
 
 void SqlQuery::saveTaskLeader(QList<taskLeader> listTask){
-    QSqlQuery query;
     query.exec("delete from taskleader");
     for(int i=0;i<listTask.size();i++){
         query.prepare("insert into taskleader(id,taskclass,task,"
@@ -360,7 +370,6 @@ void SqlQuery::saveTaskLeader(QList<taskLeader> listTask){
 }
 
 void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
-    QSqlQuery query;
     query.exec("delete from tasktranslater");
     for(int i=0;i<listTask.size();i++){
         query.prepare("insert into tasktranslater(id,taskclass,task,"
@@ -391,13 +400,28 @@ void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
         query.addBindValue(listTask[i].GetFlagToLeader());
         query.addBindValue(listTask[i].GetCommentEditting());
         query.addBindValue(listTask[i].GetResultEditting());
-        if(!query.exec())
+        if(!query.exec()){
             qDebug() << query.lastError();
-          else
+        }
+          else{
             qDebug() << "tasktranslater save";
+        }
     }
 }
 
 void SqlQuery::SendMessage(QList<Message> messageList){
-
+    query.exec("delete from message");
+    for(int i=0;i<messageList.size();i++){
+        query.prepare("insert into message (id,title,content,iduser) values(?,?,?,?)");
+        query.addBindValue(messageList[i].GetID());
+        query.addBindValue(messageList[i].GetTitle());
+        query.addBindValue(messageList[i].GetContent());
+        query.addBindValue(messageList[i].GetUser());
+    }
+    if(!query.exec()){
+        qDebug()<<query.lastError();
+    }
+    else{
+        qDebug()<<"message save";
+    }
 }

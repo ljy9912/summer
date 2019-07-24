@@ -357,6 +357,15 @@ QList <signUpForTranslater> list::SearchTranslaterForTask(taskLeader myTask){
     return myLeader;
 }
 
+QList<Message> list::SearchMessageforUser(int idUser){
+    QList<Message> myMessage;
+    for(int i=0;i<message.size();i++){
+        if(message[i].GetUser()==idUser){
+            myMessage.append(message[i]);
+        }
+    }
+    return myMessage;
+}
 /*************************************************************************
 【函数名称】TaskLeaderAppend
 【函数功能】在TaskLeader中添加TaskPublisher对象（只筛选相同信息）
