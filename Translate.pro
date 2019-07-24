@@ -47,7 +47,9 @@ SOURCES += \
     taskleader.cpp \
     leadertask.cpp \
     tasktranslater.cpp \
-    translatertask.cpp
+    translatertask.cpp \
+    messagebox.cpp \
+    message.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -73,7 +75,9 @@ HEADERS += \
     taskleader.h \
     leadertask.h \
     tasktranslater.h \
-    translatertask.h
+    translatertask.h \
+    messagebox.h \
+    message.h
 
 FORMS += \
         mainwindow.ui \
@@ -89,4 +93,5 @@ FORMS += \
     registerconfirm.ui \
     publishertask.ui \
     leadertask.ui \
-    translatertask.ui
+    translatertask.ui \
+    messagebox.ui

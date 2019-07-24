@@ -150,7 +150,7 @@ void publisherTask::Show102(int i){
     layout->addWidget(m_confrmBtn+i);
     window->setLayout(layout);
     ui->stackedWidget->addWidget(window);
-    connect(m_confrmBtn+i,SIGNAL(pressed()),this,SLOT(getPage102()));
+    connect((m_confrmBtn+i),SIGNAL(pressed()),this,SLOT(GetPage102()));
 }
 
 /*************************************************************************

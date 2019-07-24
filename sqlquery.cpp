@@ -100,6 +100,14 @@ void SqlQuery::createTaskTranslater(){
         qDebug() << "Table created!";
 }
 
+void SqlQuery::createMessage(){
+    query.prepare("create table if not exists message(id int primary key,title varchar(100),"
+                  "content varchar(1000),iduser int)");
+    if(!query.exec())
+        qDebug() << query.lastError();
+      else
+        qDebug() << "Table created!";
+}
 
 const QList<user> SqlQuery::GetUser(){
     query.exec("select * from users");
@@ -135,7 +143,7 @@ const QList<taskPublisher> SqlQuery::GetTasks(){
         myTask.attachIDToTask(id);
         //myTask.EditFlag(203);
         //listTask.append(myTask);
-        //myTask.EditFlag(201);
+        //myTask.EditFlag(202);
         listTask.append(myTask);
     }
     return listTask;
@@ -191,7 +199,7 @@ const QList<taskLeader> SqlQuery::GetTaskLeader(){
         int id=query.value(0).toInt();
         taskLeader myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlag(302);
+        //myTask.EditFlag(301);
         listTask.append(myTask);
     }
     return listTask;
@@ -213,6 +221,10 @@ const QList<taskTranslater> SqlQuery::GetTaskTranslater(){
         listTask.append(myTask);
     }
     return listTask;
+}
+
+const QList<Message> SqlQuery::GetMessage(){
+
 }
 
 void SqlQuery::saveUser(QList<user> listUser){
@@ -384,4 +396,8 @@ void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
           else
             qDebug() << "tasktranslater save";
     }
+}
+
+void SqlQuery::SendMessage(QList<Message> messageList){
+
 }

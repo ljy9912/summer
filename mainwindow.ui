@@ -82,7 +82,7 @@
    <widget class="QPushButton" name="exitBtn">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>310</x>
       <y>0</y>
       <width>80</width>
       <height>15</height>
@@ -103,6 +103,19 @@
     </property>
     <property name="text">
      <string>我是任务发布者</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MessageBox">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>0</y>
+      <width>80</width>
+      <height>15</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>消息盒子</string>
     </property>
    </widget>
   </widget>

@@ -162,8 +162,8 @@ void translaterTask::ShowValue(){
                 layout->addLayout(btn);
                 window->setLayout(layout);
                 ui->stackedWidget->addWidget(window);
-                connect(m_saveBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301save()));
-                connect(m_confrmBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301confrm()));
+                connect(m_saveBtn+i,SIGNAL(pressed()),this,SLOT(GetPage301save()));
+                connect(m_confrmBtn+i,SIGNAL(pressed()),this,SLOT(GetPage301confrm()));
             }
         }
     }
@@ -235,8 +235,11 @@ void translaterTask::OnClicked_301confrm(int i){
 【更改记录】
 *************************************************************************/
 void translaterTask::GetPage301save(){
-    connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked_301save(int)));
-    emit SendPage(m_iPage);
+    for(int i=0;i<m_taskList.size();i++){
+        if(m_saveBtn[i].isDown()){
+            OnClicked_301save(i);
+        }
+    }
 }
 
 /*************************************************************************
@@ -248,6 +251,9 @@ void translaterTask::GetPage301save(){
 【更改记录】
 *************************************************************************/
 void translaterTask::GetPage301confrm(){
-    connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked_301confrm(int)));
-    emit SendPage(m_iPage);
+    for(int i=0;i<m_taskList.size();i++){
+        if(m_confrmBtn[i].isDown()){
+            OnClicked_301confrm(i);
+        }
+    }
 }

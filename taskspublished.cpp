@@ -9,6 +9,7 @@
 #include <mainwindow.h>
 #include <QMessageBox>
 #include "signupforleader.h"
+#include <QTextBrowser>
 
 tasksPublished::tasksPublished(QWidget *parent) :
     QDialog(parent),
@@ -131,7 +132,9 @@ void tasksPublished::showValue(list List){
             taskClass=new QLabel(tr("翻译性质：英译中"));
         }
         QLabel *intro=new QLabel(tr("任务简介：%1").arg(myTaskList[i].GetIntroduction()));
-        QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(myTaskList[i].GetTask()));
+        QLabel *tasks=new QLabel(tr("翻译内容："));
+        QTextBrowser *myTask=new QTextBrowser;
+        myTask->setText(myTaskList[i].GetTask());
         QLabel *time=new QLabel(tr("任务周期：%1天").arg(myTaskList[i].GetTime()));
         QLabel *date=new QLabel(tr("负责人报名截至日期：%1年%2月%3日").arg(myTaskList[i].GetLeaderYear()).arg(myTaskList[i].GetLeaderMonth()).arg(myTaskList[i].GetLeaderDay()));
         QLabel *money=new QLabel(tr("任务总金额：%1元").arg(myTaskList[i].GetMoney()));
@@ -139,6 +142,7 @@ void tasksPublished::showValue(list List){
         layout->addWidget(taskClass);
         layout->addWidget(intro);
         layout->addWidget(tasks);
+        layout->addWidget(myTask);
         layout->addWidget(time);
         layout->addWidget(date);
         layout->addWidget(money);
