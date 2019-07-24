@@ -35,6 +35,7 @@ public:
     QList <signUpForTranslater> SearchTranslaterForTask(taskLeader myTask);
     QList <taskTranslater> SearchTaskForTranslater(user myUser);
     QList <taskTranslater> SearchTaskForTranslater(int idTask);
+    QList <taskTranslater> SearchTaskForTranslater_302(int idTask);
     
     QList <taskPublisher> TaskPublisher;
     QList <user> User;

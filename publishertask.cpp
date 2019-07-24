@@ -60,6 +60,8 @@ void publisherTask::ShowValue(){
     m_taskList=m_List.SearchTaskForPublisher(m_myUser);
     m_nameedit=new QLineEdit[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
+    m_table=new QTableWidget[m_taskList.size()];
+    m_leaderMoney=new QLineEdit[m_taskList.size()];
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
         switch(m_taskList[i].GetFlag()){
@@ -148,7 +150,7 @@ void publisherTask::Show102(int i){
     layout->addWidget(m_confrmBtn+i);
     window->setLayout(layout);
     ui->stackedWidget->addWidget(window);
-    connect(m_confrmBtn+i,SIGNAL(clicked()),this,SLOT(getPage()));
+    connect(m_confrmBtn+i,SIGNAL(pressed()),this,SLOT(getPage102()));
 }
 
 /*************************************************************************
@@ -167,7 +169,6 @@ void publisherTask::Show401(int i){
     myTask->setText(m_taskList[i].GetTask());
     QTextBrowser *myResult=new QTextBrowser;
     QLabel *inform1=new QLabel(tr("负责人酬金："));
-    QLineEdit *leaderMoney=new QLineEdit;
     int iIDTask=m_taskList[i].GetID();
     for(int j=0;j<m_List.TaskLeader.size();j++){
         if(iIDTask==m_List.TaskLeader[j].GetID()){
@@ -183,50 +184,32 @@ void publisherTask::Show401(int i){
     Tab->addTab(window1,tr("译文"));
     QHBoxLayout *leader=new QHBoxLayout;
     leader->addWidget(inform1);
-    leader->addWidget(leaderMoney);
+    leader->addWidget(m_leaderMoney+i);
     QWidget *window2=new QWidget;
     QVBoxLayout *layout2=new QVBoxLayout();
     QLabel *inform2=new QLabel(tr("译者："));
-    QList<taskTranslater> TaskTranslaterList=m_List.SearchTaskForTranslater
-            (m_taskList[i].GetID());
-    QTableWidget *table=new QTableWidget(TaskTranslaterList.size(),4);
-    table->setWindowTitle("译者");
+    m_TaskTranslaterList=m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
+    (m_table+i)->setColumnCount(4);
+    (m_table+i)->setRowCount(m_TaskTranslaterList.size());
+    (m_table+i)->setWindowTitle("译者");
     QStringList header;
     header<<"账号"<<"译文"<<"成果"<<"酬金";
-    table->setHorizontalHeaderLabels(header);
-    for(int j=0;j<TaskTranslaterList.size();j++){
-        table->setItem(i,0,new QTableWidgetItem(QString::number(TaskTranslaterList[j].GetID())));
-        table->setItem(i,1,new QTableWidgetItem(TaskTranslaterList[j].GetTask()));
-        table->setItem(i,2,new QTableWidgetItem(TaskTranslaterList[j].GetResult()));
+    (m_table+i)->setHorizontalHeaderLabels(header);
+    for(int j=0;j<m_TaskTranslaterList.size();j++){
+        (m_table+i)->setItem(j,0,new QTableWidgetItem(QString::number(m_TaskTranslaterList[j].GetID())));
+        (m_table+i)->setItem(j,1,new QTableWidgetItem(m_TaskTranslaterList[j].GetTask()));
+        (m_table+i)->setItem(j,2,new QTableWidgetItem(m_TaskTranslaterList[j].GetResult()));
     }
     layout2->addLayout(leader);
     layout2->addWidget(inform2);
-    layout2->addWidget(table);
-    QPushButton *confrmBtn=new QPushButton(tr("确定"));
-    layout2->addWidget(confrmBtn);
+    layout2->addWidget((m_table+i));
+    (m_confrmBtn+i)->setText(tr("确定"));
+    layout2->addWidget(m_confrmBtn+i);
     window2->setLayout(layout2);
     Tab->addTab(window2,tr("分配酬金"));
-    layout2->addLayout(leader);
-    layout2->addWidget(confrmBtn);
-    if(confrmBtn->isEnabled()){
-        //所有译者加5分
-
-        //所有表中删除和该任务有关的所有数据
-        int iIDLeader=m_taskList[i].GetLeader();
-        int iNum=m_List.searchUserInList(iIDLeader);
-        //将负责人的余额加入表中
-        m_List.User[iNum].AddMoney(leaderMoney->text().toDouble());//发消息确认
-        //负责人加10分
-        m_List.User[iNum].AddPoint(10);
-        for(int j=0;j<TaskTranslaterList.size();j++){
-            iNum=m_List.searchUserInList(TaskTranslaterList[j].GetTranslater());
-            //将译者余额存入表中
-            m_List.User[iNum].AddMoney(table->item(j,3)->text().toDouble());//发消息确认
-            //译者加5分
-            m_List.User[iNum].AddPoint(5);
-        }
-        m_List.Delete(m_taskList[i].GetID());
-    }
+    layout2->addWidget(m_confrmBtn+i);
+    connect((m_confrmBtn+i),SIGNAL(pressed()),this,SLOT(GetPage401()));
+    ui->stackedWidget->addWidget(Tab);
 }
 
 /*************************************************************************
@@ -282,6 +265,14 @@ void publisherTask::on_main_clicked()
     close();
 }
 
+/*************************************************************************
+【函数名称】OnClicked
+【函数功能】点击之后的函数处理
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::OnClicked(int i){
     int iIdLeader=m_nameedit[i].text().toInt();
     int iNum=ui->listWidget->currentRow();
@@ -303,7 +294,48 @@ void publisherTask::OnClicked(int i){
     m_List.TaskLeaderAppend(m_taskList[iNum]);
 }
 
-void publisherTask::getPage(){
-    connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked(int)));
-    emit SendPage(m_Page);
+/*************************************************************************
+【函数名称】ShowValue
+【函数功能】显示发布者任务界面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
+void publisherTask::GetPage102(){
+    for(int i=0;i<m_taskList.size();i++){
+        if((m_confrmBtn+i)->isDown()){
+            OnClicked(i);
+        }
+    }
+}
+
+void publisherTask::GetPage401(){
+    for(int i=0;i<m_taskList.size();i++){
+        if((m_confrmBtn+i)->isDown()){
+            OnClicked401(i);
+        }
+    }
+}
+void publisherTask::OnClicked401(int i){
+    //所有译者加5分
+    QMessageBox::information(this, tr("提示"),
+                       tr("任务确认成功！")
+                      ,tr("确定"));
+    //所有表中删除和该任务有关的所有数据
+    int iIDLeader=m_taskList[i].GetLeader();
+    int iNum=m_List.searchUserInList(iIDLeader);
+    //将负责人的余额加入表中
+    m_List.User[iNum].AddMoney((m_leaderMoney+i)->text().toDouble());//发消息确认
+    //负责人加10分
+    m_List.User[iNum].AddPoint(10);
+    for(int j=0;j<m_TaskTranslaterList.size();j++){
+        iNum=m_List.searchUserInList(m_TaskTranslaterList[j].GetTranslater());
+        //将译者余额存入表中
+        //(m_table+i)->item(j,3)->text().toDouble();
+        m_List.User[iNum].AddMoney((m_table+i)->item(j,3)->text().toDouble());//发消息确认
+        //译者加5分
+        m_List.User[iNum].AddPoint(5);
+    }
+    m_List.Delete(m_taskList[i].GetID());
 }

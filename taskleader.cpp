@@ -11,6 +11,14 @@ taskLeader::~taskLeader()
 
 }
 
+/*************************************************************************
+【函数名称】taskLeader
+【函数功能】taskLeader的拷贝构造函数
+【参数】const taskLeader& newTaskLeader
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 taskLeader::taskLeader(const taskLeader& newTaskLeader){
     id=newTaskLeader.id;
     taskclass=newTaskLeader.taskclass;
@@ -31,6 +39,14 @@ taskLeader::taskLeader(const taskLeader& newTaskLeader){
     m_ResultEditting=newTaskLeader.m_ResultEditting;
 }
 
+/*************************************************************************
+【函数名称】operator =
+【函数功能】重载“=”函数
+【参数】const taskLeader& newTaskLeader
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 taskLeader::operator =(const taskLeader& newTaskLeader){
     id=newTaskLeader.id;
     taskclass=newTaskLeader.taskclass;
@@ -51,6 +67,14 @@ taskLeader::operator =(const taskLeader& newTaskLeader){
     m_ResultEditting=newTaskLeader.m_ResultEditting;
 }
 
+/*************************************************************************
+【函数名称】Get**
+【函数功能】得到类内的private参数
+【参数】无
+【返回值】**
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 int taskLeader::GetTranslaterYear(){
     return m_iTranslaterYear;
 }
@@ -73,6 +97,14 @@ QString taskLeader::GetResultEditting(){
 
 
 
+/*************************************************************************
+【函数名称】Edit**
+【函数功能】更改类内private的参数
+【参数】**
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 void taskLeader::EditTranslaterYear(int newYear){
     m_iTranslaterYear=newYear;
 }
@@ -95,6 +127,14 @@ void taskLeader::EditResultEditting(QString newResult){
 
 
 
+/*************************************************************************
+【函数名称】attachIDToTask
+【函数功能】通过ID和tasklist内的数据初始化taskLeader对象
+【参数】int ID,QList<taskLeader> TaskList
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 void taskLeader::attachIDToTask(int ID,QList<taskLeader> TaskList){
     int i=0;
     for(i=0;i<TaskList.size();i++){
@@ -120,10 +160,18 @@ void taskLeader::attachIDToTask(int ID,QList<taskLeader> TaskList){
     m_ResultEditting=TaskList[i].GetResultEditting();
 }
 
+/*************************************************************************
+【函数名称】attachIDToTask
+【函数功能】通过id和数据库数据初始化taskLeader对象
+【参数】int ID
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.18
+【更改记录】
+*************************************************************************/
 void taskLeader::attachIDToTask(int ID){
     QSqlQuery query;
     id=ID;
-    query.prepare("select * from tasks where id=?");
+    query.prepare("select * from taskleader where id=?");
     query.addBindValue(id);
     query.exec();
     if(query.first()){

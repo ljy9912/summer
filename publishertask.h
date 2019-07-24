@@ -6,6 +6,8 @@
 #include "list.h"
 #include <QLineEdit>
 #include <QPushButton>
+#include <QTableWidget>
+#include <QLineEdit>
 
 namespace Ui {
 class publisherTask;
@@ -29,10 +31,11 @@ public:
 private slots:
     void on_main_clicked();
     void OnClicked(int i);
-    void getPage();
+    void OnClicked401(int i);
 
-signals:
-    void SendPage(int m_page);
+    void GetPage102();
+    void GetPage401();
+
 
 private:
     Ui::publisherTask *ui;
@@ -44,6 +47,9 @@ private:
 
     QLineEdit *m_nameedit;
     QPushButton *m_confrmBtn;
+    QList<taskTranslater> m_TaskTranslaterList;
+    QTableWidget* m_table;
+    QLineEdit* m_leaderMoney;
 };
 
 #endif // PUBLISHERTASK_H

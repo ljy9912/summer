@@ -191,7 +191,7 @@ const QList<taskLeader> SqlQuery::GetTaskLeader(){
         int id=query.value(0).toInt();
         taskLeader myTask;
         myTask.attachIDToTask(id);
-        myTask.EditFlag(203);
+        //myTask.EditFlag(302);
         listTask.append(myTask);
     }
     return listTask;
@@ -209,7 +209,7 @@ const QList<taskTranslater> SqlQuery::GetTaskTranslater(){
         int id=query.value(0).toInt();
         taskTranslater myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlagToLeader(0);
+        //myTask.EditFlagToLeader(3);
         listTask.append(myTask);
     }
     return listTask;

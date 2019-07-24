@@ -1,6 +1,14 @@
 #include "taskpublisher.h"
 #include <QSqlQuery>
 
+/*************************************************************************
+【函数名称】taskPublisher
+【函数功能】taskPublisher类的默认构造函数
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.15
+【更改记录】
+*************************************************************************/
 taskPublisher::taskPublisher(){
     id=0;
     taskclass=0;
@@ -16,6 +24,14 @@ taskPublisher::taskPublisher(){
     flag=0;
 }
 
+/*************************************************************************
+【函数名称】taskPublisher
+【函数功能】taskPublisher类的拷贝构造函数
+【参数】const taskPublisher &myNewTask
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.15
+【更改记录】
+*************************************************************************/
 taskPublisher::taskPublisher(const taskPublisher &myNewTask)
     :task(myNewTask){
     leaderYear=myNewTask.leaderYear;
@@ -30,13 +46,21 @@ taskPublisher::taskPublisher(const taskPublisher &myNewTask)
 【函数功能】taskPublisher类的默认析构函数
 【参数】无
 【返回值】无
-【开发者及日期】李佳芸 2019.7.12
+【开发者及日期】李佳芸 2019.7.15
 【更改记录】
 *************************************************************************/
 taskPublisher::~taskPublisher(){
 
 }
 
+/*************************************************************************
+【函数名称】operator =
+【函数功能】重载“=”运算符
+【参数】const taskPublisher& myNewTask
+【返回值】无
+【开发者及日期】李佳芸 2019.7.15
+【更改记录】
+*************************************************************************/
 taskPublisher& taskPublisher::operator = (const taskPublisher& myNewTask){
     id=myNewTask.id;
     taskclass=myNewTask.taskclass;
@@ -97,8 +121,8 @@ void taskPublisher::EditLeaderDay(int dday){
 
 /*************************************************************************
 【函数名称】 attachIDToTask
-【函数功能】 将task的对象根据id初始化
-【参数】 int ID
+【函数功能】 将task的对象根据id和TaskList中的数据初始化
+【参数】int ID,QList<taskPublisher> TaskList
 【返回值】无
 【开发者及日期】李佳芸 2019.7.15
 【更改记录】
@@ -126,6 +150,14 @@ void taskPublisher::attachIDToTask(int ID,QList<taskPublisher> TaskList){
     startDay=TaskList[i].GetStartDay();
 }
 
+/*************************************************************************
+【函数名称】attachIDToTask
+【函数功能】根据id和数据库中的数据初始化
+【参数】int ID
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.15
+【更改记录】
+*************************************************************************/
 void taskPublisher::attachIDToTask(int ID){
     QSqlQuery query;
     id=ID;

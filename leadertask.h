@@ -30,6 +30,7 @@ public:
 
 signals:
     void SendPage(int i);
+    void SendPage301(int i,int j);
 
 private slots:
     void on_main_clicked();
@@ -38,12 +39,16 @@ private slots:
     void GetPage301save();
     void GetPage301confrm();
     void GetPage301end();
-
+    void GetPage302save();
+    void GetPage302confrm();
+public:
     void OnClicked_201(int i);
     void OnClicked_203(int i);
-    void OnClicked_301save(int i);
-    void OnClicked_301confrm(int i);
-    void OnClicked_301end(int i);
+    void OnClicked_301save(int i,int j);
+    void OnClicked_301confrm(int i,int j);
+    void OnClicked_301end(int i,int j);
+    void OnClicked_302save(int i);
+    void OnClicked_302confrm(int i);
 
 private:
     Ui::leaderTask *ui;
@@ -53,14 +58,16 @@ private:
     QList<signUpForTranslater> m_translaterList;
     QList<taskTranslater> m_translaterTaskList;
     int m_iPage;
+    int m_iTab;
     QLineEdit *m_yearEdit;
     QLineEdit *m_monthEdit;
     QLineEdit *m_dayEdit;
-    QPushButton *m_confrmBtn;
-    QPushButton *m_saveBtn;
-    QPushButton* m_endBtn;
-    QTableWidget *m_table;
-    QTextEdit* m_NewComment;
+    QPushButton **m_confrmBtn;
+    QPushButton **m_saveBtn;
+    QPushButton** m_endBtn;
+    QTableWidget **m_table;
+    QTextEdit** m_NewComment;
+    QTextEdit* m_myResult;
 };
 
 #endif // LEADERTASK_H

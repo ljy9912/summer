@@ -311,6 +311,16 @@ QList <taskTranslater> list::SearchTaskForTranslater(int idTask){
     return translaterTask;
 }
 
+QList <taskTranslater> list::SearchTaskForTranslater_302(int idTask){
+    QList <taskTranslater> translaterTask;
+    for(int i=0;i<TaskTranslater.size();i++){
+        if(TaskTranslater[i].GetIDTask()==idTask){
+            translaterTask.append(TaskTranslater[i]);
+        }
+    }
+    return translaterTask;
+}
+
 /*************************************************************************
 【函数名称】SearchLeaderForTask
 【函数功能】在SignUpForLeader中寻找报名myTask负责人的人，并返回一个list
@@ -383,18 +393,18 @@ void list::TaskLeaderAppend(taskPublisher myLeader){
 【更改记录】
 *************************************************************************/
 void list::Delete(int idTask){
-    for(int i=0;i<TaskPublisher.size();i++){
+    for(int i=TaskPublisher.size()-1;i>=0;i--){
         if(TaskPublisher[i].GetID()==idTask){
             TaskPublisher.removeAt(i);
         }
     }
-    for(int i=0;i<TaskLeader.size();i++){
+    for(int i=TaskLeader.size()-1;i>=0;i--){
         if(TaskLeader[i].GetID()==idTask){
             TaskLeader.removeAt(i);
         }
     }
     int iSize=TaskTranslater.size();
-    for(int i=iSize-1;i>=0;i++){
+    for(int i=iSize-1;i>=0;i--){
         if(TaskTranslater[i].GetIDTask()==idTask){
             TaskTranslater.removeAt(i);
         }
@@ -406,7 +416,7 @@ void list::Delete(int idTask){
         }
     }
     iSize=SignUpForTranslater.size();
-    for(int i=iSize;i>=0;i--){
+    for(int i=iSize-1;i>=0;i--){
         if(SignUpForTranslater[i].GetIDTask()==idTask){
             SignUpForTranslater.removeAt(i);
         }

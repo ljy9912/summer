@@ -11,6 +11,14 @@ taskTranslater::~taskTranslater(){
 
 }
 
+/*************************************************************************
+【函数名称】taskTranslater
+【函数功能】taskTranslater类的拷贝构造函数
+【参数】const taskTranslater& newTaskTranslater
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 taskTranslater::taskTranslater(const taskTranslater& newTaskTranslater){
     id=newTaskTranslater.id;
     taskclass=newTaskTranslater.taskclass;
@@ -36,6 +44,14 @@ taskTranslater::taskTranslater(const taskTranslater& newTaskTranslater){
     m_commentEditting=newTaskTranslater.m_commentEditting;
 }
 
+/*************************************************************************
+【函数名称】operator =
+【函数功能】重载运算符“=”
+【参数】const taskTranslater& newTaskTranslater
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 taskTranslater::operator =(const taskTranslater& newTaskTranslater){
     id=newTaskTranslater.id;
     taskclass=newTaskTranslater.taskclass;
@@ -61,6 +77,14 @@ taskTranslater::operator =(const taskTranslater& newTaskTranslater){
     m_commentEditting=newTaskTranslater.m_commentEditting;
 }
 
+/*************************************************************************
+【函数名称】Get**
+【函数功能】外部得到类内private数据
+【参数】无
+【返回值】**的类型
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 int taskTranslater::GetEndYear(){
     return m_iEndYear;
 }
@@ -101,6 +125,14 @@ QString taskTranslater::GetResultEditting(){
 
 
 
+/*************************************************************************
+【函数名称】Edit**
+【函数功能】外部更改类内private变量
+【参数】**
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 void taskTranslater::EditEndYear(int newYear){
     m_iEndYear=newYear;
 }
@@ -136,6 +168,19 @@ void taskTranslater::EditCommentEditting(QString newComment){
     m_commentEditting=newComment;
 }
 
+void taskTranslater::EditResultEditting(QString newResult){
+    m_resultEditting=newResult;
+}
+
+
+/*************************************************************************
+【函数名称】AddComment
+【函数功能】向comment中加入评论
+【参数】QString newComment
+【返回值】无
+【开发者及日期】李佳芸 2019.7.23
+【更改记录】
+*************************************************************************/
 void taskTranslater::AddComment(QString newComment){
     QDateTime time;
     QString myTime=time.currentDateTime().toString();
@@ -145,11 +190,17 @@ void taskTranslater::AddComment(QString newComment){
     m_comment.append("\n");
 }
 
-void taskTranslater::EditResultEditting(QString newResult){
-    m_resultEditting=newResult;
-}
 
 
+
+/*************************************************************************
+【函数名称】attachIDToTask
+【函数功能】用id,list中的数据初始化tasktranslater对象
+【参数】int ID,QList<taskTranslater> TaskList
+【返回值】无
+【开发者及日期】李佳芸 2019.7.22
+【更改记录】
+*************************************************************************/
 void taskTranslater::attachIDToTask(int ID,QList<taskTranslater> TaskList){
     int i=0;
     for(i=0;i<TaskList.size();i++){
@@ -176,6 +227,14 @@ void taskTranslater::attachIDToTask(int ID,QList<taskTranslater> TaskList){
     m_resultEditting=TaskList[i].GetResultEditting();
 }
 
+/*************************************************************************
+【函数名称】attachIDToTask
+【函数功能】通过id和数据库中的数据，初始化tasktranslater对象
+【参数】int ID
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 void taskTranslater::attachIDToTask(int ID){
     QSqlQuery query;
     id=ID;

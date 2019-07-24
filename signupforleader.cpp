@@ -98,6 +98,15 @@ void signUpForLeader::attachIDToUser(int ID){
 void signUpForLeader::EditIDTask(int idtask){
     m_iIdTask=idtask;
 }
+
+/*************************************************************************
+【函数名称】EditIDThis
+【函数功能】外部修改task的idthis
+【参数】int id
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.17
+【更改记录】
+*************************************************************************/
 void signUpForLeader::EditIDThis(int id){
     m_iIDThis=id;
 }
@@ -113,6 +122,15 @@ void signUpForLeader::EditIDThis(int id){
 int signUpForLeader::GetIDTask(){
     return m_iIdTask;
 }
+
+/*************************************************************************
+【函数名称】GetIDThis
+【函数功能】外部修改task的id
+【参数】int idtask
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.17
+【更改记录】
+*************************************************************************/
 int signUpForLeader::GetIDThis(){
     return m_iIDThis;
 }

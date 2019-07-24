@@ -16,6 +16,14 @@ translaterTask::translaterTask(QWidget *parent) :
     ui->setupUi(this);
 }
 
+/*************************************************************************
+【函数名称】~translaterTask
+【函数功能】translatertTask的析构函数
+【参数】无
+【返回值】无
+【开发者及日期】李佳芸 2019.7.17
+【更改记录】
+*************************************************************************/
 translaterTask::~translaterTask()
 {
     delete ui;
@@ -27,14 +35,38 @@ translaterTask::~translaterTask()
     m_result=NULL;
 }
 
+/*************************************************************************
+【函数名称】EditList
+【函数功能】外部更改List参数
+【参数】list myNewList
+【返回值】无
+【开发者及日期】李佳芸 2019.7.17
+【更改记录】
+*************************************************************************/
 void translaterTask::EditList(list myNewList){
     m_List=myNewList;
 }
 
+/*************************************************************************
+【函数名称】EditUser
+【函数功能】外部更改myUser参数
+【参数】user myNewUser
+【返回值】无
+【开发者及日期】李佳芸 2019.7.17
+【更改记录】
+*************************************************************************/
 void translaterTask::EditUser(user myNewUser){
     m_User=myNewUser;
 }
 
+/*************************************************************************
+【函数名称】ShowValue
+【函数功能】显示界面
+【参数】无
+【返回值】无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void translaterTask::ShowValue(){
     m_taskList=m_List.SearchTaskForTranslater(m_User);
     m_result=new QTextEdit[m_taskList.size()];
@@ -110,7 +142,8 @@ void translaterTask::ShowValue(){
                 QLabel *label2=new QLabel(tr("我的译文："));
                 QTextBrowser *comment=new QTextBrowser;
                 comment->setText(m_taskList[i].GetComment());
-                comment->setText(m_taskList[i].GetResult());
+                (m_saveBtn+i)->setText(tr("暂存"));
+                (m_confrmBtn+i)->setText(tr("提交"));
                 //对window添加排版
                 QVBoxLayout *layout=new QVBoxLayout();
                 layout->addWidget(label);
@@ -136,6 +169,14 @@ void translaterTask::ShowValue(){
     }
 }
 
+/*************************************************************************
+【函数名称】on_main_clicked
+【函数功能】点击main之后，显示mainwindow
+【参数】无
+【返回值】无
+【开发者及日期】李佳芸 2019.7.19
+【更改记录】
+*************************************************************************/
 void translaterTask::on_main_clicked()
 {
     MainWindow *r=new MainWindow;
@@ -145,6 +186,14 @@ void translaterTask::on_main_clicked()
     close();
 }
 
+/*************************************************************************
+【函数名称】OnClicked_301save
+【函数功能】点击暂存按钮并且获得i参数之后，显示存数据成功并且存储数据
+【参数】int i
+【返回值】无
+【开发者及日期】李佳芸 2019.7.23
+【更改记录】
+*************************************************************************/
 void translaterTask::OnClicked_301save(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("翻译暂存成功！")
@@ -154,6 +203,14 @@ void translaterTask::OnClicked_301save(int i){
     m_List.updateList(m_taskList[i]);
 }
 
+/*************************************************************************
+【函数名称】OnClicked_301confrm
+【函数功能】点击确定按钮并且获得i参数之后，显示存数据成功并且存储数据
+【参数】int i
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 void translaterTask::OnClicked_301confrm(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("翻译提交成功！")
@@ -169,11 +226,27 @@ void translaterTask::OnClicked_301confrm(int i){
     m_List.updateList(m_taskList[i]);
 }
 
+/*************************************************************************
+【函数名称】GetPage301save
+【函数功能】得到按钮点击在stackedwidget中的page数
+【参数】无
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 void translaterTask::GetPage301save(){
     connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked_301save(int)));
     emit SendPage(m_iPage);
 }
 
+/*************************************************************************
+【函数名称】GetPage301confrm
+【函数功能】得到按钮点击在stackedwidget中的page数
+【参数】无
+【返回值】无
+【开发者及日期】李佳芸 2019.7.16
+【更改记录】
+*************************************************************************/
 void translaterTask::GetPage301confrm(){
     connect(this,SIGNAL(SendPage(int)),this,SLOT(OnClicked_301confrm(int)));
     emit SendPage(m_iPage);
