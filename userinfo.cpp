@@ -19,14 +19,7 @@ userInfo::userInfo(QWidget *parent) :
 userInfo::~userInfo()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -56,10 +49,10 @@ void userInfo::showValue(user myUser){
 *************************************************************************/
 void userInfo::on_editBtn_clicked()
 {
-    userInfoEdit r;
-    r.EditBackUp(m_BackUp);
-    r.showValue(m_BackUp.m_User);
-    r.show();
+    userInfoEdit* r=new userInfoEdit;
+    r->EditBackUp(m_BackUp);
+    r->showValue(m_BackUp.m_User);
+    r->show();
     close();
 }
 
@@ -108,9 +101,9 @@ void userInfo::EditBackUp(BackUp myBackUp){
 *************************************************************************/
 void userInfo::on_main_clicked()
 {
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }
 

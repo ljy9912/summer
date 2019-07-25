@@ -24,14 +24,7 @@ leaderTask::leaderTask(QWidget *parent) :
 leaderTask::~leaderTask()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -183,6 +176,7 @@ void leaderTask::OnClicked_201(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("译者报名截止时间设置成功！")
                       ,tr("确定"));
+    m_BackUp.SetTranslaterDone(m_BackUp.m_User.GetID());
 }
 
 /*************************************************************************
@@ -300,6 +294,7 @@ void leaderTask::OnClicked_203(int i){
             m_BackUp.m_List.SignUpForTranslater.removeAt(j);
         }
     }
+    m_BackUp.SelectTranslaterDone_Leader(m_BackUp.m_User.GetID(),m_taskList[iNum].GetIntroduction());
     //改变任务状态为译者开始翻译状态
     m_taskList[iNum].EditFlag(301);
     m_BackUp.m_List.updateList(m_taskList[iNum]);
@@ -339,6 +334,7 @@ void leaderTask::OnClicked_203(int i){
             myTask.EditEndDay(iEndDay);
             //将译者任务对象插入list中
             m_BackUp.m_List.TaskTranslater.append(myTask);
+            m_BackUp.SelectTranslaterDone_Translater(m_taskList[iNum].GetIntroduction(),m_taskList[iNum].GetID());
         }
     }
     //删除译者报名表中的所有该任务的报名信息
@@ -508,6 +504,9 @@ void leaderTask::OnClicked_301save(int i,int j){
                                                  )->toPlainText());
     m_translaterTaskList[j].EditFlagToLeader(3);
     m_BackUp.m_List.updateList(m_translaterTaskList[j]);
+    m_BackUp.SubmitCommentDone_Leader(m_translaterTaskList[j].GetIntroduction(),
+                                      m_translaterTaskList[j].GetLeader(),m_translaterTaskList[j].GetTranslater());
+    m_BackUp.SubmitCommentDone_Translater(m_translaterTaskList[j].GetIntroduction(),m_translaterTaskList[j].GetTranslater());
 }
 
 /*************************************************************************
@@ -558,7 +557,14 @@ void leaderTask::OnClicked_301end(int i,int j){
     if(flag==1){
         m_taskList[i].EditFlag(302);
         m_BackUp.m_List.updateList(m_taskList[i]);
+        m_BackUp.EndTranslateDone_Leader(m_translaterTaskList[j].GetIntroduction()
+                                         ,m_translaterTaskList[j].GetTranslater(),m_translaterTaskList[j].GetLeader());
     }
+    else{
+        m_BackUp.StartIntegrate(m_translaterTaskList[j].GetIntroduction(),m_translaterTaskList[j].GetLeader());
+    }
+    m_BackUp.EndTranslateDone_Translater(m_translaterTaskList[j].GetIntroduction()
+                                         ,m_translaterTaskList[j].GetIDTask());
 }
 
 /*************************************************************************
@@ -682,6 +688,8 @@ void leaderTask::OnClicked_302confrm(int i){
     m_BackUp.m_List.updateList(m_taskList[i]);
     int iNum=m_BackUp.m_List.searchTaskInList(m_taskList[i].GetID());
     m_BackUp.m_List.TaskPublisher[iNum].EditFlag(401);
+    m_BackUp.IntegratingDone_Leader(m_taskList[i].GetIntroduction(),m_taskList[i].GetID());
+    m_BackUp.IntegratingDone_Publisher(m_taskList[i].GetIntroduction(),m_taskList[i].GetPublisher());
 }
 
 /*************************************************************************
@@ -694,8 +702,8 @@ void leaderTask::OnClicked_302confrm(int i){
 *************************************************************************/
 void leaderTask::on_main_clicked()
 {
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }

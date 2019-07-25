@@ -11,6 +11,7 @@
 #include "leadertask.h"
 #include "translatertask.h"
 #include "sqlquery.h"
+#include "messagebox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,14 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -42,10 +36,10 @@ MainWindow::~MainWindow()
 *************************************************************************/
 void MainWindow::on_pushButton_clicked()
 {
-    userInfo r;
-    r.showValue(m_BackUp.m_User);
-    r.EditBackUp(m_BackUp);
-    r.show();
+    userInfo* r=new userInfo;
+    r->showValue(m_BackUp.m_User);
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }
 
@@ -71,9 +65,9 @@ void MainWindow::EditBackUp(BackUp myBackUp){
 *************************************************************************/
 void MainWindow::on_Publish_clicked()
 {
-    taskNew r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    taskNew* r=new taskNew;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }
 
@@ -87,28 +81,28 @@ void MainWindow::on_Publish_clicked()
 *************************************************************************/
 void MainWindow::on_getTask_clicked()
 {
-    tasksPublished r;
-    r.EditBackUp(m_BackUp);
-    r.showValue(m_BackUp.m_List);
-    r.show();
+    tasksPublished* r=new tasksPublished;
+    r->EditBackUp(m_BackUp);
+    r->showValue(m_BackUp.m_List);
+    r->show();
     close();
 }
 
 void MainWindow::on_myTaskBtn_clicked()
 {
-    translaterTask r;
-    r.EditBackUp(m_BackUp);
-    r.ShowValue();
-    r.show();
+    translaterTask* r=new translaterTask;
+    r->EditBackUp(m_BackUp);
+    r->ShowValue();
+    r->show();
     close();
 }
 
 void MainWindow::on_myTableBtn_clicked()
 {
-    leaderTask r;
-    r.EditBackUp(m_BackUp);
-    r.ShowValue();
-    r.show();
+    leaderTask* r=new leaderTask;
+    r->EditBackUp(m_BackUp);
+    r->ShowValue();
+    r->show();
     close();
 }
 
@@ -122,9 +116,31 @@ void MainWindow::on_myTableBtn_clicked()
 *************************************************************************/
 void MainWindow::on_publisher_clicked()
 {
-    publisherTask r;
-    r.EditBackUp(m_BackUp);
-    r.ShowValue();
-    r.show();
+    publisherTask* r=new publisherTask;
+    r->EditBackUp(m_BackUp);
+    r->ShowValue();
+    r->show();
+    close();
+}
+
+void MainWindow::on_MessageBox_clicked()
+{
+    MessageBox* r=new MessageBox;
+    r->EditBackUp(m_BackUp);
+    r->ShowMessage();
+    r->show();
+    close();
+}
+
+void MainWindow::on_exitBtn_clicked()
+{
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
     close();
 }

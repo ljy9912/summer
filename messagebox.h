@@ -18,6 +18,9 @@ public:
     void ShowMessage();
     void EditBackUp(BackUp myBackUp);
 
+private slots:
+    void on_main_clicked();
+
 private:
     Ui::MessageBox *ui;
     BackUp m_BackUp;

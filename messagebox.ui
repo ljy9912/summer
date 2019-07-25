@@ -19,25 +19,41 @@
      <x>70</x>
      <y>30</y>
      <width>231</width>
-     <height>231</height>
+     <height>221</height>
     </rect>
    </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
-   <widget class="QWidget" name="page_2">
+   <widget class="QWidget" name="welcome">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
       <width>231</width>
-      <height>210</height>
+      <height>200</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;欢迎！&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <attribute name="label">
      <string>Page 2</string>
     </attribute>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="main">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>270</y>
+     <width>80</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>返回主页面</string>
+   </property>
   </widget>
  </widget>
  <resources/>

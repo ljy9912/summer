@@ -23,14 +23,7 @@ publisherTask::publisherTask(QWidget *parent) :
 publisherTask::~publisherTask()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -255,9 +248,9 @@ void publisherTask::ShowDefault(int i){
 *************************************************************************/
 void publisherTask::on_main_clicked()
 {
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }
 
@@ -278,6 +271,7 @@ void publisherTask::OnClicked(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("选择负责人成功！")
                       ,tr("确定"));
+    m_BackUp.SelectLeaderDone(m_BackUp.m_User.GetID(),iIdLeader,m_taskList[iNum].GetIntroduction());
     int iSize=m_BackUp.m_List.SignUpForLeader.size();
     for(int j=iSize-1;j>=0;j--){
         if(m_BackUp.m_List.SignUpForLeader[j].GetIDTask()==m_taskList[iNum].GetID()){
@@ -315,6 +309,7 @@ void publisherTask::GetPage401(){
 }
 void publisherTask::OnClicked401(int i){
     //所有译者加5分
+    double moneySum=0;
     QMessageBox::information(this, tr("提示"),
                        tr("任务确认成功！")
                       ,tr("确定"));
@@ -322,7 +317,11 @@ void publisherTask::OnClicked401(int i){
     int iIDLeader=m_taskList[i].GetLeader();
     int iNum=m_BackUp.m_List.searchUserInList(iIDLeader);
     //将负责人的余额加入表中
-    m_BackUp.m_List.User[iNum].AddMoney((m_leaderMoney+i)->text().toDouble());//发消息确认
+    m_BackUp.m_List.User[iNum].AddMoney((m_leaderMoney+i)->text().toDouble());
+    //发消息确认
+    m_BackUp.DistributeMoney_Translater(m_taskList[i].GetIntroduction(),
+                                        (m_leaderMoney+i)->text().toDouble(),m_taskList[i].GetLeader());
+    moneySum+=((m_leaderMoney+i)->text().toDouble());
     //负责人加10分
     m_BackUp.m_List.User[iNum].AddPoint(10);
     for(int j=0;j<m_TaskTranslaterList.size();j++){
@@ -330,8 +329,14 @@ void publisherTask::OnClicked401(int i){
         //将译者余额存入表中
         //(m_table+i)->item(j,3)->text().toDouble();
         m_BackUp.m_List.User[iNum].AddMoney((m_table+i)->item(j,3)->text().toDouble());//发消息确认
+        moneySum+=(m_table+i)->item(j,3)->text().toDouble();
         //译者加5分
         m_BackUp.m_List.User[iNum].AddPoint(5);
+        m_BackUp.DistributeMoney_Translater(m_taskList[i].GetIntroduction(),
+                                            (m_table+i)->item(j,3)->text().toDouble(),
+                                            m_TaskTranslaterList[j].GetTranslater());
     }
+    m_BackUp.DistributeMoney_Publisher(m_taskList[i].GetIntroduction(),m_taskList[i].GetPublisher()
+                                       ,moneySum);
     m_BackUp.m_List.Delete(m_taskList[i].GetID());
 }

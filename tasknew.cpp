@@ -6,6 +6,7 @@
 #include "task.h"
 #include "mainwindow.h"
 #include "sqlquery.h"
+#include <QDate>
 
 taskNew::taskNew(QWidget *parent) :
     QDialog(parent),
@@ -17,14 +18,7 @@ taskNew::taskNew(QWidget *parent) :
 taskNew::~taskNew()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -73,6 +67,10 @@ void taskNew::on_confrmBtn_clicked()
     myTask.EditLeaderDay(ui->leaderDay->text().toInt());
     myTask.EditMoney(ui->money->text().toDouble());
     myTask.EditPublisher(m_BackUp.m_User.GetID());
+    QDate time=QDate::currentDate();
+    myTask.EditStartYear(time.year());
+    myTask.EditStartMonth(time.month());
+    myTask.EditStartDay(time.day());
     int lastID;
     if(m_BackUp.m_List.TaskPublisher.isEmpty()){
         lastID=0;
@@ -83,11 +81,11 @@ void taskNew::on_confrmBtn_clicked()
     myTask.EditID(lastID);
     m_BackUp.m_List.insertIntoList(myTask);
     close();
-    taskPublish r;
-    r.EditTask(myTask);
-    r.EditBackUp(m_BackUp);
-    r.showValue();
-    r.show();
+    taskPublish* r=new taskPublish;
+    r->EditTask(myTask);
+    r->EditBackUp(m_BackUp);
+    r->showValue();
+    r->show();
 }
 
 /*************************************************************************
@@ -123,8 +121,8 @@ void taskNew::showValue(taskPublisher myTask){
 
 void taskNew::on_main_clicked()
 {
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }

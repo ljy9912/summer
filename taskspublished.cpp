@@ -25,14 +25,7 @@ tasksPublished::tasksPublished(QWidget *parent) :
 tasksPublished::~tasksPublished()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -72,8 +65,7 @@ void tasksPublished::on_applyBtn_clicked()
             QMessageBox::information(this, tr("提示"),
                                tr("报名成功！")
                               ,tr("确定"));
-            BackUp myMessage;
-            myMessage.SignUpForLeader(m_BackUp.m_User.GetID(),idtask);
+            m_BackUp.SignUpForLeader(m_BackUp.m_User.GetID(),idtask);
         }
     }
     else if(myTaskList[row].GetFlag()==202){
@@ -84,6 +76,7 @@ void tasksPublished::on_applyBtn_clicked()
         QMessageBox::information(this, tr("提示"),
                            tr("报名成功！")
                           ,tr("确定"));
+        m_BackUp.SignUpForTranslaterDone(m_BackUp.m_User.GetID(),myTaskList[row].GetIntroduction());
     }
 }
 
@@ -97,9 +90,9 @@ void tasksPublished::on_applyBtn_clicked()
 *************************************************************************/
 void tasksPublished::on_main_clicked()
 {
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }
 

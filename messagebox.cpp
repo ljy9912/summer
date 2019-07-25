@@ -3,6 +3,7 @@
 #include <QToolBox>
 #include <QTextBrowser>
 #include "sqlquery.h"
+#include "mainwindow.h"
 
 MessageBox::MessageBox(QWidget *parent) :
     QDialog(parent),
@@ -15,13 +16,7 @@ MessageBox::~MessageBox()
 {
     delete ui;
     SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 void MessageBox::EditBackUp(BackUp myBackUp){
@@ -36,4 +31,12 @@ void MessageBox::ShowMessage(){
         ui->toolBox->addItem(window,m_messageList[i].GetTitle());
     }
 
+}
+
+void MessageBox::on_main_clicked()
+{
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
+    close();
 }

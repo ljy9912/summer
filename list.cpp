@@ -16,7 +16,8 @@ list::list()
 *************************************************************************/
 list::list(const list& newList):User(newList.User),TaskPublisher(newList.TaskPublisher),
     SignUpForLeader(newList.SignUpForLeader),TaskLeader(newList.TaskLeader),
-    SignUpForTranslater(newList.SignUpForTranslater),TaskTranslater(newList.TaskTranslater)
+    SignUpForTranslater(newList.SignUpForTranslater),TaskTranslater(newList.TaskTranslater),
+    message(newList.message)
 {
 
 }
@@ -41,6 +42,7 @@ list& list::operator =(const list& newList)
     TaskLeader=newList.TaskLeader;
     SignUpForTranslater=newList.SignUpForTranslater;
     TaskTranslater=newList.TaskTranslater;
+    message=newList.message;
     return *this;
 }
 
@@ -402,12 +404,11 @@ void list::TaskLeaderAppend(taskPublisher myLeader){
     leader.EditTask(myLeader.GetTask());
     leader.EditTaskClass(myLeader.GetTaskClass());
     leader.EditTime(myLeader.GetTime());
+    leader.EditStartYear(myLeader.GetStartYear());
+    leader.EditStartMonth(myLeader.GetStartMonth());
+    leader.EditStartDay(myLeader.GetStartDay());
     TaskLeader.append(leader);
-    QDate *time=new QDate;
-    time->currentDate();
-    leader.EditStartYear(time->year());
-    leader.EditStartMonth(time->month());
-    leader.EditStartDay(time->day());
+
 }
 
 /*************************************************************************

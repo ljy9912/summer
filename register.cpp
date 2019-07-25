@@ -20,14 +20,7 @@ Register::Register(QWidget *parent) :
 Register::~Register()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -120,9 +113,9 @@ void Register::on_confrmbtn_clicked()
 void Register::on_pushButton_clicked()
 {
     close();
-    LoginDialog r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    LoginDialog* r=new LoginDialog;
+    r->EditBackUp(m_BackUp);
+    r->show();
 }
 
 /*************************************************************************

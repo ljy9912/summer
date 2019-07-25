@@ -19,14 +19,7 @@ taskPublish::taskPublish(QWidget *parent) :
 taskPublish::~taskPublish()
 {
     delete ui;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -64,11 +57,11 @@ void taskPublish::showValue(){
 *************************************************************************/
 void taskPublish::on_editBtn_clicked()
 {
-    taskPublishEdit r;
-    r.EditTask(myTask);
-    r.EditBackUp(m_BackUp);
-    r.showValue();
-    r.show();
+    taskPublishEdit* r=new taskPublishEdit;
+    r->EditTask(myTask);
+    r->EditBackUp(m_BackUp);
+    r->showValue();
+    r->show();
     close();
 }
 
@@ -105,11 +98,12 @@ void taskPublish::on_publishBtn_clicked()
     myTask.EditStartMonth(time.month());
     myTask.EditStartDay(time.day());
     m_BackUp.m_List.updateList(myTask);
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
-    close();
     m_BackUp.TaskPublish(m_BackUp.m_User.GetID(),myTask.GetIntroduction());
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
+    close();
+
 }
 
 /*************************************************************************

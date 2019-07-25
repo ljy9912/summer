@@ -34,14 +34,7 @@ translaterTask::~translaterTask()
     m_saveBtn=NULL;
     delete m_result;
     m_result=NULL;
-    SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+
 }
 
 /*************************************************************************
@@ -176,9 +169,9 @@ void translaterTask::ShowValue(){
 *************************************************************************/
 void translaterTask::on_main_clicked()
 {
-    MainWindow r;
-    r.EditBackUp(m_BackUp);
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->EditBackUp(m_BackUp);
+    r->show();
     close();
 }
 
@@ -220,6 +213,9 @@ void translaterTask::OnClicked_301confrm(int i){
         m_taskList[i].EditFlagToLeader(3);
     }
     m_BackUp.m_List.updateList(m_taskList[i]);
+    m_BackUp.SubmitCommentDone_Translater(m_taskList[i].GetIntroduction(),m_BackUp.m_User.GetID());
+    m_BackUp.SubmitCommentDone_Leader(m_taskList[i].GetIntroduction(),m_taskList[i].GetLeader(),
+                                      m_taskList[i].GetTranslater());
 }
 
 /*************************************************************************

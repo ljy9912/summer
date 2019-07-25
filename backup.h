@@ -17,7 +17,7 @@ public:
     void TaskPublish(int iID, QString intro);
     void CheckDateSnupfrLeader();
     void CheckDateSnupfrTranslater();
-    void SelectLeaderDone(int iPublisherID, user myLeader, QString intro);
+    void SelectLeaderDone(int iPublisherID, int idLeader, QString intro);
     void SetTranslaterDone(int iLeaderID);
     void SignUpForTranslaterDone(int iID, QString intro);
     void SelectTranslaterDone_Leader(int iLeaderID, QString intro);

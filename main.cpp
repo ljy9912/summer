@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
     myBackup.m_List.TaskLeader=query.GetTaskLeader();
     myBackup.m_List.TaskTranslater=query.GetTaskTranslater();
     myBackup.m_List.message=query.GetMessage();
+    myBackup.CheckDateSnupfrLeader();
+    myBackup.CheckDateSnupfrTranslater();
 
     r.EditBackUp(myBackup);
     r.show();

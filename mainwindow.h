@@ -32,6 +32,10 @@ private slots:
 
     void on_myTaskBtn_clicked();
     
+    void on_MessageBox_clicked();
+
+    void on_exitBtn_clicked();
+
 private:
     
     Ui::MainWindow *ui;
