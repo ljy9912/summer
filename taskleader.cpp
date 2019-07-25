@@ -47,7 +47,7 @@ taskLeader::taskLeader(const taskLeader& newTaskLeader){
 【开发者及日期】李佳芸 2019.7.18
 【更改记录】
 *************************************************************************/
-taskLeader::operator =(const taskLeader& newTaskLeader){
+taskLeader& taskLeader::operator =(const taskLeader& newTaskLeader){
     id=newTaskLeader.id;
     taskclass=newTaskLeader.taskclass;
     translateTask=newTaskLeader.translateTask;
@@ -65,6 +65,7 @@ taskLeader::operator =(const taskLeader& newTaskLeader){
     startDay=newTaskLeader.startDay;
     m_Result=newTaskLeader.m_Result;
     m_ResultEditting=newTaskLeader.m_ResultEditting;
+    return *this;
 }
 
 /*************************************************************************

@@ -2,9 +2,7 @@
 #define TASKWHOLE_H
 
 #include <QDialog>
-#include "task.h"
-#include "user.h"
-#include "list.h"
+#include "backup.h"
 #include <QList>
 #include "message.h"
 
@@ -21,8 +19,7 @@ public:
     ~taskPublish();
     void showValue();
     void EditTask(taskPublisher myNewTask);
-    void EditUser(user myNewUser);
-    void EditList(list newList);
+    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_editBtn_clicked();
@@ -32,8 +29,7 @@ private slots:
 private:
     Ui::taskPublish *ui;
     taskPublisher myTask;
-    user myUser;
-    list List;
+    BackUp m_BackUp;
 
 signals:
     void PublishTask(int iID,QString intro,QList<Message> listMessage);

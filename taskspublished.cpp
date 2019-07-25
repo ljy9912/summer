@@ -10,7 +10,8 @@
 #include <QMessageBox>
 #include "signupforleader.h"
 #include <QTextBrowser>
-#include "messagebackup.h"
+#include "backup.h"
+#include "sqlquery.h"
 
 tasksPublished::tasksPublished(QWidget *parent) :
     QDialog(parent),
@@ -24,6 +25,14 @@ tasksPublished::tasksPublished(QWidget *parent) :
 tasksPublished::~tasksPublished()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -34,8 +43,8 @@ tasksPublished::~tasksPublished()
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
-void tasksPublished::EditUser(user myNewUser){
-    myUser=myNewUser;
+void tasksPublished::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -50,30 +59,28 @@ void tasksPublished::on_applyBtn_clicked()
 {
     int row=ui->listWidget->currentRow();
     if(myTaskList[row].GetFlag()==101){
-        if(myUser.GetRewrdPoint()<100){
+        if(m_BackUp.m_User.GetRewrdPoint()<100){
             QMessageBox::warning(this, tr("提示"),
                                tr("积分不足，请努力完成更多翻译任务后再来申请吧！")
                               ,tr("确定"));
         }
         else{
             int idtask=myTaskList[row].GetID();
-            int idthis=List.SignUpForLeader.size();
-            signUpForLeader leader(myUser,idtask,idthis);
-            List.SignUpForLeader.append(leader);
+            int idthis=m_BackUp.m_List.SignUpForLeader.size();
+            signUpForLeader leader(m_BackUp.m_User,idtask,idthis);
+            m_BackUp.m_List.SignUpForLeader.append(leader);
             QMessageBox::information(this, tr("提示"),
                                tr("报名成功！")
                               ,tr("确定"));
-            MessageBackUp* myMessage=new MessageBackUp;
-            connect(this,SIGNAL(SignUpForLeader(int,QList<Message>&)),myMessage,SLOT(SignUpForLeader(int,QList<Message>&)));
-            delete myMessage;
-            emit SignUpForLeader(myUser.GetID(),List.message);
+            BackUp myMessage;
+            myMessage.SignUpForLeader(m_BackUp.m_User.GetID(),idtask);
         }
     }
     else if(myTaskList[row].GetFlag()==202){
         int idtask=myTaskList[row].GetID();
-        int idthis=List.SignUpForTranslater.size();
-        signUpForTranslater translater(myUser,idtask,idthis);
-        List.SignUpForTranslater.append(translater);
+        int idthis=m_BackUp.m_List.SignUpForTranslater.size();
+        signUpForTranslater translater(m_BackUp.m_User,idtask,idthis);
+        m_BackUp.m_List.SignUpForTranslater.append(translater);
         QMessageBox::information(this, tr("提示"),
                            tr("报名成功！")
                           ,tr("确定"));
@@ -90,34 +97,22 @@ void tasksPublished::on_applyBtn_clicked()
 *************************************************************************/
 void tasksPublished::on_main_clicked()
 {
-    MainWindow *r=new MainWindow;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->show();
+    MainWindow r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
 }
 
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改list参数
-【参数】list newList
-【返回值】无
-【开发者及日期】李佳芸 2019.7.16
-【更改记录】
-*************************************************************************/
-void tasksPublished::EditList(list newList){
-    List=newList;
-}
 
 /*************************************************************************
 【函数名称】showValue
 【函数功能】显示界面
-【参数】list List
+【参数】list m_BackUp.m_List
 【返回值】无
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
-void tasksPublished::showValue(list List){
+void tasksPublished::showValue(list  List){
     for(int i=0;i<List.TaskPublisher.size();i++)
     {
         if(List.TaskPublisher[i].GetFlag()==101

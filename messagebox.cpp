@@ -2,6 +2,7 @@
 #include "ui_messagebox.h"
 #include <QToolBox>
 #include <QTextBrowser>
+#include "sqlquery.h"
 
 MessageBox::MessageBox(QWidget *parent) :
     QDialog(parent),
@@ -13,19 +14,22 @@ MessageBox::MessageBox(QWidget *parent) :
 MessageBox::~MessageBox()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
-void MessageBox::EditList(list NewList){
-    m_List=NewList;
+void MessageBox::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
-
-void MessageBox::EditUser(user NewUser){
-    m_User=NewUser;
-}
-
 
 void MessageBox::ShowMessage(){
-    m_messageList=m_List.SearchMessageforUser(m_User.GetID());
+    m_messageList=m_BackUp.m_List.SearchMessageforUser(m_BackUp.m_User.GetID());
     for(int i=0;i<m_messageList.size();i++){
         QTextBrowser* window=new QTextBrowser;
         window->setText(m_messageList[i].GetContent());

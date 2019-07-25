@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "taskpublish.h"
 #include "task.h"
+#include "sqlquery.h"
 
 taskPublishEdit::taskPublishEdit(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,14 @@ taskPublishEdit::taskPublishEdit(QWidget *parent) :
 taskPublishEdit::~taskPublishEdit()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -62,38 +71,29 @@ void taskPublishEdit::on_confrmBtn_clicked()
     myTask.EditLeaderMonth(ui->leaderMonth->text().toInt());
     myTask.EditLeaderDay(ui->leaderDay->text().toInt());
     myTask.EditMoney(ui->money->text().toDouble());
-    myTask.EditPublisher(myUser.GetID());
-    List.updateList(myTask);
+    myTask.EditPublisher(m_BackUp.m_User.GetID());
+    m_BackUp.m_List.updateList(myTask);
     close();
-    taskPublish *r=new taskPublish;
-    r->EditList(List);
-    r->EditTask(myTask);
-    r->showValue();
-    r->show();
+    taskPublish r;
+    r.EditBackUp(m_BackUp);
+    r.showValue();
+    r.show();
 }
 
 /*************************************************************************
-【函数名称】editIDTask
-【函数功能】外部更改该类的idtask
-【参数】int iid
+【函数名称】editTask
+【函数功能】外部更改该类的task
+【参数】taskPublisher myNewTask
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.15
 【更改记录】
 *************************************************************************/
+void taskPublishEdit::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
+}
+
 void taskPublishEdit::EditTask(taskPublisher myNewTask){
     myTask=myNewTask;
-}
-
-/*************************************************************************
-【函数名称】EditIDUser
-【函数功能】外部更改该类的iduser
-【参数】int iid
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.15
-【更改记录】
-*************************************************************************/
-void taskPublishEdit::EditUser(const user myNewUser){
-    myUser=myNewUser;
 }
 
 /*************************************************************************
@@ -115,6 +115,3 @@ void taskPublishEdit::showValue(){
     ui->money->setText(tr("%1").arg(myTask.GetMoney()));
 }
 
-void taskPublishEdit::EditList(list newList){
-    List=newList;
-}

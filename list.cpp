@@ -33,7 +33,7 @@ list::~list(){
 【开发者及日期】李佳芸 2019.7.19
 【更改记录】
 *************************************************************************/
-list::operator =(const list& newList)
+list& list::operator =(const list& newList)
 {
     User=newList.User;
     TaskPublisher=newList.TaskPublisher;
@@ -41,6 +41,7 @@ list::operator =(const list& newList)
     TaskLeader=newList.TaskLeader;
     SignUpForTranslater=newList.SignUpForTranslater;
     TaskTranslater=newList.TaskTranslater;
+    return *this;
 }
 
 /*************************************************************************
@@ -311,6 +312,14 @@ QList <taskTranslater> list::SearchTaskForTranslater(int idTask){
     return translaterTask;
 }
 
+/*************************************************************************
+【函数名称】SearchTaskForTranslater_302
+【函数功能】寻找TaskTranslater中翻译idTask任务的所有子任务并返回一个List
+【参数】int idTask
+【返回值】 QList <taskTranslater>
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 QList <taskTranslater> list::SearchTaskForTranslater_302(int idTask){
     QList <taskTranslater> translaterTask;
     for(int i=0;i<TaskTranslater.size();i++){
@@ -357,6 +366,14 @@ QList <signUpForTranslater> list::SearchTranslaterForTask(taskLeader myTask){
     return myLeader;
 }
 
+/*************************************************************************
+【函数名称】SearchMessageforUser
+【函数功能】在message的list中寻找idUser的消息并返回一个List
+【参数】int idUser
+【返回值】QList<Message>
+【开发者及日期】李佳芸 2019.7.24
+【更改记录】
+*************************************************************************/
 QList<Message> list::SearchMessageforUser(int idUser){
     QList<Message> myMessage;
     for(int i=0;i<message.size();i++){

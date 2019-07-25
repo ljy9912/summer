@@ -54,10 +54,11 @@ signUpForLeader::~signUpForLeader(){
 【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
-signUpForLeader::operator =(const signUpForLeader& newLeader){
+signUpForLeader& signUpForLeader::operator =(const signUpForLeader& newLeader){
     user::operator =(newLeader);
     m_iIdTask=newLeader.m_iIdTask;
     m_iIDThis=newLeader.m_iIDThis;
+    return *this;
 }
 
 /*************************************************************************

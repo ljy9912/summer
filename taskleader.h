@@ -8,7 +8,7 @@ public:
     taskLeader();
     ~taskLeader();
     taskLeader(const taskLeader& newTaskLeader);
-    operator= (const taskLeader& newTaskLeader);
+    taskLeader& operator= (const taskLeader& newTaskLeader);
     
     int GetTranslaterYear();
     int GetTranslaterMonth();

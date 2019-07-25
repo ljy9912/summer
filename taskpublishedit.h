@@ -2,9 +2,7 @@
 #define TASKPUBLISHEDIT_H
 
 #include <QDialog>
-#include "task.h"
-#include "user.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class taskPublishEdit;
@@ -19,8 +17,7 @@ public:
     ~taskPublishEdit();
     void EditTask(taskPublisher myNewTask);
     void showValue();
-    void EditUser(user myUser);
-   void EditList(list newList);
+    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_canclBtn_clicked();
@@ -30,8 +27,7 @@ private slots:
 private:
     Ui::taskPublishEdit *ui;
     taskPublisher myTask;
-    user myUser;
-    list List;
+    BackUp m_BackUp;
 };
 
 #endif // TASKPUBLISHEDIT_H

@@ -12,6 +12,7 @@
 #include <QTextBrowser>
 #include <QMessageBox>
 #include <QTabWidget>
+#include "sqlquery.h"
 
 leaderTask::leaderTask(QWidget *parent) :
     QDialog(parent),
@@ -23,30 +24,26 @@ leaderTask::leaderTask(QWidget *parent) :
 leaderTask::~leaderTask()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
-【函数名称】EditUser
-【函数功能】外部改变类内的m_myUser参数
-【参数】user myNewUser
+【函数名称】EditBackUp
+【函数功能】外部改变类内的m_BackUp参数
+【参数】BackUp myBackUp
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.18
 【更改记录】
 *************************************************************************/
-void leaderTask::EditUser(user myNewUser){
-    m_myUser=myNewUser;
-}
-
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部改变类内的m_myUserm_List参数
-【参数】list myNewList
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.18
-【更改记录】
-*************************************************************************/
-void leaderTask::EditList(list myNewList){
-    m_List=myNewList;
+void leaderTask::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -58,7 +55,7 @@ void leaderTask::EditList(list myNewList){
 【更改记录】
 *************************************************************************/
 void leaderTask::ShowValue(){
-    m_taskList=m_List.SearchTaskForLeader(m_myUser);
+    m_taskList=m_BackUp.m_List.SearchTaskForLeader(m_BackUp.m_User);
     m_yearEdit=new QLineEdit[m_taskList.size()];
     m_monthEdit=new QLineEdit[m_taskList.size()];
     m_dayEdit=new QLineEdit[m_taskList.size()];
@@ -180,9 +177,9 @@ void leaderTask::OnClicked_201(int i){
     m_taskList[iNum].EditTranslaterMonth(iTranslaterMonth);
     m_taskList[iNum].EditTranslaterDay(iTranslaterDay);
     m_taskList[iNum].EditFlag(202);
-    m_List.updateList(m_taskList[iNum]);
-    int iNumInList=m_List.searchTaskInList(m_taskList[iNum].GetID());
-    m_List.TaskPublisher[iNumInList].EditFlag(202);
+    m_BackUp.m_List.updateList(m_taskList[iNum]);
+    int iNumInList=m_BackUp.m_List.searchTaskInList(m_taskList[iNum].GetID());
+    m_BackUp.m_List.TaskPublisher[iNumInList].EditFlag(202);
     QMessageBox::information(this, tr("提示"),
                        tr("译者报名截止时间设置成功！")
                       ,tr("确定"));
@@ -198,7 +195,7 @@ void leaderTask::OnClicked_201(int i){
 *************************************************************************/
 void leaderTask::Show202(int i){
     ui->listWidget->insertItem(i,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetIntroduction()));
-    m_translaterList=m_List.SearchTranslaterForTask(m_taskList[i]);
+    m_translaterList=m_BackUp.m_List.SearchTranslaterForTask(m_taskList[i]);
     m_table[i]=new QTableWidget(m_translaterList.size(),4);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
@@ -231,7 +228,7 @@ void leaderTask::Show202(int i){
 void leaderTask::Show203(int i){
     m_iPage=i;
     ui->listWidget->insertItem(i,tr("<译者报名完毕，请分配任务！>%1").arg(m_taskList[i].GetIntroduction()));
-    m_translaterList=m_List.SearchTranslaterForTask(m_taskList[i]);
+    m_translaterList=m_BackUp.m_List.SearchTranslaterForTask(m_taskList[i]);
     m_table[i]=new QTableWidget(m_translaterList.size(),6);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
@@ -297,15 +294,15 @@ void leaderTask::OnClicked_203(int i){
                        tr("分配任务成功！")
                       ,tr("确定"));
     int iNum=ui->listWidget->currentRow();
-    int iSize=m_List.SignUpForTranslater.size();
+    int iSize=m_BackUp.m_List.SignUpForTranslater.size();
     for(int j=iSize-1;j>=0;j--){
-        if(m_List.SignUpForTranslater[j].GetIDTask()==m_taskList[iNum].GetID()){
-            m_List.SignUpForTranslater.removeAt(j);
+        if(m_BackUp.m_List.SignUpForTranslater[j].GetIDTask()==m_taskList[iNum].GetID()){
+            m_BackUp.m_List.SignUpForTranslater.removeAt(j);
         }
     }
     //改变任务状态为译者开始翻译状态
     m_taskList[iNum].EditFlag(301);
-    m_List.updateList(m_taskList[iNum]);
+    m_BackUp.m_List.updateList(m_taskList[iNum]);
     for(int j=0;j<m_translaterList.size();j++){
         //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
         if(m_table[i]->item(j,4)->text()!=NULL){
@@ -325,11 +322,11 @@ void leaderTask::OnClicked_203(int i){
             myTask.EditLeader(m_taskList[i].GetLeader());
             myTask.EditTranslater(m_translaterList[j].GetID());
             int iID;
-            if(m_List.TaskTranslater.isEmpty()){
+            if(m_BackUp.m_List.TaskTranslater.isEmpty()){
                 iID=0;
             }
             else{
-                iID=m_List.TaskTranslater.last().GetID()+1;
+                iID=m_BackUp.m_List.TaskTranslater.last().GetID()+1;
             }
             myTask.EditID(iID);
             //从表格中用户填写的截至日期当中提取截至的年月日
@@ -341,15 +338,15 @@ void leaderTask::OnClicked_203(int i){
             myTask.EditEndMonth(iEndMonth);
             myTask.EditEndDay(iEndDay);
             //将译者任务对象插入list中
-            m_List.TaskTranslater.append(myTask);
+            m_BackUp.m_List.TaskTranslater.append(myTask);
         }
     }
     //删除译者报名表中的所有该任务的报名信息
-    iSize=m_List.SignUpForTranslater.size();
+    iSize=m_BackUp.m_List.SignUpForTranslater.size();
     for(int j=iSize-1;j>=0;j--){
-        if(m_List.SignUpForTranslater[j].GetIDTask()==
+        if(m_BackUp.m_List.SignUpForTranslater[j].GetIDTask()==
                 m_taskList[iNum].GetID()){
-            m_List.SignUpForTranslater.removeAt(j);
+            m_BackUp.m_List.SignUpForTranslater.removeAt(j);
         }
     }
 }
@@ -367,11 +364,11 @@ void leaderTask::Show301(int i){
     ui->listWidget->insertItem(i,tr("<译者的翻译出炉！请点评！>%1")
                                .arg(m_taskList[i].GetIntroduction()));
     //筛选已经提交的文章或已经修改并且提交的文章
-    for(int j=0;j<m_List.TaskTranslater.size();j++){
-        if(m_List.TaskTranslater[j].GetIDTask()==m_taskList[i].GetID()
-                &&(m_List.TaskTranslater[j].GetFlagToLeader()==1||
-                   (m_List.TaskTranslater[j].GetFlagToLeader())==3)){
-            m_translaterTaskList.append(m_List.TaskTranslater[j]);
+    for(int j=0;j<m_BackUp.m_List.TaskTranslater.size();j++){
+        if(m_BackUp.m_List.TaskTranslater[j].GetIDTask()==m_taskList[i].GetID()
+                &&(m_BackUp.m_List.TaskTranslater[j].GetFlagToLeader()==1||
+                   (m_BackUp.m_List.TaskTranslater[j].GetFlagToLeader())==3)){
+            m_translaterTaskList.append(m_BackUp.m_List.TaskTranslater[j]);
         }
     }
     //对每一个译者构建一个tabWidget来显示对应的译文并让负责人进行评价
@@ -387,9 +384,9 @@ void leaderTask::Show301(int i){
                 m_translaterTaskList[j].GetFlagToLeader()==3){
             int idUser=m_translaterTaskList[j].GetTranslater();
             QString userName;
-            for(int t=0;t<m_List.User.size();t++){
-                if(m_List.User[t].GetID()==idUser){
-                    userName=m_List.User[t].GetName();
+            for(int t=0;t<m_BackUp.m_List.User.size();t++){
+                if(m_BackUp.m_List.User[t].GetID()==idUser){
+                    userName=m_BackUp.m_List.User[t].GetName();
                 }
             }
             QWidget *window=new QWidget;
@@ -510,7 +507,7 @@ void leaderTask::OnClicked_301save(int i,int j){
     m_translaterTaskList[j].EditCommentEditting((m_NewComment[i]+j
                                                  )->toPlainText());
     m_translaterTaskList[j].EditFlagToLeader(3);
-    m_List.updateList(m_translaterTaskList[j]);
+    m_BackUp.m_List.updateList(m_translaterTaskList[j]);
 }
 
 /*************************************************************************
@@ -529,7 +526,7 @@ void leaderTask::OnClicked_301confrm(int i,int j){
     m_translaterTaskList[j].AddComment((m_NewComment[i]+j)->toPlainText());
     m_translaterTaskList[j].EditCommentEditting(NULL);
     m_translaterTaskList[j].EditFlagToLeader(2);
-    m_List.updateList(m_translaterTaskList[j]);
+    m_BackUp.m_List.updateList(m_translaterTaskList[j]);
 }
 
 /*************************************************************************
@@ -546,21 +543,21 @@ void leaderTask::OnClicked_301end(int i,int j){
                        tr("收稿成功！")
                       ,tr("确定"));
     m_translaterTaskList[j].EditFlagToLeader(5);
-    m_List.updateList(m_translaterTaskList[j]);
+    m_BackUp.m_List.updateList(m_translaterTaskList[j]);
     //发送信息告诉译者任务通过，不用修改，等酬金
     //检测是否所有任务都已经通过
     int flag=1;
-    for(int t=0;t<m_List.TaskTranslater.size();t++){
-        if(m_List.TaskTranslater[t].GetIDTask()==
+    for(int t=0;t<m_BackUp.m_List.TaskTranslater.size();t++){
+        if(m_BackUp.m_List.TaskTranslater[t].GetIDTask()==
                 m_translaterTaskList[j].GetIDTask()){
-            if(m_List.TaskTranslater[t].GetFlagToLeader()!=5){
+            if(m_BackUp.m_List.TaskTranslater[t].GetFlagToLeader()!=5){
                 flag=0;
             }
         }
     }
     if(flag==1){
         m_taskList[i].EditFlag(302);
-        m_List.updateList(m_taskList[i]);
+        m_BackUp.m_List.updateList(m_taskList[i]);
     }
 }
 
@@ -574,7 +571,7 @@ void leaderTask::OnClicked_301end(int i,int j){
 *************************************************************************/
 void leaderTask::Show302(int i){
     ui->listWidget->insertItem(i,tr("<所有译者的翻译均已通过，请整合译文！>%1").arg(m_taskList[i].GetIntroduction()));
-    m_translaterTaskList=m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
+    m_translaterTaskList=m_BackUp.m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
     QLabel *inform1=new QLabel(tr("所有译者的翻译均已通过，请整合译文！"));
     QLabel *inform2=new QLabel(tr("译文："));
     QLabel *inform3=new QLabel(tr("所有译文："));
@@ -596,9 +593,9 @@ void leaderTask::Show302(int i){
         m_table[i]->setItem(j,0,new QTableWidgetItem(QString::number
                                                 (m_translaterTaskList[j].GetTranslater())));
         QString userName;
-        for(int t=0;t<m_List.User.size();t++){
-            if(m_List.User[t].GetID()==m_translaterTaskList[j].GetTranslater()){
-                userName=m_List.User[t].GetName();
+        for(int t=0;t<m_BackUp.m_List.User.size();t++){
+            if(m_BackUp.m_List.User[t].GetID()==m_translaterTaskList[j].GetTranslater()){
+                userName=m_BackUp.m_List.User[t].GetName();
             }
         }
         m_table[i]->setItem(j,1,new QTableWidgetItem(userName));
@@ -620,6 +617,14 @@ void leaderTask::Show302(int i){
     ui->stackedWidget->addWidget(window);
 }
 
+/*************************************************************************
+【函数名称】GetPage302save
+【函数功能】在状态302下用户点击暂存按钮寻找用户正在按下的按钮
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.24
+【更改记录】
+*************************************************************************/
 void leaderTask::GetPage302save(){
     for(int i=0;i<m_taskList.size();i++){
         if(m_saveBtn[i]->isDown()){
@@ -628,14 +633,30 @@ void leaderTask::GetPage302save(){
     }
 }
 
+/*************************************************************************
+【函数名称】OnClicked_302save
+【函数功能】用户按下i层的暂存按钮，进行数据存储等工作，并发消息
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.24
+【更改记录】
+*************************************************************************/
 void leaderTask::OnClicked_302save(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("译文整合暂存成功！")
                       ,tr("确定"));
     m_taskList[i].EditResultEditting((m_myResult+i)->toPlainText());
-    m_List.updateList(m_taskList[i]);
+    m_BackUp.m_List.updateList(m_taskList[i]);
 }
 
+/*************************************************************************
+【函数名称】GetPage302confrm
+【函数功能】如果用户在302状态按下确定按钮，寻找按下的按钮的所在层数
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.24
+【更改记录】
+*************************************************************************/
 void leaderTask::GetPage302confrm(){
     for(int i=0;i<m_taskList.size();i++){
         if(m_confrmBtn[i]->isDown()){
@@ -644,15 +665,23 @@ void leaderTask::GetPage302confrm(){
     }
 }
 
+/*************************************************************************
+【函数名称】OnClicked_302confrm
+【函数功能】用户按下i层的确定按钮，进行数据存储等工作，并发消息
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.24
+【更改记录】
+*************************************************************************/
 void leaderTask::OnClicked_302confrm(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("译文提交成功！")
                       ,tr("确定"));
     m_taskList[i].EditResult((m_myResult+i)->toPlainText());
     m_taskList[i].EditFlag(401);
-    m_List.updateList(m_taskList[i]);
-    int iNum=m_List.searchTaskInList(m_taskList[i].GetID());
-    m_List.TaskPublisher[iNum].EditFlag(401);
+    m_BackUp.m_List.updateList(m_taskList[i]);
+    int iNum=m_BackUp.m_List.searchTaskInList(m_taskList[i].GetID());
+    m_BackUp.m_List.TaskPublisher[iNum].EditFlag(401);
 }
 
 /*************************************************************************
@@ -665,9 +694,8 @@ void leaderTask::OnClicked_302confrm(int i){
 *************************************************************************/
 void leaderTask::on_main_clicked()
 {
-    MainWindow *r=new MainWindow;
-    r->EditList(m_List);
-    r->EditUser(m_myUser);
-    r->show();
+    MainWindow r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
 }

@@ -5,7 +5,7 @@
 #include "user.h"
 #include <QList>
 #include "taskpublisher.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,8 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void EditUser(user myNewUser);
-    void EditList(list newList);
+    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_pushButton_clicked();
@@ -29,8 +28,6 @@ private slots:
 
     void on_myTableBtn_clicked();
     
-    void on_exitBtn_clicked();
-    
     void on_publisher_clicked();
 
     void on_myTaskBtn_clicked();
@@ -38,8 +35,7 @@ private slots:
 private:
     
     Ui::MainWindow *ui;
-    user myUser;
-    list List;
+    BackUp m_BackUp;
 };
 
 #endif // MAINWINDOW_H

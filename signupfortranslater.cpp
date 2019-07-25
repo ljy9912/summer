@@ -7,11 +7,11 @@ signUpForTranslater::signUpForTranslater()
 }
 
 /*************************************************************************
-【函数名称】GetIDTask
-【函数功能】读入idtask
-【参数】无
+【函数名称】signUpForTranslater
+【函数功能】类的拷贝构造函数
+【参数】const signUpForTranslater& newTranslater
 【返回值】 无
-【开发者及日期】李佳芸 2019.7.12
+【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
 signUpForTranslater::signUpForTranslater(const signUpForTranslater& newTranslater):user(newTranslater),
@@ -21,11 +21,11 @@ signUpForTranslater::signUpForTranslater(const signUpForTranslater& newTranslate
 }
 
 /*************************************************************************
-【函数名称】GetIDTask
-【函数功能】读入idtask
-【参数】无
+【函数名称】signUpForTranslater
+【函数功能】类的有参数的构造函数
+【参数】user& myUser,int newIDTask,int newIDThis
 【返回值】 无
-【开发者及日期】李佳芸 2019.7.12
+【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
 signUpForTranslater::signUpForTranslater(user& myUser,int newIDTask,int newIDThis):user(myUser)
@@ -35,11 +35,11 @@ signUpForTranslater::signUpForTranslater(user& myUser,int newIDTask,int newIDThi
 }
 
 /*************************************************************************
-【函数名称】GetIDTask
-【函数功能】读入idtask
+【函数名称】~signUpForTranslater
+【函数功能】类的析构函数
 【参数】无
 【返回值】 无
-【开发者及日期】李佳芸 2019.7.12
+【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
 signUpForTranslater::~signUpForTranslater(){
@@ -47,25 +47,26 @@ signUpForTranslater::~signUpForTranslater(){
 }
 
 /*************************************************************************
-【函数名称】GetIDTask
-【函数功能】读入idtask
-【参数】无
+【函数名称】operator =
+【函数功能】重载“=”
+【参数】const signUpForTranslater& newTranslater
 【返回值】 无
-【开发者及日期】李佳芸 2019.7.12
+【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
-signUpForTranslater::operator =(const signUpForTranslater& newTranslater){
+signUpForTranslater& signUpForTranslater::operator =(const signUpForTranslater& newTranslater){
     user::operator =(newTranslater);
     m_iIdTask=newTranslater.m_iIdTask;
     m_iIDThis=newTranslater.m_iIDThis;
+    return *this;
 }
 
 /*************************************************************************
-【函数名称】GetIDTask
-【函数功能】读入idtask
-【参数】无
+【函数名称】attachIDToUser
+【函数功能】通过id和数据库的数据初始化类的对象
+【参数】int ID
 【返回值】 无
-【开发者及日期】李佳芸 2019.7.12
+【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
 void signUpForTranslater::attachIDToUser(int ID){

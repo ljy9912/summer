@@ -6,7 +6,7 @@
 #include <registerconfirm.h>
 #include <QList>
 #include "task.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class Register;
@@ -19,12 +19,11 @@ class Register : public QDialog
 public:
     explicit Register(QWidget *parent = 0);
     ~Register();
-    void EditList(list newList);
+    void EditBackUp(BackUp myBackUp);
     
 private slots:
     void on_canclbtn_clicked();
 
-    void on_RegisterBtn_clicked();
 
     void on_confrmbtn_clicked();
 
@@ -34,8 +33,7 @@ private slots:
 private:
     Ui::Register *ui;
     registerConfirm *dlg;
-    user myUser;
-    list List;
+    BackUp m_BackUp;
 };
 
 #endif // REGISTER_H

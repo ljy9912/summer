@@ -2,9 +2,7 @@
 #define USERINFO_H
 
 #include <QDialog>
-#include "user.h"
-#include "task.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class userInfo;
@@ -17,9 +15,8 @@ class userInfo : public QDialog
 public:
     explicit userInfo(QWidget *parent = 0);
     ~userInfo();
-    void showValue(user);
-    void EditUser(user myNewUser);
-   void EditList(list newList);
+    void showValue(user myUser);
+    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_editBtn_clicked();
@@ -28,8 +25,7 @@ private slots:
 
 private:
     Ui::userInfo *ui;
-    user myUser;
-    list List;
+    BackUp m_BackUp;
 
 signals:
     void dlgreturn(int);

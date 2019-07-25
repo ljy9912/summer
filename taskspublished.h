@@ -4,9 +4,7 @@
 #include <QDialog>
 #include <QListWidget>
 #include <QStackedWidget>
-#include "user.h"
-#include "task.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class tasksPublished;
@@ -19,8 +17,7 @@ class tasksPublished : public QDialog
 public:
     explicit tasksPublished(QWidget *parent = 0);
     ~tasksPublished();
-    void EditUser(user myNewUser);
-    void EditList(list newList);
+    void EditBackUp(BackUp myBackUp);
     void showValue(list List);
 
 private slots:
@@ -30,8 +27,7 @@ private slots:
     
 private:
     Ui::tasksPublished *ui;
-    user myUser;
-    list List;
+    BackUp m_BackUp;
     QList <taskPublisher> myTaskList;
 
 signals:

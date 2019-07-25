@@ -4,8 +4,7 @@
 #include <QDialog>
 #include "taskpublish.h"
 #include "task.h"
-#include "user.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class taskNew;
@@ -18,10 +17,9 @@ class taskNew : public QDialog
 public:
     explicit taskNew(QWidget *parent = 0);
     ~taskNew();
-    void EditUser(user myNewUser);
+    void EditBackUp(BackUp myBackUp);
     void showValue(taskPublisher);
     void EditIDTask(int iid);
-    void EditList(list newList);
 
 private slots:
     void on_canclBtn_clicked();
@@ -32,8 +30,7 @@ private slots:
     
 private:
     Ui::taskNew *ui;
-    user myUser;
-    int idtask;
+    BackUp m_BackUp;
     taskPublisher myTask;
     list List;
 };

@@ -2,8 +2,7 @@
 #define PUBLISHERTASK_H
 
 #include <QDialog>
-#include "user.h"
-#include "list.h"
+#include "backup.h"
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTableWidget>
@@ -21,8 +20,7 @@ public:
     explicit publisherTask(QWidget *parent = 0);
     ~publisherTask();
     void ShowValue();
-    void EditUser(user myNewUser);
-    void EditList(list myNewList);
+    void EditBackUp(BackUp myBackUp);
     void Show101(int i);
     void Show102(int i);
     void Show401(int i);
@@ -39,8 +37,7 @@ private slots:
 
 private:
     Ui::publisherTask *ui;
-    user m_myUser;
-    list m_List;
+    BackUp m_BackUp;
     QList<taskPublisher> m_taskList;
     QList<signUpForLeader> m_leaderList;
     int m_Page;

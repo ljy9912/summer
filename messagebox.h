@@ -2,8 +2,7 @@
 #define MESSAGEBOX_H
 
 #include <QDialog>
-#include "user.h"
-#include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class MessageBox;
@@ -16,14 +15,12 @@ class MessageBox : public QDialog
 public:
     explicit MessageBox(QWidget *parent = 0);
     ~MessageBox();
-    void ShowValue();
-    void EditUser(user NewUser);
-    void EditList(list NewList);
+    void ShowMessage();
+    void EditBackUp(BackUp myBackUp);
 
 private:
     Ui::MessageBox *ui;
-    user m_User;
-    list m_List;
+    BackUp m_BackUp;
     QList<Message> m_messageList;
 };
 

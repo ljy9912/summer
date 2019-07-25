@@ -103,7 +103,7 @@ void SqlQuery::createTaskTranslater(){
 
 void SqlQuery::createMessage(){
     query.prepare("create table if not exists message(id int primary key,title varchar(100),"
-                  "content varchar(1000),iduser int)");
+                  "content varchar(1000),iduser int,flag int)");
     if(!query.exec())
         qDebug() << query.lastError();
       else
@@ -230,12 +230,12 @@ const QList<Message> SqlQuery::GetMessage(){
     query.first();
     int id=query.value(0).toInt();
     Message myMessage;
-    myMessage.attachIDToTask(id);
-    listMessage.append(myTask);
+    myMessage.AttachIDToMessage(id);
+    listMessage.append(myMessage);
     while(query.next()){
         int id=query.value(0).toInt();
         Message myMessage;
-        myMessage.attachIDToTask(id);
+        myMessage.AttachIDToMessage(id);
         //myTask.EditFlagToLeader(3);
         listMessage.append(myMessage);
     }
@@ -409,14 +409,15 @@ void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
     }
 }
 
-void SqlQuery::SendMessage(QList<Message> messageList){
-    query.exec("delete from message");
-    for(int i=0;i<messageList.size();i++){
-        query.prepare("insert into message (id,title,content,iduser) values(?,?,?,?)");
+void SqlQuery::saveMessage(QList<Message> messageList){
+        query.exec("delete from message");
+        for(int i=0;i<messageList.size();i++){
+        query.prepare("insert into message (id,title,content,iduser,flag) values(?,?,?,?,?)");
         query.addBindValue(messageList[i].GetID());
         query.addBindValue(messageList[i].GetTitle());
         query.addBindValue(messageList[i].GetContent());
         query.addBindValue(messageList[i].GetUser());
+        query.addBindValue(messageList[i].GetFlag());
     }
     if(!query.exec()){
         qDebug()<<query.lastError();

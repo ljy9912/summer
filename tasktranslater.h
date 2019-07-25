@@ -8,7 +8,7 @@ public:
     taskTranslater();
     virtual ~taskTranslater();
     taskTranslater(const taskTranslater& myNewTask);
-    operator =(const taskTranslater& myNewTask);
+    taskTranslater& operator =(const taskTranslater& myNewTask);
     int GetEndYear();
     int GetEndMonth();
     int GetEndDay();

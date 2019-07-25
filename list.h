@@ -15,7 +15,7 @@ public:
     list();
     list(const list& newList);
     virtual ~list();
-    operator =(const list& newList);
+    list &operator =(const list& newList);
 
     void updateList(user myUser);
     void updateList(taskPublisher myTask);

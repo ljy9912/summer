@@ -9,7 +9,8 @@
 #include "sqlquery.h"
 #include "publishertask.h"
 #include "leadertask.h"
-#include "translatertask.h".h"
+#include "translatertask.h"
+#include "sqlquery.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,6 +22,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -33,11 +42,10 @@ MainWindow::~MainWindow()
 *************************************************************************/
 void MainWindow::on_pushButton_clicked()
 {
-    userInfo *r=new userInfo;
-    r->showValue(myUser);
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->show();
+    userInfo r;
+    r.showValue(m_BackUp.m_User);
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
 }
 
@@ -49,8 +57,8 @@ void MainWindow::on_pushButton_clicked()
 【开发者及日期】李佳芸 2019.7.1
 【更改记录】
 *************************************************************************/
-void MainWindow::EditUser(user myNewUser){
-    myUser=myNewUser;
+void MainWindow::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -63,10 +71,9 @@ void MainWindow::EditUser(user myNewUser){
 *************************************************************************/
 void MainWindow::on_Publish_clicked()
 {
-    taskNew *r=new taskNew;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->show();
+    taskNew r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
 }
 
@@ -80,64 +87,28 @@ void MainWindow::on_Publish_clicked()
 *************************************************************************/
 void MainWindow::on_getTask_clicked()
 {
-    tasksPublished *r=new tasksPublished;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->showValue(List);
-    r->show();
+    tasksPublished r;
+    r.EditBackUp(m_BackUp);
+    r.showValue(m_BackUp.m_List);
+    r.show();
     close();
 }
 
 void MainWindow::on_myTaskBtn_clicked()
 {
-    translaterTask *r=new translaterTask;
-    r->EditList(List);
-    r->EditUser(myUser);
-    r->ShowValue();
-    r->show();
+    translaterTask r;
+    r.EditBackUp(m_BackUp);
+    r.ShowValue();
+    r.show();
     close();
-}
-
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改list接口
-【参数】list newList
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.20
-【更改记录】
-*************************************************************************/
-void MainWindow::EditList(list newList){
-    List=newList;
 }
 
 void MainWindow::on_myTableBtn_clicked()
 {
-    leaderTask *r=new leaderTask;
-    r->EditList(List);
-    r->EditUser(myUser);
-    r->ShowValue();
-    r->show();
-    close();
-}
-
-
-/*************************************************************************
-【函数名称】on_exitBtn_clicked
-【函数功能】当点击退出之后，将所有的List中的数据存储到数据库当中
-【参数】无
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.21
-【更改记录】
-*************************************************************************/
-void MainWindow::on_exitBtn_clicked()
-{
-    SqlQuery query;
-    query.saveUser(List.User);
-    query.saveTasks(List.TaskPublisher);
-    query.saveSignUpForLeader(List.SignUpForLeader);
-    query.saveSignUpForTranslater(List.SignUpForTranslater);
-    query.saveTaskLeader(List.TaskLeader);
-    query.saveTaskTranslater(List.TaskTranslater);
+    leaderTask r;
+    r.EditBackUp(m_BackUp);
+    r.ShowValue();
+    r.show();
     close();
 }
 
@@ -151,10 +122,9 @@ void MainWindow::on_exitBtn_clicked()
 *************************************************************************/
 void MainWindow::on_publisher_clicked()
 {
-    publisherTask *r=new publisherTask;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->ShowValue();
-    r->show();
+    publisherTask r;
+    r.EditBackUp(m_BackUp);
+    r.ShowValue();
+    r.show();
     close();
 }

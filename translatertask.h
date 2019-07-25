@@ -2,7 +2,7 @@
 #define TRANSLATERTASK_H
 
 #include <QDialog>
-#include "list.h"
+#include "backup.h"
 #include <QTextEdit>
 #include <QPushButton>
 
@@ -17,8 +17,7 @@ class translaterTask : public QDialog
 public:
     explicit translaterTask(QWidget *parent = 0);
     ~translaterTask();
-    void EditList(list myNewList);
-    void EditUser(user myNewUser);
+    void EditBackUp(BackUp myBackUp);
     void ShowValue();
 
 signals:
@@ -33,8 +32,7 @@ private slots:
 
 private:
     Ui::translaterTask *ui;
-    list m_List;
-    user m_User;
+    BackUp m_BackUp;
     QList<taskTranslater> m_taskList;
     int m_iPage;
 

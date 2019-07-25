@@ -4,6 +4,7 @@
 #include "register.h"
 #include "mainwindow.h"
 #include "user.h"
+#include "sqlquery.h"
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,14 @@ LoginDialog::LoginDialog(QWidget *parent) :
 LoginDialog::~LoginDialog()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -31,16 +40,15 @@ void LoginDialog::on_loginBtn_clicked()
     int idnum=ui->usrLineEdit->text().toInt();
     QString pswrdvalue=ui->pswLineEdit->text();
     int flag=0;
-    for(int i=0;i<List.User.size();i++){
-        if(List.User[i].userWithPasswrd(idnum,pswrdvalue)){
+    for(int i=0;i<m_BackUp.m_List.User.size();i++){
+        if(m_BackUp.m_List.User[i].userWithPasswrd(idnum,pswrdvalue)){
             accept();
             flag=1;
             id=idnum;
-            myUser.attachIDToUser(id,List.User);
-            MainWindow *r=new MainWindow;
-            r->EditUser(myUser);
-            r->EditList(List);
-            r->show();
+            m_BackUp.m_User.attachIDToUser(id,m_BackUp.m_List.User);
+            MainWindow r;
+            r.EditBackUp(m_BackUp);
+            r.show();
             close();
             break;
         }
@@ -66,9 +74,9 @@ void LoginDialog::on_loginBtn_clicked()
 
 void LoginDialog::on_RegisterBtn_clicked()
 {
-    Register *r=new Register;
-    r->EditList(List);
-    r->show();
+    Register r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
 }
 
@@ -103,6 +111,6 @@ void LoginDialog::on_exitBtn_clicked()
 【开发者及日期】李佳芸 2019.7.20
 【更改记录】
 *************************************************************************/
-void LoginDialog::EditList(list newList){
-    List=newList;
+void LoginDialog::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }

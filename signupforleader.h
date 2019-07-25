@@ -9,7 +9,7 @@ public:
     signUpForLeader(user& myUser,int idTask,int idThis);
     signUpForLeader(const signUpForLeader& newLeader);
     virtual ~signUpForLeader();
-    operator =(const signUpForLeader& newLeader);
+    signUpForLeader& operator =(const signUpForLeader& newLeader);
 
     void attachIDToUser(int ID);
     void EditIDTask(int idtask);

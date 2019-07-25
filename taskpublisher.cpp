@@ -77,6 +77,7 @@ taskPublisher& taskPublisher::operator = (const taskPublisher& myNewTask){
     money=myNewTask.money;
     flag=myNewTask.flag;
     leader=myNewTask.leader;
+    return *this;
 }
 
 /*************************************************************************

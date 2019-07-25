@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include "mainwindow.h"
 #include <QInputDialog>
+#include "sqlquery.h"
 
 userInfo::userInfo(QWidget *parent) :
     QDialog(parent),
@@ -18,12 +19,20 @@ userInfo::userInfo(QWidget *parent) :
 userInfo::~userInfo()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
 【函数名称】showValue
 【函数功能】根据user对象显示用户信息
-【参数】user myUser
+【参数】user m_BackUp.m_User
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.14
 【更改记录】
@@ -47,11 +56,10 @@ void userInfo::showValue(user myUser){
 *************************************************************************/
 void userInfo::on_editBtn_clicked()
 {
-    userInfoEdit *r=new userInfoEdit;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->showValue(myUser);
-    r->show();
+    userInfoEdit r;
+    r.EditBackUp(m_BackUp);
+    r.showValue(m_BackUp.m_User);
+    r.show();
     close();
 }
 
@@ -68,11 +76,11 @@ void userInfo::on_moneyBtn_clicked()
     double add= QInputDialog::getDouble(this, "充值",
                                                    "请输入充值钱数");
 
-   int i=List.searchUserInList(myUser);
-   double money=List.User[i].GetMoney();
+   int i=m_BackUp.m_List.searchUserInList(m_BackUp.m_User);
+   double money=m_BackUp.m_List.User[i].GetMoney();
    money+=add;
-   List.User[i].EditMoney(money);
-   myUser.EditMoney(money);
+   m_BackUp.m_List.User[i].EditMoney(money);
+   m_BackUp.m_User.EditMoney(money);
    ui->money->setText(tr("余额：%1").arg(money));
    close();
    show();
@@ -86,8 +94,8 @@ void userInfo::on_moneyBtn_clicked()
 【开发者及日期】李佳芸 2019.7.18
 【更改记录】
 *************************************************************************/
-void userInfo::EditUser(user myNewUser){
-    myUser=myNewUser;
+void userInfo::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -100,14 +108,9 @@ void userInfo::EditUser(user myNewUser){
 *************************************************************************/
 void userInfo::on_main_clicked()
 {
-    MainWindow *r=new MainWindow;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->show();
+    MainWindow r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
-}
-
-void userInfo::EditList(list newList){
-    List=newList;
 }
 

@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include "mainwindow.h"
 #include <QMessageBox>
+#include "sqlquery.h"
 
 translaterTask::translaterTask(QWidget *parent) :
     QDialog(parent),
@@ -33,6 +34,14 @@ translaterTask::~translaterTask()
     m_saveBtn=NULL;
     delete m_result;
     m_result=NULL;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -43,20 +52,8 @@ translaterTask::~translaterTask()
 【开发者及日期】李佳芸 2019.7.17
 【更改记录】
 *************************************************************************/
-void translaterTask::EditList(list myNewList){
-    m_List=myNewList;
-}
-
-/*************************************************************************
-【函数名称】EditUser
-【函数功能】外部更改myUser参数
-【参数】user myNewUser
-【返回值】无
-【开发者及日期】李佳芸 2019.7.17
-【更改记录】
-*************************************************************************/
-void translaterTask::EditUser(user myNewUser){
-    m_User=myNewUser;
+void translaterTask::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -68,7 +65,7 @@ void translaterTask::EditUser(user myNewUser){
 【更改记录】
 *************************************************************************/
 void translaterTask::ShowValue(){
-    m_taskList=m_List.SearchTaskForTranslater(m_User);
+    m_taskList=m_BackUp.m_List.SearchTaskForTranslater(m_BackUp.m_User);
     m_result=new QTextEdit[m_taskList.size()];
     m_saveBtn=new QPushButton[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
@@ -179,10 +176,9 @@ void translaterTask::ShowValue(){
 *************************************************************************/
 void translaterTask::on_main_clicked()
 {
-    MainWindow *r=new MainWindow;
-    r->EditList(m_List);
-    r->EditUser(m_User);
-    r->show();
+    MainWindow r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
 }
 
@@ -200,7 +196,7 @@ void translaterTask::OnClicked_301save(int i){
                       ,tr("确定"));
     QString myResult=(m_result+i)->toPlainText();
     m_taskList[i].EditResultEditting(myResult);
-    m_List.updateList(m_taskList[i]);
+    m_BackUp.m_List.updateList(m_taskList[i]);
 }
 
 /*************************************************************************
@@ -223,7 +219,7 @@ void translaterTask::OnClicked_301confrm(int i){
     else if(m_taskList[i].GetFlagToLeader()==2){
         m_taskList[i].EditFlagToLeader(3);
     }
-    m_List.updateList(m_taskList[i]);
+    m_BackUp.m_List.updateList(m_taskList[i]);
 }
 
 /*************************************************************************

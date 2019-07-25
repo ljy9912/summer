@@ -74,6 +74,7 @@ task& task::operator = (const task& myNewTask){
     flag=myNewTask.flag;
     leader=myNewTask.leader;
     publisher=myNewTask.publisher;
+    return *this;
 }
 
 /*************************************************************************

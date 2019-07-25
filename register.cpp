@@ -8,6 +8,7 @@
 #include "registerid.h"
 #include "user.h"
 #include "list.h"
+#include "sqlquery.h"
 
 Register::Register(QWidget *parent) :
     QDialog(parent),
@@ -19,6 +20,14 @@ Register::Register(QWidget *parent) :
 Register::~Register()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -45,10 +54,6 @@ void Register::on_canclbtn_clicked()
 }
 
 
-void Register::on_RegisterBtn_clicked()
-{
-
-}
 
 /*************************************************************************
 【函数名称】on_confrmbtn_clicked
@@ -75,13 +80,13 @@ void Register::on_confrmbtn_clicked()
         }
         else{
           int flag=0;
-          myUser.EditPassWrd(passwordvalue);
-          myUser.EditName(ui->nameedit->text());
-          myUser.EditPhoneNum(ui->phoneEdit->text());
-          myUser.EditIDNum(ui->ID->text());
-          myUser.EditEnglish(ui->EnglishEdit->text());
-          for(int i=0;i<List.User.size();i++){
-              if((List.User[i].GetName()==myUser.GetName())){
+          m_BackUp.m_User.EditPassWrd(passwordvalue);
+          m_BackUp.m_User.EditName(ui->nameedit->text());
+          m_BackUp.m_User.EditPhoneNum(ui->phoneEdit->text());
+          m_BackUp.m_User.EditIDNum(ui->ID->text());
+          m_BackUp.m_User.EditEnglish(ui->EnglishEdit->text());
+          for(int i=0;i<m_BackUp.m_List.User.size();i++){
+              if((m_BackUp.m_List.User[i].GetName()==m_BackUp.m_User.GetName())){
                   QMessageBox::warning(this, tr("警告"),
                                      tr("用户名已被注册！")
                                     ,tr("确定"));
@@ -94,13 +99,12 @@ void Register::on_confrmbtn_clicked()
           }
           if(flag==0){
               close();
-              myUser.EditID(List.User[List.User.size()-1].GetID()+1);
-              List.insertIntoList(myUser);
-              registerConfirm* r=new registerConfirm;
-              r->EditList(List);
-              r->EditUser(myUser);
-              r->showValue();
-              r->show();
+              m_BackUp.m_User.EditID(m_BackUp.m_List.User[m_BackUp.m_List.User.size()-1].GetID()+1);
+              m_BackUp.m_List.insertIntoList(m_BackUp.m_User);
+              registerConfirm r;
+              r.EditBackUp(m_BackUp);
+              r.showValue();
+              r.show();
           }
     }
 }
@@ -116,9 +120,9 @@ void Register::on_confrmbtn_clicked()
 void Register::on_pushButton_clicked()
 {
     close();
-    LoginDialog *r=new LoginDialog;
-    r->EditList(List);
-    r->show();
+    LoginDialog r;
+    r.EditBackUp(m_BackUp);
+    r.show();
 }
 
 /*************************************************************************
@@ -129,6 +133,6 @@ void Register::on_pushButton_clicked()
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
-void Register::EditList(list newList){
-    List=newList;
+void Register::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }

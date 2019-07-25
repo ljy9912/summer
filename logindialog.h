@@ -6,6 +6,7 @@
 #include <QList>
 #include "taskpublisher.h"
 #include "list.h"
+#include "backup.h"
 
 namespace Ui {
 class LoginDialog;
@@ -18,13 +19,12 @@ class LoginDialog : public QDialog
 private:
     Ui::LoginDialog *ui;
     int id;
-    list List;
+    BackUp m_BackUp;
 
 public:
     explicit LoginDialog(QWidget *parent = 0);
     ~LoginDialog();
-    user myUser;
-    void EditList(list newList);
+    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_loginBtn_clicked();

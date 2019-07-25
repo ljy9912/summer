@@ -22,6 +22,7 @@ public:
     void createSignUpForTranslater();
     void createTaskLeader();
     void createTaskTranslater();
+    void createMessage();
     
     const QList<user> GetUser();
     const QList<taskPublisher> GetTasks();
@@ -29,6 +30,7 @@ public:
     const QList<signUpForTranslater> GetSignUpForTranslater();
     const QList<taskLeader> GetTaskLeader();
     const QList<taskTranslater> GetTaskTranslater();
+    const QList<Message> GetMessage();
     
     void saveUser(QList<user> listUser);
     void saveTasks(QList<taskPublisher> listTask);
@@ -36,6 +38,7 @@ public:
     void saveSignUpForTranslater(QList<signUpForTranslater> listSignUpForTranslater);
     void saveTaskLeader(QList<taskLeader> listTask);
     void saveTaskTranslater(QList<taskTranslater> listTask);
+    void saveMessage(QList<Message> messageList);
 };
 
 #endif // SQLQUERY_H

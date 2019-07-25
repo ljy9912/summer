@@ -6,7 +6,8 @@
 #include "task.h"
 #include "mainwindow.h"
 #include <QDate>
-#include "messagebackup.h"
+#include "backup.h"
+#include "sqlquery.h"
 
 taskPublish::taskPublish(QWidget *parent) :
     QDialog(parent),
@@ -18,6 +19,14 @@ taskPublish::taskPublish(QWidget *parent) :
 taskPublish::~taskPublish()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -55,19 +64,18 @@ void taskPublish::showValue(){
 *************************************************************************/
 void taskPublish::on_editBtn_clicked()
 {
-    taskPublishEdit *r=new taskPublishEdit;
-    r->EditTask(myTask);
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->showValue();
-    r->show();
+    taskPublishEdit r;
+    r.EditTask(myTask);
+    r.EditBackUp(m_BackUp);
+    r.showValue();
+    r.show();
     close();
 }
 
 
 /*************************************************************************
-【函数名称】EditIDTask
-【函数功能】外部更改该类的idtask
+【函数名称】EditTask
+【函数功能】外部更改该类的task
 【参数】int iid
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.15
@@ -75,18 +83,6 @@ void taskPublish::on_editBtn_clicked()
 *************************************************************************/
 void taskPublish::EditTask(taskPublisher myNewTask){
     myTask=myNewTask;
-}
-
-/*************************************************************************
-【函数名称】EditIDUser
-【函数功能】外部更改该类的iduser
-【参数】int iid
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.15
-【更改记录】
-*************************************************************************/
-void taskPublish::EditUser(user myNewUser){
-    myUser=myNewUser;
 }
 
 
@@ -108,17 +104,22 @@ void taskPublish::on_publishBtn_clicked()
     myTask.EditStartYear(time.year());
     myTask.EditStartMonth(time.month());
     myTask.EditStartDay(time.day());
-    List.updateList(myTask);
-    MainWindow *r=new MainWindow();
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->show();
+    m_BackUp.m_List.updateList(myTask);
+    MainWindow r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
-    MessageBackUp* myMessage;
-    connect(this,SIGNAL(PublishTask(int,QString,QList<Message>)),myMessage,SLOT(PublishTask(int,QString,QList<Message>)));
-    emit PublishTask(myUser.GetID(),myTask.GetIntroduction(),List.message);
+    m_BackUp.TaskPublish(m_BackUp.m_User.GetID(),myTask.GetIntroduction());
 }
 
-void taskPublish::EditList(list newList){
-    List=newList;
+/*************************************************************************
+【函数名称】EditList
+【函数功能】外部更改该类的list
+【参数】list newList
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.15
+【更改记录】
+*************************************************************************/
+void taskPublish::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "task.h"
 #include "mainwindow.h"
+#include "sqlquery.h"
 
 taskNew::taskNew(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,14 @@ taskNew::taskNew(QWidget *parent) :
 taskNew::~taskNew()
 {
     delete ui;
+    SqlQuery query;
+    query.saveUser(m_BackUp.m_List.User);
+    query.saveTasks(m_BackUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
+    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
+    query.saveMessage(m_BackUp.m_List.message);
 }
 
 /*************************************************************************
@@ -63,23 +72,22 @@ void taskNew::on_confrmBtn_clicked()
     myTask.EditLeaderMonth(ui->leaderMonth->text().toInt());
     myTask.EditLeaderDay(ui->leaderDay->text().toInt());
     myTask.EditMoney(ui->money->text().toDouble());
-    myTask.EditPublisher(myUser.GetID());
+    myTask.EditPublisher(m_BackUp.m_User.GetID());
     int lastID;
-    if(List.TaskPublisher.isEmpty()){
+    if(m_BackUp.m_List.TaskPublisher.isEmpty()){
         lastID=0;
     }
     else{
-        lastID=List.TaskPublisher.last().GetID()+1;
+        lastID=m_BackUp.m_List.TaskPublisher.last().GetID()+1;
     }
     myTask.EditID(lastID);
-    List.insertIntoList(myTask);
+    m_BackUp.m_List.insertIntoList(myTask);
     close();
-    taskPublish *r=new taskPublish;
-    r->EditTask(myTask);
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->showValue();
-    r->show();
+    taskPublish r;
+    r.EditTask(myTask);
+    r.EditBackUp(m_BackUp);
+    r.showValue();
+    r.show();
 }
 
 /*************************************************************************
@@ -90,8 +98,8 @@ void taskNew::on_confrmBtn_clicked()
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
-void taskNew::EditUser(user myNewUser){
-    myUser=myNewUser;
+void taskNew::EditBackUp(BackUp myBackUp){
+    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -112,27 +120,11 @@ void taskNew::showValue(taskPublisher myTask){
     ui->money->setText(tr("%1").arg(myTask.GetMoney()));
 }
 
-/*************************************************************************
-【函数名称】EditIDTask
-【函数功能】外部更改该类的idtask
-【参数】int iid
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.16
-【更改记录】
-*************************************************************************/
-void taskNew::EditIDTask(int iid){
-    idtask=iid;
-}
 
 void taskNew::on_main_clicked()
 {
-    MainWindow *r=new MainWindow;
-    r->EditUser(myUser);
-    r->EditList(List);
-    r->show();
+    MainWindow r;
+    r.EditBackUp(m_BackUp);
+    r.show();
     close();
-}
-
-void taskNew::EditList(list newList){
-    List=newList;
 }

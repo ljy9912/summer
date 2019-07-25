@@ -9,7 +9,7 @@ public:
     signUpForTranslater(user& myUser,int idTask,int idThis);
     signUpForTranslater(const signUpForTranslater& newTranslater);
     virtual ~signUpForTranslater();
-    operator =(const signUpForTranslater& newTranslater);
+    signUpForTranslater& operator =(const signUpForTranslater& newTranslater);
 
     void attachIDToUser(int ID);
     void EditIDTask(int idtask);

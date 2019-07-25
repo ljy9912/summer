@@ -52,7 +52,7 @@ taskTranslater::taskTranslater(const taskTranslater& newTaskTranslater){
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
-taskTranslater::operator =(const taskTranslater& newTaskTranslater){
+taskTranslater& taskTranslater::operator =(const taskTranslater& newTaskTranslater){
     id=newTaskTranslater.id;
     taskclass=newTaskTranslater.taskclass;
     translateTask=newTaskTranslater.translateTask;

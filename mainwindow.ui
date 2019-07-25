@@ -79,19 +79,6 @@
      <string>我是负责人</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="exitBtn">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>0</y>
-      <width>80</width>
-      <height>15</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>退出</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="publisher">
     <property name="geometry">
      <rect>
