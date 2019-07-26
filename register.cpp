@@ -95,9 +95,9 @@ void Register::on_confrmbtn_clicked()
           if(flag==0){
               close();
               g_backUp.m_List.insertIntoList(g_backUp.m_User);
-              registerConfirm* r=new registerConfirm;
-              r->showValue();
-              r->show();
+              registerConfirm r;
+              r.showValue();
+              r.exec();
           }
     }
 }

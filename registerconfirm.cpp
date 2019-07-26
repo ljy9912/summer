@@ -48,7 +48,7 @@ void registerConfirm::showValue()         // 自定义槽
 void registerConfirm::on_pushButton_clicked()
 {
     close();
-    LoginDialog* r=new LoginDialog;
-    r->show();
+    LoginDialog r;
+    r.exec();
 }
 

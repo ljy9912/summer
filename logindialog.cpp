@@ -71,8 +71,8 @@ void LoginDialog::on_loginBtn_clicked()
 
 void LoginDialog::on_RegisterBtn_clicked()
 {
-    Register *r=new Register;
-    r->show();
+    Register r;
+    r.exec();
     close();
 }
 

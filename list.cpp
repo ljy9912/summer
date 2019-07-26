@@ -421,32 +421,9 @@ void list::TaskLeaderAppend(taskPublisher myLeader){
 【更改记录】
 *************************************************************************/
 void list::Delete(int idTask){
-    for(int i=TaskPublisher.size()-1;i>=0;i--){
-        if(TaskPublisher[i].GetID()==idTask){
-            TaskPublisher.removeAt(i);
-        }
-    }
-    for(int i=TaskLeader.size()-1;i>=0;i--){
-        if(TaskLeader[i].GetID()==idTask){
-            TaskLeader.removeAt(i);
-        }
-    }
-    int iSize=TaskTranslater.size();
-    for(int i=iSize-1;i>=0;i--){
-        if(TaskTranslater[i].GetIDTask()==idTask){
-            TaskTranslater.removeAt(i);
-        }
-    }
-    iSize=SignUpForLeader.size();
-    for(int i=iSize-1;i>=0;i--){
-        if(SignUpForLeader[i].GetIDTask()==idTask){
-            SignUpForLeader.removeAt(i);
-        }
-    }
-    iSize=SignUpForTranslater.size();
-    for(int i=iSize-1;i>=0;i--){
-        if(SignUpForTranslater[i].GetIDTask()==idTask){
-            SignUpForTranslater.removeAt(i);
+    for(int i=m_List.size()-1;i>=0;i--){
+        if(m_List[i].GetID()==idTask){
+            m_List.removeAt(i);
         }
     }
 }

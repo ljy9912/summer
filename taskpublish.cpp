@@ -60,10 +60,10 @@ void taskPublish::showValue(){
 *************************************************************************/
 void taskPublish::on_editBtn_clicked()
 {
-    taskPublishEdit* r=new taskPublishEdit;
-    r->EditTask(myTask);
-    r->showValue();
-    r->show();
+    taskPublishEdit r;
+    r.EditTask(myTask);
+    r.showValue();
+    r.exec();
     close();
 }
 

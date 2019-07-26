@@ -39,9 +39,9 @@ MainWindow::~MainWindow()
 *************************************************************************/
 void MainWindow::on_pushButton_clicked()
 {
-    userInfo* r=new userInfo;
-    r->showValue(g_backUp.m_User);
-    r->show();
+    userInfo r;
+    r.showValue(g_backUp.m_User);
+    r.exec();
     close();
 }
 
@@ -56,8 +56,8 @@ void MainWindow::on_pushButton_clicked()
 *************************************************************************/
 void MainWindow::on_Publish_clicked()
 {
-    taskNew* r=new taskNew;
-    r->show();
+    taskNew r;
+    r.exec();
     close();
 }
 
@@ -71,25 +71,25 @@ void MainWindow::on_Publish_clicked()
 *************************************************************************/
 void MainWindow::on_getTask_clicked()
 {
-    tasksPublished* r=new tasksPublished;
-    r->ShowValue();
-    r->show();
+    tasksPublished r;
+    r.ShowValue();
+    r.exec();
     close();
 }
 
 void MainWindow::on_myTaskBtn_clicked()
 {
-    translaterTask* r=new translaterTask;
-    r->ShowValue();
-    r->show();
+    translaterTask r;
+    r.ShowValue();
+    r.exec();
     close();
 }
 
 void MainWindow::on_myTableBtn_clicked()
 {
-    leaderTask* r=new leaderTask;
-    r->ShowValue();
-    r->show();
+    leaderTask r;
+    r.ShowValue();
+    r.exec();
     close();
 }
 
@@ -103,17 +103,17 @@ void MainWindow::on_myTableBtn_clicked()
 *************************************************************************/
 void MainWindow::on_publisher_clicked()
 {
-    publisherTask* r=new publisherTask;
-    r->ShowValue();
-    r->show();
+    publisherTask r;
+    r.ShowValue();
+    r.exec();
     close();
 }
 
 void MainWindow::on_MessageBox_clicked()
 {
-    MessageBox* r=new MessageBox;
-    r->ShowMessage();
-    r->show();
+    MessageBox r;
+    r.ShowMessage();
+    r.exec();
     close();
 }
 

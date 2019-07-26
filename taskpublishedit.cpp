@@ -72,9 +72,9 @@ void taskPublishEdit::on_confrmBtn_clicked()
     myTask.EditTitle(ui->title->text());
     g_backUp.m_List.updateList(myTask);
     close();
-    taskPublish* r=new taskPublish;
-    r->showValue();
-    r->show();
+    taskPublish r;
+    r.showValue();
+    r.exec();
 }
 
 void taskPublishEdit::EditTask(taskPublisher myNewTask){

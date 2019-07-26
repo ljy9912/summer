@@ -51,9 +51,9 @@ void userInfo::showValue(user myUser){
 *************************************************************************/
 void userInfo::on_editBtn_clicked()
 {
-    userInfoEdit* r=new userInfoEdit;
-    r->showValue(g_backUp.m_User);
-    r->show();
+    userInfoEdit r;
+    r.showValue(g_backUp.m_User);
+    r.exec();
     close();
 }
 
@@ -90,8 +90,8 @@ void userInfo::on_moneyBtn_clicked()
 *************************************************************************/
 void userInfo::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
+    MainWindow r;
+    r.show();
     close();
 }
 

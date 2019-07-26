@@ -681,7 +681,6 @@ void leaderTask::OnClicked_302confrm(int i){
 void leaderTask::on_main_clicked()
 {
     MainWindow* r=new MainWindow;
-
     r->show();
     close();
 }

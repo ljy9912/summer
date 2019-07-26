@@ -95,8 +95,8 @@ void userInfoEdit::on_confrmBtn_clicked()
     QMessageBox::information(this, tr("提示"),
                        tr("信息修改成功！")
                       ,tr("确定"));
-    userInfo* r=new userInfo;
-    r->showValue(g_backUp.m_User);
-    r->show();
+    userInfo r;
+    r.showValue(g_backUp.m_User);
+    r.exec();
     close();
 }

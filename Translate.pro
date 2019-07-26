@@ -50,7 +50,14 @@ SOURCES += \
     translatertask.cpp \
     messagebox.cpp \
     message.cpp \
-    backup.cpp
+    backup.cpp \
+    listuser.cpp \
+    listtaskpublisher.cpp \
+    listtaskleader.cpp \
+    listtasktranslater.cpp \
+    listsignupforleader.cpp \
+    listsignupfortranslater.cpp \
+    listmessage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -69,7 +76,6 @@ HEADERS += \
     user.h \
     list.h \
     signupforleader.h \
-    leadertable.h \
     signupfortranslater.h \
     publishertask.h \
     taskpublisher.h \
@@ -79,7 +85,14 @@ HEADERS += \
     translatertask.h \
     messagebox.h \
     message.h \
-    backup.h
+    backup.h \
+    listuser.h \
+    listtaskpublisher.h \
+    listtaskleader.h \
+    listtasktranslater.h \
+    listsignupforleader.h \
+    listsignupfortranslater.h \
+    listmessage.h
 
 FORMS += \
         mainwindow.ui \

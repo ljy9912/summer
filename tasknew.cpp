@@ -85,10 +85,10 @@ void taskNew::on_confrmBtn_clicked()
     myTask.EditID(lastID);
     g_backUp.m_List.insertIntoList(myTask);
     close();
-    taskPublish* r=new taskPublish;
-    r->EditTask(myTask);
-    r->showValue();
-    r->show();
+    taskPublish r;
+    r.EditTask(myTask);
+    r.showValue();
+    r.exec();
 }
 
 
