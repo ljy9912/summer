@@ -6,6 +6,8 @@
 #include "logindialog.h"
 #include "list.h"
 
+
+
 static bool createConnection()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");

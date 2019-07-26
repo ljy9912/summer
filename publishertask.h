@@ -20,7 +20,7 @@ public:
     explicit publisherTask(QWidget *parent = 0);
     ~publisherTask();
     void ShowValue();
-    void EditBackUp(BackUp myBackUp);
+
     void Show101(int i);
     void Show102(int i);
     void Show401(int i);
@@ -37,7 +37,7 @@ private slots:
 
 private:
     Ui::publisherTask *ui;
-    BackUp m_BackUp;
+
     QList<taskPublisher> m_taskList;
     QList<signUpForLeader> m_leaderList;
     int m_Page;

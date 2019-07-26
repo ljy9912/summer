@@ -23,7 +23,7 @@ public:
     void updateList(taskTranslater myTask);
     void insertIntoList(user myUser);
     int searchUserInList(user myUser);
-    int searchUserInList(int iIDUser);
+    int searchUserInList(QString IDUser);
     void insertIntoList(taskPublisher myTask);
     int searchTaskInList(taskPublisher myTask);
     int searchTaskInList(int iIDTask);
@@ -37,7 +37,7 @@ public:
     QList <taskTranslater> SearchTaskForTranslater(user myUser);
     QList <taskTranslater> SearchTaskForTranslater(int idTask);
     QList <taskTranslater> SearchTaskForTranslater_302(int idTask);
-    QList <Message> SearchMessageforUser(int idUser);
+    QList <Message> SearchMessageforUser(QString idUser);
     
     QList <taskPublisher> TaskPublisher;
     QList <user> User;

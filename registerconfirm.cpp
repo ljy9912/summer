@@ -5,11 +5,14 @@
 #include <QSqlQuery>
 #include "sqlquery.h"
 
+
+
 registerConfirm::registerConfirm(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::registerConfirm)
 {
     ui->setupUi(this);
+
 }
 
 registerConfirm::~registerConfirm()
@@ -28,11 +31,10 @@ registerConfirm::~registerConfirm()
 *************************************************************************/
 void registerConfirm::showValue()         // 自定义槽
 {
-    ui->id->setText(tr("账号：%1").arg(m_BackUp.m_User.GetID()));
-    ui->phonenum->setText(tr("电话：%1").arg(m_BackUp.m_User.GetPhoneNum()));
-    ui->idnum->setText(tr("身份证号：%1").arg(m_BackUp.m_User.GetIDNum()));
-    ui->Englishedit->setText(tr("英语资历：%1").arg(m_BackUp.m_User.GetEnglish()));
-    ui->nameconfirm->setText(tr("用户名：%1").arg(m_BackUp.m_User.GetName()));
+    ui->id->setText(tr("用户名：%1").arg(g_backUp.m_User.GetID()));
+    ui->phonenum->setText(tr("电话：%1").arg(g_backUp.m_User.GetPhoneNum()));
+    ui->idnum->setText(tr("身份证号：%1").arg(g_backUp.m_User.GetIDNum()));
+    ui->Englishedit->setText(tr("英语资历：%1").arg(g_backUp.m_User.GetEnglish()));
 }
 
 /*************************************************************************
@@ -47,18 +49,6 @@ void registerConfirm::on_pushButton_clicked()
 {
     close();
     LoginDialog* r=new LoginDialog;
-    r->EditBackUp(m_BackUp);
     r->show();
 }
 
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改List
-【参数】list newList
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.16
-【更改记录】
-*************************************************************************/
-void registerConfirm::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
-}

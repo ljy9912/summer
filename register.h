@@ -19,7 +19,7 @@ class Register : public QDialog
 public:
     explicit Register(QWidget *parent = 0);
     ~Register();
-    void EditBackUp(BackUp myBackUp);
+
     
 private slots:
     void on_canclbtn_clicked();
@@ -33,7 +33,7 @@ private slots:
 private:
     Ui::Register *ui;
     registerConfirm *dlg;
-    BackUp m_BackUp;
+
 };
 
 #endif // REGISTER_H

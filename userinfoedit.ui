@@ -94,8 +94,8 @@
    <property name="geometry">
     <rect>
      <x>41</x>
-     <y>30</y>
-     <width>36</width>
+     <y>60</y>
+     <width>111</width>
      <height>16</height>
     </rect>
    </property>
@@ -106,7 +106,7 @@
     </font>
    </property>
    <property name="text">
-    <string>账号：</string>
+    <string>用户名：</string>
    </property>
   </widget>
   <widget class="QPushButton" name="canclBtn">
@@ -126,16 +126,6 @@
    </property>
    <property name="text">
     <string>取消</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="nameEdit">
-   <property name="geometry">
-    <rect>
-     <x>105</x>
-     <y>56</y>
-     <width>91</width>
-     <height>22</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLabel" name="IDNum">
@@ -184,25 +174,6 @@
      <width>91</width>
      <height>22</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="name">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>56</y>
-     <width>48</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>用户名：</string>
    </property>
   </widget>
   <widget class="QLabel" name="phoneNum">

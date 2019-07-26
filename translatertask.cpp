@@ -10,6 +10,8 @@
 #include <QMessageBox>
 #include "sqlquery.h"
 
+
+
 translaterTask::translaterTask(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::translaterTask)
@@ -38,18 +40,6 @@ translaterTask::~translaterTask()
 }
 
 /*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改List参数
-【参数】list myNewList
-【返回值】无
-【开发者及日期】李佳芸 2019.7.17
-【更改记录】
-*************************************************************************/
-void translaterTask::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
-}
-
-/*************************************************************************
 【函数名称】ShowValue
 【函数功能】显示界面
 【参数】无
@@ -58,7 +48,7 @@ void translaterTask::EditBackUp(BackUp myBackUp){
 【更改记录】
 *************************************************************************/
 void translaterTask::ShowValue(){
-    m_taskList=m_BackUp.m_List.SearchTaskForTranslater(m_BackUp.m_User);
+    m_taskList=g_backUp.m_List.SearchTaskForTranslater(g_backUp.m_User);
     m_result=new QTextEdit[m_taskList.size()];
     m_saveBtn=new QPushButton[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
@@ -69,7 +59,7 @@ void translaterTask::ShowValue(){
         if(m_taskList[i].GetFlag()==301){
             //译者第一次翻译的界面，没有负责人的评价
             if(m_taskList[i].GetFlagToLeader()==0){
-                ui->listWidget->insertItem(i,tr("<任务来啦！>%1").arg(m_taskList[i].GetIntroduction()));
+                ui->listWidget->insertItem(i,tr("<任务来啦！>%1").arg(m_taskList[i].GetTitle()));
             
             
                 QWidget *window=new QWidget();
@@ -81,6 +71,7 @@ void translaterTask::ShowValue(){
                 else{
                     taskClass=new QLabel(tr("翻译性质：英译中"));
                 }
+                QLabel* title=new QLabel(tr("翻译标题：%1").arg(m_taskList[i].GetTitle()));
                 QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
                 QLabel *tasks=new QLabel(tr("翻译内容："));
                 QTextBrowser *myTask=new QTextBrowser;
@@ -92,6 +83,7 @@ void translaterTask::ShowValue(){
                 QVBoxLayout *layout=new QVBoxLayout();
                 layout->addWidget(label);
                 layout->addWidget(taskClass);
+                layout->addWidget(title);
                 layout->addWidget(intro);
                 layout->addWidget(tasks);
                 layout->addWidget(myTask);
@@ -113,7 +105,7 @@ void translaterTask::ShowValue(){
             }
             //译者修改翻译的界面，显示译者原来的翻译和历史评价
             else if(m_taskList[i].GetFlagToLeader()==2){
-                ui->listWidget->insertItem(i,tr("<负责人有新的修改意见啦！>%1").arg(m_taskList[i].GetIntroduction()));
+                ui->listWidget->insertItem(i,tr("<负责人有新的修改意见啦！>%1").arg(m_taskList[i].GetTitle()));
             
             
                 QWidget *window=new QWidget();
@@ -125,6 +117,7 @@ void translaterTask::ShowValue(){
                 else{
                     taskClass=new QLabel(tr("翻译性质：英译中"));
                 }
+                QLabel* title=new QLabel(tr("翻译标题：%1").arg(m_taskList[i].GetTitle()));
                 QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
                 QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(m_taskList[i].GetTask()));
                 QLabel *money=new QLabel(tr("任务总金额：%1元").arg(m_taskList[i].GetMoney()));
@@ -138,6 +131,7 @@ void translaterTask::ShowValue(){
                 QVBoxLayout *layout=new QVBoxLayout();
                 layout->addWidget(label);
                 layout->addWidget(taskClass);
+                layout->addWidget(title);
                 layout->addWidget(intro);
                 layout->addWidget(tasks);
                 layout->addWidget(money);
@@ -170,7 +164,6 @@ void translaterTask::ShowValue(){
 void translaterTask::on_main_clicked()
 {
     MainWindow* r=new MainWindow;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 }
@@ -189,7 +182,7 @@ void translaterTask::OnClicked_301save(int i){
                       ,tr("确定"));
     QString myResult=(m_result+i)->toPlainText();
     m_taskList[i].EditResultEditting(myResult);
-    m_BackUp.m_List.updateList(m_taskList[i]);
+    g_backUp.m_List.updateList(m_taskList[i]);
 }
 
 /*************************************************************************
@@ -212,9 +205,9 @@ void translaterTask::OnClicked_301confrm(int i){
     else if(m_taskList[i].GetFlagToLeader()==2){
         m_taskList[i].EditFlagToLeader(3);
     }
-    m_BackUp.m_List.updateList(m_taskList[i]);
-    m_BackUp.SubmitCommentDone_Translater(m_taskList[i].GetIntroduction(),m_BackUp.m_User.GetID());
-    m_BackUp.SubmitCommentDone_Leader(m_taskList[i].GetIntroduction(),m_taskList[i].GetLeader(),
+    g_backUp.m_List.updateList(m_taskList[i]);
+    g_backUp.SubmitCommentDone_Translater(m_taskList[i].GetTitle(),g_backUp.m_User.GetID());
+    g_backUp.SubmitCommentDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetLeader(),
                                       m_taskList[i].GetTranslater());
 }
 

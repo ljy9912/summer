@@ -14,11 +14,13 @@
 #include <QTabWidget>
 #include "sqlquery.h"
 
+
 leaderTask::leaderTask(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::leaderTask)
 {
     ui->setupUi(this);
+
 }
 
 leaderTask::~leaderTask()
@@ -27,17 +29,6 @@ leaderTask::~leaderTask()
 
 }
 
-/*************************************************************************
-【函数名称】EditBackUp
-【函数功能】外部改变类内的m_BackUp参数
-【参数】BackUp myBackUp
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.18
-【更改记录】
-*************************************************************************/
-void leaderTask::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
-}
 
 /*************************************************************************
 【函数名称】ShowValue
@@ -48,7 +39,7 @@ void leaderTask::EditBackUp(BackUp myBackUp){
 【更改记录】
 *************************************************************************/
 void leaderTask::ShowValue(){
-    m_taskList=m_BackUp.m_List.SearchTaskForLeader(m_BackUp.m_User);
+    m_taskList=g_backUp.m_List.SearchTaskForLeader(g_backUp.m_User);
     m_yearEdit=new QLineEdit[m_taskList.size()];
     m_monthEdit=new QLineEdit[m_taskList.size()];
     m_dayEdit=new QLineEdit[m_taskList.size()];
@@ -91,7 +82,7 @@ void leaderTask::ShowValue(){
 void leaderTask::Show201(int i){
     m_iPage=i;
     m_confrmBtn[i]=new QPushButton(tr("确定"));
-    ui->listWidget->insertItem(i,tr("<设定译者招募结束日期>%1").arg(m_taskList[i].GetIntroduction()));
+    ui->listWidget->insertItem(i,tr("<设定译者招募结束日期>%1").arg(m_taskList[i].GetTitle()));
     QWidget *window=new QWidget();
     QLabel *inform1=new QLabel(tr("恭喜成为负责人！请设定译者招募结束日期"));
     QLabel *inform2=new QLabel(tr("翻译任务详情如下："));
@@ -102,6 +93,7 @@ void leaderTask::Show201(int i){
     else{
         taskClass=new QLabel(tr("翻译性质：英译中"));
     }
+    QLabel* title=new QLabel(tr("翻译标题：%1").arg(m_taskList[i].GetTitle()));
     QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
     QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(m_taskList[i].GetTask()));
     QLabel *time=new QLabel(tr("任务周期：%1天").arg(m_taskList[i].GetTime()));
@@ -124,6 +116,7 @@ void leaderTask::Show201(int i){
     layout->addWidget(inform1);
     layout->addWidget(inform2);
     layout->addWidget(taskClass);
+    layout->addWidget(title);
     layout->addWidget(intro);
     layout->addWidget(tasks);
     layout->addWidget(time);
@@ -170,13 +163,13 @@ void leaderTask::OnClicked_201(int i){
     m_taskList[iNum].EditTranslaterMonth(iTranslaterMonth);
     m_taskList[iNum].EditTranslaterDay(iTranslaterDay);
     m_taskList[iNum].EditFlag(202);
-    m_BackUp.m_List.updateList(m_taskList[iNum]);
-    int iNumInList=m_BackUp.m_List.searchTaskInList(m_taskList[iNum].GetID());
-    m_BackUp.m_List.TaskPublisher[iNumInList].EditFlag(202);
+    g_backUp.m_List.updateList(m_taskList[iNum]);
+    int iNumInList=g_backUp.m_List.searchTaskInList(m_taskList[iNum].GetID());
+    g_backUp.m_List.TaskPublisher[iNumInList].EditFlag(202);
     QMessageBox::information(this, tr("提示"),
                        tr("译者报名截止时间设置成功！")
                       ,tr("确定"));
-    m_BackUp.SetTranslaterDone(m_BackUp.m_User.GetID());
+    g_backUp.SetTranslaterDone(g_backUp.m_User.GetID(),m_taskList[iNum].GetTitle());
 }
 
 /*************************************************************************
@@ -188,22 +181,21 @@ void leaderTask::OnClicked_201(int i){
 【更改记录】
 *************************************************************************/
 void leaderTask::Show202(int i){
-    ui->listWidget->insertItem(i,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetIntroduction()));
-    m_translaterList=m_BackUp.m_List.SearchTranslaterForTask(m_taskList[i]);
-    m_table[i]=new QTableWidget(m_translaterList.size(),4);
+    ui->listWidget->insertItem(i,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetTitle()));
+    m_translaterList=g_backUp.m_List.SearchTranslaterForTask(m_taskList[i]);
+    m_table[i]=new QTableWidget(m_translaterList.size(),3);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label=new QLabel(tr("已报名译者："));
     m_table[i]->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_table[i]->setWindowTitle("已报名译者");
     QStringList header;
-    header<<"账号"<<"用户名"<<"英语资历"<<"积分";
+    header<<"用户名"<<"英语资历"<<"积分";
     m_table[i]->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_translaterList.size();j++){
-        m_table[i]->setItem(j,0,new QTableWidgetItem(QString::number(m_translaterList[j].GetID())));
-        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterList[j].GetName()));
-        m_table[i]->setItem(j,2,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
-        m_table[i]->setItem(j,3,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
+        m_table[i]->setItem(j,0,new QTableWidgetItem(m_translaterList[j].GetID()));
+        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
+        m_table[i]->setItem(j,2,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(m_table[i]);
@@ -221,9 +213,9 @@ void leaderTask::Show202(int i){
 *************************************************************************/
 void leaderTask::Show203(int i){
     m_iPage=i;
-    ui->listWidget->insertItem(i,tr("<译者报名完毕，请分配任务！>%1").arg(m_taskList[i].GetIntroduction()));
-    m_translaterList=m_BackUp.m_List.SearchTranslaterForTask(m_taskList[i]);
-    m_table[i]=new QTableWidget(m_translaterList.size(),6);
+    ui->listWidget->insertItem(i,tr("<译者报名完毕，请分配任务！>%1").arg(m_taskList[i].GetTitle()));
+    m_translaterList=g_backUp.m_List.SearchTranslaterForTask(m_taskList[i]);
+    m_table[i]=new QTableWidget(m_translaterList.size(),5);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label1=new QLabel(tr("翻译原文"));
@@ -234,13 +226,12 @@ void leaderTask::Show203(int i){
     Task->setText(m_taskList[i].GetTask());
     (m_table[i])->setWindowTitle("分配任务");
     QStringList header;
-    header<<"账号"<<"用户名"<<"英语资历"<<"积分"<<"任务"<<"任务截止日期（年-月-日）";
+    header<<"用户名"<<"英语资历"<<"积分"<<"任务"<<"任务截止日期（年-月-日）";
     (m_table[i])->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_translaterList.size();j++){
-        (m_table[i])->setItem(j,0,new QTableWidgetItem(QString::number(m_translaterList[j].GetID())));
-        (m_table[i])->setItem(j,1,new QTableWidgetItem(m_translaterList[j].GetName()));
-        (m_table[i])->setItem(j,2,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
-        (m_table[i])->setItem(j,3,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
+        (m_table[i])->setItem(j,0,new QTableWidgetItem(m_translaterList[j].GetID()));
+        (m_table[i])->setItem(j,1,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
+        (m_table[i])->setItem(j,2,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
     }
     layout->addWidget(label1);
     layout->addWidget(Task);
@@ -288,24 +279,25 @@ void leaderTask::OnClicked_203(int i){
                        tr("分配任务成功！")
                       ,tr("确定"));
     int iNum=ui->listWidget->currentRow();
-    int iSize=m_BackUp.m_List.SignUpForTranslater.size();
+    int iSize=g_backUp.m_List.SignUpForTranslater.size();
     for(int j=iSize-1;j>=0;j--){
-        if(m_BackUp.m_List.SignUpForTranslater[j].GetIDTask()==m_taskList[iNum].GetID()){
-            m_BackUp.m_List.SignUpForTranslater.removeAt(j);
+        if(g_backUp.m_List.SignUpForTranslater[j].GetIDTask()==m_taskList[iNum].GetID()){
+            g_backUp.m_List.SignUpForTranslater.removeAt(j);
         }
     }
-    m_BackUp.SelectTranslaterDone_Leader(m_BackUp.m_User.GetID(),m_taskList[iNum].GetIntroduction());
+    g_backUp.SelectTranslaterDone_Leader(g_backUp.m_User.GetID(),m_taskList[iNum].GetTitle());
     //改变任务状态为译者开始翻译状态
     m_taskList[iNum].EditFlag(301);
-    m_BackUp.m_List.updateList(m_taskList[iNum]);
+    g_backUp.m_List.updateList(m_taskList[iNum]);
     for(int j=0;j<m_translaterList.size();j++){
         //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
-        if(m_table[i]->item(j,4)->text()!=NULL){
+        if(m_table[i]->item(j,3)->text()!=NULL){
             taskTranslater myTask;
             myTask.EditIDTask(m_taskList[i].GetID());
             myTask.EditTaskClass(m_taskList[i].GetTaskClass());
-            QString newTask=m_table[i]->item(j,4)->text();
+            QString newTask=m_table[i]->item(j,3)->text();
             myTask.EditTask(newTask);
+            myTask.EditTitle(m_taskList[i].GetTitle());
             myTask.EditIntroduction(m_taskList[i].GetIntroduction());
             myTask.EditTime(m_taskList[i].GetTime());
             myTask.EditStartYear(m_taskList[i].GetStartYear());
@@ -317,15 +309,15 @@ void leaderTask::OnClicked_203(int i){
             myTask.EditLeader(m_taskList[i].GetLeader());
             myTask.EditTranslater(m_translaterList[j].GetID());
             int iID;
-            if(m_BackUp.m_List.TaskTranslater.isEmpty()){
+            if(g_backUp.m_List.TaskTranslater.isEmpty()){
                 iID=0;
             }
             else{
-                iID=m_BackUp.m_List.TaskTranslater.last().GetID()+1;
+                iID=g_backUp.m_List.TaskTranslater.last().GetID()+1;
             }
             myTask.EditID(iID);
             //从表格中用户填写的截至日期当中提取截至的年月日
-            QString EndDate=m_table[i]->item(j,5)->text();
+            QString EndDate=m_table[i]->item(j,3)->text();
             int iEndYear=EndDate.mid(0,4).toInt();
             int iEndMonth=EndDate.mid(5,2).toInt();
             int iEndDay=EndDate.mid(8,2).toInt();
@@ -333,16 +325,16 @@ void leaderTask::OnClicked_203(int i){
             myTask.EditEndMonth(iEndMonth);
             myTask.EditEndDay(iEndDay);
             //将译者任务对象插入list中
-            m_BackUp.m_List.TaskTranslater.append(myTask);
-            m_BackUp.SelectTranslaterDone_Translater(m_taskList[iNum].GetIntroduction(),m_taskList[iNum].GetID());
+            g_backUp.m_List.TaskTranslater.append(myTask);
+            g_backUp.SelectTranslaterDone_Translater(m_taskList[iNum].GetTitle(),m_translaterList[j].GetID());
         }
     }
     //删除译者报名表中的所有该任务的报名信息
-    iSize=m_BackUp.m_List.SignUpForTranslater.size();
+    iSize=g_backUp.m_List.SignUpForTranslater.size();
     for(int j=iSize-1;j>=0;j--){
-        if(m_BackUp.m_List.SignUpForTranslater[j].GetIDTask()==
+        if(g_backUp.m_List.SignUpForTranslater[j].GetIDTask()==
                 m_taskList[iNum].GetID()){
-            m_BackUp.m_List.SignUpForTranslater.removeAt(j);
+            g_backUp.m_List.SignUpForTranslater.removeAt(j);
         }
     }
 }
@@ -358,13 +350,13 @@ void leaderTask::OnClicked_203(int i){
 void leaderTask::Show301(int i){
     m_iPage=i;
     ui->listWidget->insertItem(i,tr("<译者的翻译出炉！请点评！>%1")
-                               .arg(m_taskList[i].GetIntroduction()));
+                               .arg(m_taskList[i].GetTitle()));
     //筛选已经提交的文章或已经修改并且提交的文章
-    for(int j=0;j<m_BackUp.m_List.TaskTranslater.size();j++){
-        if(m_BackUp.m_List.TaskTranslater[j].GetIDTask()==m_taskList[i].GetID()
-                &&(m_BackUp.m_List.TaskTranslater[j].GetFlagToLeader()==1||
-                   (m_BackUp.m_List.TaskTranslater[j].GetFlagToLeader())==3)){
-            m_translaterTaskList.append(m_BackUp.m_List.TaskTranslater[j]);
+    for(int j=0;j<g_backUp.m_List.TaskTranslater.size();j++){
+        if(g_backUp.m_List.TaskTranslater[j].GetIDTask()==m_taskList[i].GetID()
+                &&(g_backUp.m_List.TaskTranslater[j].GetFlagToLeader()==1||
+                   (g_backUp.m_List.TaskTranslater[j].GetFlagToLeader())==3)){
+            m_translaterTaskList.append(g_backUp.m_List.TaskTranslater[j]);
         }
     }
     //对每一个译者构建一个tabWidget来显示对应的译文并让负责人进行评价
@@ -378,15 +370,9 @@ void leaderTask::Show301(int i){
         //如果flag是1或3，表明译者完成翻译或者完成修改
        if(m_translaterTaskList[j].GetFlagToLeader()==1||
                 m_translaterTaskList[j].GetFlagToLeader()==3){
-            int idUser=m_translaterTaskList[j].GetTranslater();
-            QString userName;
-            for(int t=0;t<m_BackUp.m_List.User.size();t++){
-                if(m_BackUp.m_List.User[t].GetID()==idUser){
-                    userName=m_BackUp.m_List.User[t].GetName();
-                }
-            }
+            QString idUser=m_translaterTaskList[j].GetTranslater();
             QWidget *window=new QWidget;
-            QLabel *title=new QLabel(tr("译者%1的翻译如下，请点评！").arg(userName));
+            QLabel *title=new QLabel(tr("译者%1的翻译如下，请点评！").arg(idUser));
             QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_translaterTaskList[j].GetEndYear()).arg(m_translaterTaskList[i].GetEndMonth()).arg(m_translaterTaskList[i].GetEndDay()));
             QLabel *inform1=new QLabel(tr("翻译原文："));
             QLabel *inform2=new QLabel(tr("译者翻译结果"));
@@ -419,7 +405,7 @@ void leaderTask::Show301(int i){
             Btn->addWidget(m_endBtn[i]+j);
             layout->addLayout(Btn);
             window->setLayout(layout);
-            Tab->addTab(window,userName);
+            Tab->addTab(window,idUser);
             //如果点击提交，改变flag使得译者可见，负责人页面不必显示
             //修改list当中译者的历史评价的内容
             connect(m_confrmBtn[i]+j,SIGNAL(pressed()),this,SLOT(GetPage301confrm()));
@@ -503,10 +489,10 @@ void leaderTask::OnClicked_301save(int i,int j){
     m_translaterTaskList[j].EditCommentEditting((m_NewComment[i]+j
                                                  )->toPlainText());
     m_translaterTaskList[j].EditFlagToLeader(3);
-    m_BackUp.m_List.updateList(m_translaterTaskList[j]);
-    m_BackUp.SubmitCommentDone_Leader(m_translaterTaskList[j].GetIntroduction(),
+    g_backUp.m_List.updateList(m_translaterTaskList[j]);
+    g_backUp.SubmitCommentDone_Leader(m_translaterTaskList[j].GetTitle(),
                                       m_translaterTaskList[j].GetLeader(),m_translaterTaskList[j].GetTranslater());
-    m_BackUp.SubmitCommentDone_Translater(m_translaterTaskList[j].GetIntroduction(),m_translaterTaskList[j].GetTranslater());
+    g_backUp.SubmitCommentDone_Translater(m_translaterTaskList[j].GetTitle(),m_translaterTaskList[j].GetTranslater());
 }
 
 /*************************************************************************
@@ -525,7 +511,7 @@ void leaderTask::OnClicked_301confrm(int i,int j){
     m_translaterTaskList[j].AddComment((m_NewComment[i]+j)->toPlainText());
     m_translaterTaskList[j].EditCommentEditting(NULL);
     m_translaterTaskList[j].EditFlagToLeader(2);
-    m_BackUp.m_List.updateList(m_translaterTaskList[j]);
+    g_backUp.m_List.updateList(m_translaterTaskList[j]);
 }
 
 /*************************************************************************
@@ -542,29 +528,29 @@ void leaderTask::OnClicked_301end(int i,int j){
                        tr("收稿成功！")
                       ,tr("确定"));
     m_translaterTaskList[j].EditFlagToLeader(5);
-    m_BackUp.m_List.updateList(m_translaterTaskList[j]);
+    g_backUp.m_List.updateList(m_translaterTaskList[j]);
     //发送信息告诉译者任务通过，不用修改，等酬金
     //检测是否所有任务都已经通过
     int flag=1;
-    for(int t=0;t<m_BackUp.m_List.TaskTranslater.size();t++){
-        if(m_BackUp.m_List.TaskTranslater[t].GetIDTask()==
+    for(int t=0;t<g_backUp.m_List.TaskTranslater.size();t++){
+        if(g_backUp.m_List.TaskTranslater[t].GetIDTask()==
                 m_translaterTaskList[j].GetIDTask()){
-            if(m_BackUp.m_List.TaskTranslater[t].GetFlagToLeader()!=5){
+            if(g_backUp.m_List.TaskTranslater[t].GetFlagToLeader()!=5){
                 flag=0;
             }
         }
     }
     if(flag==1){
         m_taskList[i].EditFlag(302);
-        m_BackUp.m_List.updateList(m_taskList[i]);
-        m_BackUp.EndTranslateDone_Leader(m_translaterTaskList[j].GetIntroduction()
+        g_backUp.m_List.updateList(m_taskList[i]);
+        g_backUp.EndTranslateDone_Leader(m_translaterTaskList[j].GetTitle()
                                          ,m_translaterTaskList[j].GetTranslater(),m_translaterTaskList[j].GetLeader());
     }
     else{
-        m_BackUp.StartIntegrate(m_translaterTaskList[j].GetIntroduction(),m_translaterTaskList[j].GetLeader());
+        g_backUp.StartIntegrate(m_translaterTaskList[j].GetTitle(),m_translaterTaskList[j].GetLeader());
     }
-    m_BackUp.EndTranslateDone_Translater(m_translaterTaskList[j].GetIntroduction()
-                                         ,m_translaterTaskList[j].GetIDTask());
+    g_backUp.EndTranslateDone_Translater(m_translaterTaskList[j].GetTitle()
+                                         ,m_translaterTaskList[j].GetTranslater());
 }
 
 /*************************************************************************
@@ -576,8 +562,8 @@ void leaderTask::OnClicked_301end(int i,int j){
 【更改记录】
 *************************************************************************/
 void leaderTask::Show302(int i){
-    ui->listWidget->insertItem(i,tr("<所有译者的翻译均已通过，请整合译文！>%1").arg(m_taskList[i].GetIntroduction()));
-    m_translaterTaskList=m_BackUp.m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
+    ui->listWidget->insertItem(i,tr("<所有译者的翻译均已通过，请整合译文！>%1").arg(m_taskList[i].GetTitle()));
+    m_translaterTaskList=g_backUp.m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
     QLabel *inform1=new QLabel(tr("所有译者的翻译均已通过，请整合译文！"));
     QLabel *inform2=new QLabel(tr("译文："));
     QLabel *inform3=new QLabel(tr("所有译文："));
@@ -589,24 +575,16 @@ void leaderTask::Show302(int i){
     Btn->addWidget(m_saveBtn[i]);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
-    m_table[i]=new QTableWidget(m_translaterTaskList.size(),4);
+    m_table[i]=new QTableWidget(m_translaterTaskList.size(),3);
     m_table[i]->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_table[i]->setWindowTitle("翻译原文及译文");
     QStringList header;
-    header<<"账号"<<"用户名"<<"原文"<<"译文";
+    header<<"用户名"<<"原文"<<"译文";
     m_table[i]->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_translaterTaskList.size();j++){
-        m_table[i]->setItem(j,0,new QTableWidgetItem(QString::number
-                                                (m_translaterTaskList[j].GetTranslater())));
-        QString userName;
-        for(int t=0;t<m_BackUp.m_List.User.size();t++){
-            if(m_BackUp.m_List.User[t].GetID()==m_translaterTaskList[j].GetTranslater()){
-                userName=m_BackUp.m_List.User[t].GetName();
-            }
-        }
-        m_table[i]->setItem(j,1,new QTableWidgetItem(userName));
-        m_table[i]->setItem(j,2,new QTableWidgetItem(m_translaterTaskList[j].GetTask()));
-        m_table[i]->setItem(j,3,new QTableWidgetItem(m_translaterTaskList[j].GetResult()));
+        m_table[i]->setItem(j,0,new QTableWidgetItem(m_translaterTaskList[j].GetTranslater()));
+        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterTaskList[j].GetTask()));
+        m_table[i]->setItem(j,2,new QTableWidgetItem(m_translaterTaskList[j].GetResult()));
     }
     layout->addWidget(inform1);
     layout->addWidget(inform2);
@@ -652,7 +630,7 @@ void leaderTask::OnClicked_302save(int i){
                        tr("译文整合暂存成功！")
                       ,tr("确定"));
     m_taskList[i].EditResultEditting((m_myResult+i)->toPlainText());
-    m_BackUp.m_List.updateList(m_taskList[i]);
+    g_backUp.m_List.updateList(m_taskList[i]);
 }
 
 /*************************************************************************
@@ -685,11 +663,11 @@ void leaderTask::OnClicked_302confrm(int i){
                       ,tr("确定"));
     m_taskList[i].EditResult((m_myResult+i)->toPlainText());
     m_taskList[i].EditFlag(401);
-    m_BackUp.m_List.updateList(m_taskList[i]);
-    int iNum=m_BackUp.m_List.searchTaskInList(m_taskList[i].GetID());
-    m_BackUp.m_List.TaskPublisher[iNum].EditFlag(401);
-    m_BackUp.IntegratingDone_Leader(m_taskList[i].GetIntroduction(),m_taskList[i].GetID());
-    m_BackUp.IntegratingDone_Publisher(m_taskList[i].GetIntroduction(),m_taskList[i].GetPublisher());
+    g_backUp.m_List.updateList(m_taskList[i]);
+    int iNum=g_backUp.m_List.searchTaskInList(m_taskList[i].GetID());
+    g_backUp.m_List.TaskPublisher[iNum].EditFlag(401);
+    g_backUp.IntegratingDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetLeader());
+    g_backUp.IntegratingDone_Publisher(m_taskList[i].GetTitle(),m_taskList[i].GetPublisher());
 }
 
 /*************************************************************************
@@ -703,7 +681,7 @@ void leaderTask::OnClicked_302confrm(int i){
 void leaderTask::on_main_clicked()
 {
     MainWindow* r=new MainWindow;
-    r->EditBackUp(m_BackUp);
+
     r->show();
     close();
 }

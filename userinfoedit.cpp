@@ -7,6 +7,8 @@
 #include "logindialog.h"
 #include "sqlquery.h"
 
+
+
 userInfoEdit::userInfoEdit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::userInfoEdit)
@@ -23,14 +25,13 @@ userInfoEdit::~userInfoEdit()
 /*************************************************************************
 【函数名称】showValue
 【函数功能】通过user的对象显示用户信息方便用户编辑
-【参数】user m_BackUp.m_User
+【参数】user g_backUp.m_User
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
 void userInfoEdit::showValue(user myUser){
     ui->ID->setText(tr("账号：%1").arg(myUser.GetID()));
-    ui->nameEdit->setText(myUser.GetName());
     ui->phoneEdit->setText(myUser.GetPhoneNum());
     ui->IDNumEdit->setText(myUser.GetIDNum());
     ui->EnglishEdit->setText(myUser.GetEnglish());
@@ -49,7 +50,6 @@ void userInfoEdit::showValue(user myUser){
 void userInfoEdit::on_pushButton_3_clicked()
 {
     MainWindow* r=new MainWindow;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 }
@@ -71,11 +71,10 @@ void userInfoEdit::on_canclBtn_clicked()
     QPushButton *moreBtn=new QPushButton(tr("取消"));
     msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
     msgbx->addButton(moreBtn,QMessageBox::ActionRole);
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->nameEdit,SLOT(setText(tr("用户名：%1").arg(m_BackUp.m_User.GetName()))));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->phoneEdit,SLOT(setText(tr("手机号：%1").arg(m_BackUp.m_User.GetPhoneNum()))));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->IDNumEdit,SLOT(setText(tr("身份证号：%1").arg(m_BackUp.m_User.GetIDNum()))));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->EnglishEdit,SLOT(setText(tr("英语资历：%1").arg(m_BackUp.m_User.GetEnglish()))));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->nameEdit,SLOT(setFocus()));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->phoneEdit,SLOT(setText(tr("手机号：%1").arg(g_backUp.m_User.GetPhoneNum()))));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->IDNumEdit,SLOT(setText(tr("身份证号：%1").arg(g_backUp.m_User.GetIDNum()))));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->EnglishEdit,SLOT(setText(tr("英语资历：%1").arg(g_backUp.m_User.GetEnglish()))));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->phoneEdit,SLOT(setFocus()));
     msgbx->show();
 }
 
@@ -89,29 +88,15 @@ void userInfoEdit::on_canclBtn_clicked()
 *************************************************************************/
 void userInfoEdit::on_confrmBtn_clicked()
 {
-    m_BackUp.m_User.EditName(ui->nameEdit->text());
-    m_BackUp.m_User.EditIDNum(ui->IDNumEdit->text());
-    m_BackUp.m_User.EditPhoneNum(ui->phoneEdit->text());
-    m_BackUp.m_User.EditEnglish(ui->EnglishEdit->text());
-    m_BackUp.m_List.updateList(m_BackUp.m_User);
+    g_backUp.m_User.EditIDNum(ui->IDNumEdit->text());
+    g_backUp.m_User.EditPhoneNum(ui->phoneEdit->text());
+    g_backUp.m_User.EditEnglish(ui->EnglishEdit->text());
+    g_backUp.m_List.updateList(g_backUp.m_User);
     QMessageBox::information(this, tr("提示"),
                        tr("信息修改成功！")
                       ,tr("确定"));
     userInfo* r=new userInfo;
-    r->EditBackUp(m_BackUp);
-    r->showValue(m_BackUp.m_User);
+    r->showValue(g_backUp.m_User);
     r->show();
     close();
-}
-
-/*************************************************************************
-【函数名称】EditUser
-【函数功能】外部修改类内的user
-【参数】user myNewUser
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.15
-【更改记录】
-*************************************************************************/
-void userInfoEdit::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }

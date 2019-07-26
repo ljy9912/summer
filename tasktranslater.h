@@ -12,7 +12,7 @@ public:
     int GetEndYear();
     int GetEndMonth();
     int GetEndDay();
-    int GetTranslater();
+    QString GetTranslater();
     int GetIDTask();
     QString GetResult();
     QString GetResultEditting();
@@ -23,7 +23,7 @@ public:
     void EditEndYear(int newYear);
     void EditEndMonth(int newMonth);
     void EditEndDay(int newDay);
-    void EditTranslater(int newTranslater);
+    void EditTranslater(QString newTranslater);
     void EditIDTask(int newIDTask);
     void EditResult(QString newResult);
     void EditResultEditting(QString newResult);
@@ -39,7 +39,7 @@ private:
     int m_iEndYear;
     int m_iEndMonth;
     int m_iEndDay;
-    int m_iTranslater;
+    QString m_iTranslater;
     int m_iIDTask;
     QString m_result;
     QString m_resultEditting;

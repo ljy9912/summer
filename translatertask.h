@@ -17,7 +17,7 @@ class translaterTask : public QDialog
 public:
     explicit translaterTask(QWidget *parent = 0);
     ~translaterTask();
-    void EditBackUp(BackUp myBackUp);
+
     void ShowValue();
 
 signals:
@@ -32,7 +32,7 @@ private slots:
 
 private:
     Ui::translaterTask *ui;
-    BackUp m_BackUp;
+
     QList<taskTranslater> m_taskList;
     int m_iPage;
 

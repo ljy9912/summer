@@ -12,7 +12,7 @@
 taskPublisher::taskPublisher(){
     id=0;
     taskclass=0;
-    publisher=0;
+    publisher="";
     time=0;
     leaderYear=0;
     leaderMonth=0;
@@ -77,6 +77,7 @@ taskPublisher& taskPublisher::operator = (const taskPublisher& myNewTask){
     money=myNewTask.money;
     flag=myNewTask.flag;
     leader=myNewTask.leader;
+    title=myNewTask.title;
     return *this;
 }
 
@@ -149,6 +150,7 @@ void taskPublisher::attachIDToTask(int ID,QList<taskPublisher> TaskList){
     startYear=TaskList[i].GetStartYear();
     startMonth=TaskList[i].GetStartMonth();
     startDay=TaskList[i].GetStartDay();
+    title=TaskList[i].GetTitle();
 }
 
 /*************************************************************************
@@ -169,16 +171,17 @@ void taskPublisher::attachIDToTask(int ID){
         taskclass=query.value(1).toInt();
         translateTask=query.value(2).toString();
         introduction=query.value(3).toString();
-        publisher=query.value(4).toInt();
+        publisher=query.value(4).toString();
         time=query.value(5).toInt();
         leaderYear=query.value(6).toInt();
         leaderMonth=query.value(7).toInt();
         leaderDay=query.value(8).toInt();
         money=query.value(9).toDouble();
         flag=query.value(10).toInt();
-        leader=query.value(11).toInt();
+        leader=query.value(11).toString();
         startYear=query.value(12).toInt();
         startMonth=query.value(13).toInt();
         startDay=query.value(14).toInt();
+        title=query.value(15).toString();
     }
 }

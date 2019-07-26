@@ -13,13 +13,13 @@ public:
     int GetID();
     QString GetContent();
     QString GetTitle();
-    int GetUser();
+    QString GetUser();
     int GetFlag();
 
     void EditID(int iID);
     void EditContent(QString newContent);
     void EditTitle(QString newTitle);
-    void EditUser(int newUser);
+    void EditUser(QString newUser);
     void EditFlag(int newFlag);
 
     void AttachIDToMessage(int iID);
@@ -28,7 +28,7 @@ private:
     int m_iID;
     QString m_content;
     QString m_title;
-    int m_iIDUser;
+    QString m_IDUser;
     int m_iFlag;
 
 };

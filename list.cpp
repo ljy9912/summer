@@ -198,10 +198,10 @@ int list::searchLeaderInList(signUpForLeader myLeader){
 【开发者及日期】李佳芸 2019.7.20
 【更改记录】
 *************************************************************************/
-int list::searchUserInList(int iIDUser){
+int list::searchUserInList(QString IDUser){
     int i=0;
     for(i=0;i<User.size();i++){
-        if(iIDUser==User[i].GetID()){
+        if(IDUser==User[i].GetID()){
             return i;
         }
     }
@@ -376,7 +376,7 @@ QList <signUpForTranslater> list::SearchTranslaterForTask(taskLeader myTask){
 【开发者及日期】李佳芸 2019.7.24
 【更改记录】
 *************************************************************************/
-QList<Message> list::SearchMessageforUser(int idUser){
+QList<Message> list::SearchMessageforUser(QString idUser){
     QList<Message> myMessage;
     for(int i=0;i<message.size();i++){
         if(message[i].GetUser()==idUser){
@@ -407,6 +407,7 @@ void list::TaskLeaderAppend(taskPublisher myLeader){
     leader.EditStartYear(myLeader.GetStartYear());
     leader.EditStartMonth(myLeader.GetStartMonth());
     leader.EditStartDay(myLeader.GetStartDay());
+    leader.EditTitle(myLeader.GetTitle());
     TaskLeader.append(leader);
 
 }

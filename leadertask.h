@@ -21,7 +21,6 @@ public:
     explicit leaderTask(QWidget *parent = 0);
     ~leaderTask();
     void ShowValue();
-    void EditBackUp(BackUp myBackUp);
     void Show201(int i);
     void Show202(int i);
     void Show203(int i);
@@ -52,7 +51,7 @@ public:
 
 private:
     Ui::leaderTask *ui;
-    BackUp m_BackUp;
+
     QList<taskLeader> m_taskList;
     QList<signUpForTranslater> m_translaterList;
     QList<taskTranslater> m_translaterTaskList;

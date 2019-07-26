@@ -6,11 +6,16 @@
 #include "user.h"
 #include "sqlquery.h"
 
+
+
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
+    setMinimumSize(300,400);
+    setMaximumSize(300,400);
+
 }
 
 LoginDialog::~LoginDialog()
@@ -30,17 +35,16 @@ LoginDialog::~LoginDialog()
 *************************************************************************/
 void LoginDialog::on_loginBtn_clicked()
 {
-    int idnum=ui->usrLineEdit->text().toInt();
+    QString idnum=ui->usrLineEdit->text().trimmed();
     QString pswrdvalue=ui->pswLineEdit->text();
     int flag=0;
-    for(int i=0;i<m_BackUp.m_List.User.size();i++){
-        if(m_BackUp.m_List.User[i].userWithPasswrd(idnum,pswrdvalue)){
+    for(int i=0;i<g_backUp.m_List.User.size();i++){
+        if(g_backUp.m_List.User[i].userWithPasswrd(idnum,pswrdvalue)){
             accept();
             flag=1;
-            id=idnum;
-            m_BackUp.m_User.attachIDToUser(id,m_BackUp.m_List.User);
+            m_id=idnum;
+            g_backUp.m_User.attachIDToUser(m_id,g_backUp.m_List.User);
             MainWindow *r=new MainWindow;
-            r->EditBackUp(m_BackUp);
             r->show();
             close();
             break;
@@ -68,7 +72,6 @@ void LoginDialog::on_loginBtn_clicked()
 void LoginDialog::on_RegisterBtn_clicked()
 {
     Register *r=new Register;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 }
@@ -94,16 +97,4 @@ void LoginDialog::on_exitBtn_clicked()
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->usrLineEdit,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->pswLineEdit,SLOT(clear()));
     msgbx->show();
-}
-
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改list接口
-【参数】list newList
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.20
-【更改记录】
-*************************************************************************/
-void LoginDialog::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }

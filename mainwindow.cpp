@@ -13,11 +13,14 @@
 #include "sqlquery.h"
 #include "messagebox.h"
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -37,23 +40,11 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     userInfo* r=new userInfo;
-    r->showValue(m_BackUp.m_User);
-    r->EditBackUp(m_BackUp);
+    r->showValue(g_backUp.m_User);
     r->show();
     close();
 }
 
-/*************************************************************************
-【函数名称】EditUser
-【函数功能】 从外部改变类内myUser的参数
-【参数】user myNewUser
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.1
-【更改记录】
-*************************************************************************/
-void MainWindow::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
-}
 
 /*************************************************************************
 【函数名称】on_Publish_clicked
@@ -66,7 +57,6 @@ void MainWindow::EditBackUp(BackUp myBackUp){
 void MainWindow::on_Publish_clicked()
 {
     taskNew* r=new taskNew;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 }
@@ -82,8 +72,7 @@ void MainWindow::on_Publish_clicked()
 void MainWindow::on_getTask_clicked()
 {
     tasksPublished* r=new tasksPublished;
-    r->EditBackUp(m_BackUp);
-    r->showValue(m_BackUp.m_List);
+    r->ShowValue();
     r->show();
     close();
 }
@@ -91,7 +80,6 @@ void MainWindow::on_getTask_clicked()
 void MainWindow::on_myTaskBtn_clicked()
 {
     translaterTask* r=new translaterTask;
-    r->EditBackUp(m_BackUp);
     r->ShowValue();
     r->show();
     close();
@@ -100,7 +88,6 @@ void MainWindow::on_myTaskBtn_clicked()
 void MainWindow::on_myTableBtn_clicked()
 {
     leaderTask* r=new leaderTask;
-    r->EditBackUp(m_BackUp);
     r->ShowValue();
     r->show();
     close();
@@ -117,7 +104,6 @@ void MainWindow::on_myTableBtn_clicked()
 void MainWindow::on_publisher_clicked()
 {
     publisherTask* r=new publisherTask;
-    r->EditBackUp(m_BackUp);
     r->ShowValue();
     r->show();
     close();
@@ -126,7 +112,6 @@ void MainWindow::on_publisher_clicked()
 void MainWindow::on_MessageBox_clicked()
 {
     MessageBox* r=new MessageBox;
-    r->EditBackUp(m_BackUp);
     r->ShowMessage();
     r->show();
     close();
@@ -135,12 +120,12 @@ void MainWindow::on_MessageBox_clicked()
 void MainWindow::on_exitBtn_clicked()
 {
     SqlQuery query;
-    query.saveUser(m_BackUp.m_List.User);
-    query.saveTasks(m_BackUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(m_BackUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(m_BackUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(m_BackUp.m_List.TaskLeader);
-    query.saveTaskTranslater(m_BackUp.m_List.TaskTranslater);
-    query.saveMessage(m_BackUp.m_List.message);
+    query.saveUser(g_backUp.m_List.User);
+    query.saveTasks(g_backUp.m_List.TaskPublisher);
+    query.saveSignUpForLeader(g_backUp.m_List.SignUpForLeader);
+    query.saveSignUpForTranslater(g_backUp.m_List.SignUpForTranslater);
+    query.saveTaskLeader(g_backUp.m_List.TaskLeader);
+    query.saveTaskTranslater(g_backUp.m_List.TaskTranslater);
+    query.saveMessage(g_backUp.m_List.message);
     close();
 }

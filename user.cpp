@@ -14,14 +14,12 @@
 【更改记录】
 *************************************************************************/
 user::user(){
-    m_iID=0;
     m_iRewrdPoint=100;
     m_dMoney=0;
 }
 
 user::user(const user& myNewUser){
-    m_iID=myNewUser.m_iID;
-    m_Name=myNewUser.m_Name;
+    m_ID=myNewUser.m_ID;
     m_PhoneNum=myNewUser.m_PhoneNum;
     m_IDNum=myNewUser.m_IDNum;
     m_Passwrd=myNewUser.m_Passwrd;
@@ -43,8 +41,7 @@ user::~user(){
 }
 
 user& user::operator = (const user& myNewUser){
-    m_iID=myNewUser.m_iID;
-    m_Name=myNewUser.m_Name;
+    m_ID=myNewUser.m_ID;
     m_PhoneNum=myNewUser.m_PhoneNum;
     m_IDNum=myNewUser.m_IDNum;
     m_Passwrd=myNewUser.m_Passwrd;
@@ -62,12 +59,10 @@ user& user::operator = (const user& myNewUser){
 【开发者及日期】李佳芸 2019.7.12
 【更改记录】
 *************************************************************************/
-int user::GetID(){
-    return m_iID;
+QString user::GetID(){
+    return m_ID;
 }
-QString user::GetName(){
-    return m_Name;
-}
+
 QString user::GetPhoneNum(){
     return m_PhoneNum;
 }
@@ -96,12 +91,8 @@ double user::GetMoney(){
 【开发者及日期】李佳芸 2019.7.12
 【更改记录】
 *************************************************************************/
-void user::EditID(int iid){
-    m_iID=iid;
-}
-
-void user::EditName(QString newName){
-    m_Name=newName;
+void user::EditID(QString NewID){
+    m_ID=NewID;
 }
 void user::EditPhoneNum(QString newPhoneNum){
     m_PhoneNum=newPhoneNum;
@@ -128,6 +119,9 @@ void user::AddPoint(int iNewPoint){
     m_iRewrdPoint+=iNewPoint;
 }
 
+void user::LoseMoney(double dlose){
+    m_dMoney-=dlose;
+}
 
 /*************************************************************************
 【函数名称】attachIDToUser
@@ -137,15 +131,14 @@ void user::AddPoint(int iNewPoint){
 【开发者及日期】李佳芸 2019.7.13
 【更改记录】
 *************************************************************************/
-void user::attachIDToUser(int iID,QList<user> UserList){
+void user::attachIDToUser(QString ID,QList<user> UserList){
     int i=0;
     for(i=0;i<UserList.size();i++){
-        if(UserList[i].GetID()==iID)   {
+        if(UserList[i].GetID()==ID)   {
             break;
         }
     }
-    m_iID=UserList[i].GetID();
-    m_Name=UserList[i].GetName();
+    m_ID=UserList[i].GetID();
     m_PhoneNum=UserList[i].GetPhoneNum();
     m_IDNum=UserList[i].GetIDNum();
     m_Passwrd=UserList[i].GetPassWrd();
@@ -154,24 +147,24 @@ void user::attachIDToUser(int iID,QList<user> UserList){
     m_dMoney=UserList[i].GetMoney();
 }
 
-void user::attachIDToUser(int iID){
+void user::attachIDToUser(QString ID){
     QSqlQuery query;
-    m_iID=iID;
+    m_ID=ID;
     query.prepare("select * from users where id=?");
-    query.addBindValue(m_iID);
+    query.addBindValue(m_ID);
     query.exec();
     if(query.first()){
-        m_Name=query.value(1).toString();
-        m_PhoneNum=query.value(2).toString();
-        m_IDNum=query.value(3).toString();
-        m_Passwrd=query.value(4).toString();
-        m_English=query.value(5).toString();
-        m_iRewrdPoint=query.value(6).toInt();
-        m_dMoney=query.value(7).toInt();
+        m_PhoneNum=query.value(1).toString();
+        m_IDNum=query.value(2).toString();
+        m_Passwrd=query.value(3).toString();
+        m_English=query.value(4).toString();
+        m_iRewrdPoint=query.value(5).toInt();
+        m_dMoney=query.value(6).toInt();
     }
 }
-bool user::userWithPasswrd(int iInputId,QString inputPasswrd){
-    if(m_iID==iInputId&&m_Passwrd==inputPasswrd){
+
+bool user::userWithPasswrd(QString iInputId,QString inputPasswrd){
+    if(m_ID==iInputId&&m_Passwrd==inputPasswrd){
         return true;
     }
     else{

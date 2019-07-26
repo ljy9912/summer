@@ -10,6 +10,8 @@
 #include <QSqlQuery>
 #include "backup.h"
 
+
+BackUp g_backUp;
 int main(int argc, char *argv[])
 {
     if(QT_VERSION>=QT_VERSION_CHECK(5,6,0))
@@ -19,7 +21,7 @@ int main(int argc, char *argv[])
          return 1;
     //tasksPublished *r=new tasksPublished;
     //r->show();
-    BackUp myBackup;
+
     LoginDialog r;
     SqlQuery query;
     query.createUser();
@@ -29,17 +31,16 @@ int main(int argc, char *argv[])
     query.createTaskLeader();
     query.createTaskTranslater();
     query.createMessage();
-    myBackup.m_List.TaskPublisher=query.GetTasks();
-    myBackup.m_List.User=query.GetUser();
-    myBackup.m_List.SignUpForLeader=query.GetSignUpForLeader();
-    myBackup.m_List.SignUpForTranslater=query.GetSignUpForTranslater();
-    myBackup.m_List.TaskLeader=query.GetTaskLeader();
-    myBackup.m_List.TaskTranslater=query.GetTaskTranslater();
-    myBackup.m_List.message=query.GetMessage();
-    myBackup.CheckDateSnupfrLeader();
-    myBackup.CheckDateSnupfrTranslater();
+    g_backUp.m_List.TaskPublisher=query.GetTasks();
+    g_backUp.m_List.User=query.GetUser();
+    g_backUp.m_List.SignUpForLeader=query.GetSignUpForLeader();
+    g_backUp.m_List.SignUpForTranslater=query.GetSignUpForTranslater();
+    g_backUp.m_List.TaskLeader=query.GetTaskLeader();
+    g_backUp.m_List.TaskTranslater=query.GetTaskTranslater();
+    g_backUp.m_List.message=query.GetMessage();
+    g_backUp.CheckDateSnupfrLeader();
+    g_backUp.CheckDateSnupfrTranslater();
 
-    r.EditBackUp(myBackup);
     r.show();
     return a.exec();
 }

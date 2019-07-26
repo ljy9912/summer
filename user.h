@@ -8,8 +8,7 @@ class user{
 private:
 
 protected:
-    int m_iID;
-    QString m_Name;
+    QString m_ID;
     QString m_PhoneNum;
     QString m_IDNum;
     QString m_English;
@@ -24,8 +23,7 @@ public:
     virtual ~user();
     user& operator = (const user& myNewUser);
 
-    int GetID();
-    QString GetName();
+    QString GetID();
     QString GetPhoneNum();
     QString GetIDNum();
     QString GetEnglish();
@@ -33,8 +31,7 @@ public:
     int GetRewrdPoint();
     double GetMoney();
 
-    void EditID(int iID);
-    void EditName(QString NewName);
+    void EditID(QString NewID);
     void EditPhoneNum(QString NewPhoneNum);
     void EditIDNum(QString NewIDNum);
     void EditPassWrd(QString NewPassWrd);
@@ -43,10 +40,11 @@ public:
     void EditRewrdPoint(int iNewRewrdPoint);
     void AddMoney(double dAdd);
     void AddPoint(int iNewPoint);
+    void LoseMoney(double dlose);
 
-    void attachIDToUser(int iID,QList<user> UserList);
-    void attachIDToUser(int iID);
-    bool userWithPasswrd(int iID,QString dPasswrd);
+    void attachIDToUser(QString iID, QList<user> UserList);
+    void attachIDToUser(QString iID);
+    bool userWithPasswrd(QString iID, QString dPasswrd);
 
 };
 

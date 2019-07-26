@@ -6,11 +6,14 @@
 #include "task.h"
 #include "sqlquery.h"
 
+
+
 taskPublishEdit::taskPublishEdit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::taskPublishEdit)
 {
     ui->setupUi(this);
+
 }
 
 taskPublishEdit::~taskPublishEdit()
@@ -36,13 +39,14 @@ void taskPublishEdit::on_canclBtn_clicked()
     QPushButton *moreBtn=new QPushButton(tr("取消"));
     msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
     msgbx->addButton(moreBtn,QMessageBox::ActionRole);
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->title,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->introEdit,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->translateTask,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->time,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->leaderYear,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->leaderMonth,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->leaderDay,SLOT(clear()));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->translateTask,SLOT(setFocus()));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->title,SLOT(setFocus()));
     msgbx->show();
 }
 
@@ -64,25 +68,13 @@ void taskPublishEdit::on_confrmBtn_clicked()
     myTask.EditLeaderMonth(ui->leaderMonth->text().toInt());
     myTask.EditLeaderDay(ui->leaderDay->text().toInt());
     myTask.EditMoney(ui->money->text().toDouble());
-    myTask.EditPublisher(m_BackUp.m_User.GetID());
-    m_BackUp.m_List.updateList(myTask);
+    myTask.EditPublisher(g_backUp.m_User.GetID());
+    myTask.EditTitle(ui->title->text());
+    g_backUp.m_List.updateList(myTask);
     close();
     taskPublish* r=new taskPublish;
-    r->EditBackUp(m_BackUp);
     r->showValue();
     r->show();
-}
-
-/*************************************************************************
-【函数名称】editTask
-【函数功能】外部更改该类的task
-【参数】taskPublisher myNewTask
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.15
-【更改记录】
-*************************************************************************/
-void taskPublishEdit::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }
 
 void taskPublishEdit::EditTask(taskPublisher myNewTask){
@@ -106,5 +98,6 @@ void taskPublishEdit::showValue(){
     ui->leaderMonth->setText(tr("%1").arg(myTask.GetLeaderMonth()));
     ui->leaderDay->setText(tr("%1").arg(myTask.GetLeaderDay()));
     ui->money->setText(tr("%1").arg(myTask.GetMoney()));
+    ui->title->setText(tr("%1").arg(myTask.GetTitle()));
 }
 

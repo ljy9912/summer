@@ -17,7 +17,7 @@ public:
     ~taskPublishEdit();
     void EditTask(taskPublisher myNewTask);
     void showValue();
-    void EditBackUp(BackUp myBackUp);
+
 
 private slots:
     void on_canclBtn_clicked();
@@ -27,7 +27,7 @@ private slots:
 private:
     Ui::taskPublishEdit *ui;
     taskPublisher myTask;
-    BackUp m_BackUp;
+
 };
 
 #endif // TASKPUBLISHEDIT_H

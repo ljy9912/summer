@@ -19,7 +19,7 @@ public:
     ~taskPublish();
     void showValue();
     void EditTask(taskPublisher myNewTask);
-    void EditBackUp(BackUp myBackUp);
+
 
 private slots:
     void on_editBtn_clicked();
@@ -29,7 +29,7 @@ private slots:
 private:
     Ui::taskPublish *ui;
     taskPublisher myTask;
-    BackUp m_BackUp;
+
 
 signals:
     void PublishTask(int iID,QString intro,QList<Message> listMessage);

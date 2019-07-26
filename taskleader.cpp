@@ -37,6 +37,7 @@ taskLeader::taskLeader(const taskLeader& newTaskLeader){
     startDay=newTaskLeader.startDay;
     m_Result=newTaskLeader.m_Result;
     m_ResultEditting=newTaskLeader.m_ResultEditting;
+    title=newTaskLeader.title;
 }
 
 /*************************************************************************
@@ -65,6 +66,7 @@ taskLeader& taskLeader::operator =(const taskLeader& newTaskLeader){
     startDay=newTaskLeader.startDay;
     m_Result=newTaskLeader.m_Result;
     m_ResultEditting=newTaskLeader.m_ResultEditting;
+    title=newTaskLeader.title;
     return *this;
 }
 
@@ -159,6 +161,7 @@ void taskLeader::attachIDToTask(int ID,QList<taskLeader> TaskList){
     m_iTranslaterDay=TaskList[i].GetTranslaterDay();
     m_Result=TaskList[i].GetResult();
     m_ResultEditting=TaskList[i].GetResultEditting();
+    title=TaskList[i].GetTitle();
 }
 
 /*************************************************************************
@@ -179,18 +182,19 @@ void taskLeader::attachIDToTask(int ID){
         taskclass=query.value(1).toInt();
         translateTask=query.value(2).toString();
         introduction=query.value(3).toString();
-        publisher=query.value(4).toInt();
+        publisher=query.value(4).toString();
         time=query.value(5).toInt();
         m_iTranslaterYear=query.value(6).toInt();
         m_iTranslaterMonth=query.value(7).toInt();
         m_iTranslaterDay=query.value(8).toInt();
         money=query.value(9).toDouble();
         flag=query.value(10).toInt();
-        leader=query.value(11).toInt();
+        leader=query.value(11).toString();
         startYear=query.value(12).toInt();
         startMonth=query.value(13).toInt();
         startDay=query.value(14).toInt();
         m_Result=query.value(15).toString();
         m_ResultEditting=query.value(16).toString();
+        title=query.value(17).toString();
     }
 }

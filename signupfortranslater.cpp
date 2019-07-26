@@ -76,15 +76,14 @@ void signUpForTranslater::attachIDToUser(int ID){
     query.addBindValue(m_iIDThis);
     query.exec();
     if(query.first()){
-        m_iID=query.value(0).toInt();
-        m_Name=query.value(1).toString();
-        m_PhoneNum=query.value(2).toString();
-        m_IDNum=query.value(3).toString();
-        m_Passwrd=query.value(4).toString();
-        m_English=query.value(5).toString();
-        m_iRewrdPoint=query.value(6).toInt();
-        m_dMoney=query.value(7).toInt();
-        m_iIdTask=query.value(8).toInt();
+        m_ID=query.value(0).toInt();
+        m_PhoneNum=query.value(1).toString();
+        m_IDNum=query.value(2).toString();
+        m_Passwrd=query.value(3).toString();
+        m_English=query.value(4).toString();
+        m_iRewrdPoint=query.value(5).toInt();
+        m_dMoney=query.value(6).toInt();
+        m_iIdTask=query.value(7).toInt();
     }
 }
 

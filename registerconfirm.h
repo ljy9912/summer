@@ -18,12 +18,11 @@ class registerConfirm : public QDialog
 public:
     explicit registerConfirm(QWidget *parent = 0);
     ~registerConfirm();
-    void EditBackUp(BackUp myBackUp);
+
     void showValue();
 
 private:
     Ui::registerConfirm *ui;
-    BackUp m_BackUp;
 
 
 private slots:

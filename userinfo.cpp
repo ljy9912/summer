@@ -8,6 +8,9 @@
 #include "mainwindow.h"
 #include <QInputDialog>
 #include "sqlquery.h"
+#include <QTextBrowser>
+
+
 
 userInfo::userInfo(QWidget *parent) :
     QDialog(parent),
@@ -25,14 +28,13 @@ userInfo::~userInfo()
 /*************************************************************************
 【函数名称】showValue
 【函数功能】根据user对象显示用户信息
-【参数】user m_BackUp.m_User
+【参数】user g_backUp.m_User
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.14
 【更改记录】
 *************************************************************************/
 void userInfo::showValue(user myUser){
-    ui->ID->setText(tr("账号：%1").arg(myUser.GetID()));
-    ui->name->setText(tr("用户名：%1").arg(myUser.GetName()));
+    ui->ID->setText(tr("用户名：%1").arg(myUser.GetID()));
     ui->phoneNum->setText(tr("电话：%1").arg(myUser.GetPhoneNum()));
     ui->IDNum->setText(tr("身份证号：%1").arg(myUser.GetIDNum()));
     ui->credit->setText(tr("积分：%1").arg(myUser.GetRewrdPoint()));
@@ -50,8 +52,7 @@ void userInfo::showValue(user myUser){
 void userInfo::on_editBtn_clicked()
 {
     userInfoEdit* r=new userInfoEdit;
-    r->EditBackUp(m_BackUp);
-    r->showValue(m_BackUp.m_User);
+    r->showValue(g_backUp.m_User);
     r->show();
     close();
 }
@@ -66,29 +67,17 @@ void userInfo::on_editBtn_clicked()
 *************************************************************************/
 void userInfo::on_moneyBtn_clicked()
 {
-    double add= QInputDialog::getDouble(this, "充值",
+   double add= QInputDialog::getDouble(this, "充值",
                                                    "请输入充值钱数");
 
-   int i=m_BackUp.m_List.searchUserInList(m_BackUp.m_User);
-   double money=m_BackUp.m_List.User[i].GetMoney();
+   int i=g_backUp.m_List.searchUserInList(g_backUp.m_User);
+   double money=g_backUp.m_List.User[i].GetMoney();
    money+=add;
-   m_BackUp.m_List.User[i].EditMoney(money);
-   m_BackUp.m_User.EditMoney(money);
+   g_backUp.m_List.User[i].EditMoney(money);
+   g_backUp.m_User.EditMoney(money);
    ui->money->setText(tr("余额：%1").arg(money));
    close();
    show();
-}
-
-/*************************************************************************
-【函数名称】editUser
-【函数功能】外部更改该类的myUser
-【参数】user myNewUser
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.18
-【更改记录】
-*************************************************************************/
-void userInfo::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -102,8 +91,17 @@ void userInfo::EditBackUp(BackUp myBackUp){
 void userInfo::on_main_clicked()
 {
     MainWindow* r=new MainWindow;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 }
 
+void userInfo::ShowMessage(){
+    QList<Message> messageList;
+    messageList=g_backUp.m_List.SearchMessageforUser(g_backUp.m_User.GetID());
+    for(int i=0;i<messageList.size();i++){
+        QTextBrowser* window=new QTextBrowser;
+        window->setText(messageList[i].GetContent());
+        ui->toolBox->addItem(window,messageList[i].GetTitle());
+    }
+
+}

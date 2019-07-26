@@ -42,6 +42,7 @@ taskTranslater::taskTranslater(const taskTranslater& newTaskTranslater){
     m_comment=newTaskTranslater.m_comment;
     m_flagToLeader=newTaskTranslater.m_flagToLeader;
     m_commentEditting=newTaskTranslater.m_commentEditting;
+    title=newTaskTranslater.title;
 }
 
 /*************************************************************************
@@ -75,6 +76,7 @@ taskTranslater& taskTranslater::operator =(const taskTranslater& newTaskTranslat
     m_comment=newTaskTranslater.m_comment;
     m_flagToLeader=newTaskTranslater.m_flagToLeader;
     m_commentEditting=newTaskTranslater.m_commentEditting;
+    title=newTaskTranslater.title;
 }
 
 /*************************************************************************
@@ -96,7 +98,7 @@ int taskTranslater::GetEndMonth(){
 int taskTranslater::GetEndDay(){
     return m_iEndDay;
 }
-int taskTranslater::GetTranslater(){
+QString taskTranslater::GetTranslater(){
     return m_iTranslater;
 }
 
@@ -144,7 +146,7 @@ void taskTranslater::EditEndMonth(int newMonth){
 void taskTranslater::EditEndDay(int newDay){
     m_iEndDay=newDay;
 }
-void taskTranslater::EditTranslater(int newTranslater){
+void taskTranslater::EditTranslater(QString newTranslater){
     m_iTranslater=newTranslater;
 }
 
@@ -225,6 +227,7 @@ void taskTranslater::attachIDToTask(int ID,QList<taskTranslater> TaskList){
     m_iTranslater=TaskList[i].GetTranslater();
     m_iIDTask=TaskList[i].GetIDTask();
     m_resultEditting=TaskList[i].GetResultEditting();
+    title=TaskList[i].GetTitle();
 }
 
 /*************************************************************************
@@ -245,23 +248,24 @@ void taskTranslater::attachIDToTask(int ID){
         taskclass=query.value(1).toInt();
         translateTask=query.value(2).toString();
         introduction=query.value(3).toString();
-        publisher=query.value(4).toInt();
+        publisher=query.value(4).toString();
         time=query.value(5).toInt();
         m_iEndYear=query.value(6).toInt();
         m_iEndMonth=query.value(7).toInt();
         m_iEndDay=query.value(8).toInt();
         money=query.value(9).toDouble();
         flag=query.value(10).toInt();
-        leader=query.value(11).toInt();
+        leader=query.value(11).toString();
         startYear=query.value(12).toInt();
         startMonth=query.value(13).toInt();
         startDay=query.value(14).toInt();
-        m_iTranslater=query.value(15).toInt();
+        m_iTranslater=query.value(15).toString();
         m_iIDTask=query.value(16).toInt();
         m_result=query.value(17).toString();
         m_comment=query.value(18).toString();
         m_flagToLeader=query.value(19).toInt();
         m_commentEditting=query.value(20).toString();
         m_resultEditting=query.value(21).toString();
+        title=query.value(22).toString();
     }
 }

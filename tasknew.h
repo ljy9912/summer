@@ -17,8 +17,8 @@ class taskNew : public QDialog
 public:
     explicit taskNew(QWidget *parent = 0);
     ~taskNew();
-    void EditBackUp(BackUp myBackUp);
-    void showValue(taskPublisher);
+
+    void showValue();
     void EditIDTask(int iid);
 
 private slots:
@@ -30,7 +30,7 @@ private slots:
     
 private:
     Ui::taskNew *ui;
-    BackUp m_BackUp;
+
     taskPublisher myTask;
     list List;
 };

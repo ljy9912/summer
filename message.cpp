@@ -6,13 +6,13 @@ Message::Message()
 {
     m_iFlag=0;
     m_iID=0;
-    m_iIDUser=0;
+    m_IDUser="";
 }
 
 Message::Message(int iNum){
     m_iID=iNum;
     m_iFlag=0;
-    m_iIDUser=0;
+    m_IDUser="";
 }
 
 Message::~Message(){
@@ -23,7 +23,7 @@ Message::Message(const Message &myMessage){
     m_iID=myMessage.m_iID;
     m_title=myMessage.m_title;
     m_content=myMessage.m_content;
-    m_iIDUser=myMessage.m_iIDUser;
+    m_IDUser=myMessage.m_IDUser;
     m_iFlag=myMessage.m_iFlag;
 }
 
@@ -31,7 +31,7 @@ Message& Message::operator =(const Message &myMessage){
     m_iID=myMessage.m_iID;
     m_title=myMessage.m_title;
     m_content=myMessage.m_content;
-    m_iIDUser=myMessage.m_iIDUser;
+    m_IDUser=myMessage.m_IDUser;
     m_iFlag=myMessage.m_iFlag;
     return *this;
 }
@@ -50,8 +50,8 @@ QString Message::GetTitle(){
     return m_title;
 }
 
-int Message::GetUser(){
-    return m_iIDUser;
+QString Message::GetUser(){
+    return m_IDUser;
 }
 
 int Message::GetFlag(){
@@ -72,8 +72,8 @@ void Message::EditContent(QString newContent){
     m_content=newContent;
 }
 
-void Message::EditUser(int newUser){
-    m_iIDUser=newUser;
+void Message::EditUser(QString newUser){
+    m_IDUser=newUser;
 }
 
 void Message::EditFlag(int newFlag){
@@ -89,7 +89,7 @@ void Message::AttachIDToMessage(int iID){
     if(query.first()){
         m_title=query.value(1).toString();
         m_content=query.value(2).toString();
-        m_iIDUser=query.value(3).toInt();
+        m_IDUser=query.value(3).toString();
         m_iFlag=query.value(4).toInt();
     }
 }

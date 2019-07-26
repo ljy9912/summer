@@ -16,7 +16,8 @@ public:
     explicit userInfo(QWidget *parent = 0);
     ~userInfo();
     void showValue(user myUser);
-    void EditBackUp(BackUp myBackUp);
+
+    void ShowMessage();
 
 private slots:
     void on_editBtn_clicked();
@@ -25,7 +26,6 @@ private slots:
 
 private:
     Ui::userInfo *ui;
-    BackUp m_BackUp;
 
 signals:
     void dlgreturn(int);

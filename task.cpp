@@ -39,6 +39,7 @@ task::task(const task &myNewTask){
     flag=myNewTask.flag;
     leader=myNewTask.leader;
     publisher=myNewTask.publisher;
+    title=myNewTask.title;
 }
 
 /*************************************************************************
@@ -74,6 +75,7 @@ task& task::operator = (const task& myNewTask){
     flag=myNewTask.flag;
     leader=myNewTask.leader;
     publisher=myNewTask.publisher;
+    title=myNewTask.title;
     return *this;
 }
 
@@ -99,6 +101,9 @@ QString task::GetTask(){
 QString task::GetIntroduction(){
     return introduction;
 }
+QString task::GetTitle(){
+    return title;
+}
 int task::GetTime(){
     return time;
 }
@@ -117,10 +122,10 @@ double task::GetMoney(){
 int task::GetFlag(){
     return flag;
 }
-int task::GetLeader(){
+QString task::GetLeader(){
     return leader;
 }
-int task::GetPublisher(){
+QString task::GetPublisher(){
     return publisher;
 }
 
@@ -144,6 +149,9 @@ void task::EditTask(QString taskk){
 void task::EditIntroduction(QString iintroduction){
     introduction=iintroduction;
 }
+void task::EditTitle(QString newTitle){
+    title=newTitle;
+}
 void task::EditTime(int ttime){
     time=ttime;
 }
@@ -162,10 +170,10 @@ void task::EditMoney(double mmoney){
 void task::EditFlag(int fflag){
     flag=fflag;
 }
-void task::EditLeader(int iLeader){
+void task::EditLeader(QString iLeader){
     leader=iLeader;
 }
-void task::EditPublisher(int ppublisher){
+void task::EditPublisher(QString ppublisher){
     publisher=ppublisher;
 }
 

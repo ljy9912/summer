@@ -12,30 +12,22 @@
 #include <QTextBrowser>
 #include <QTabWidget>
 #include "sqlquery.h"
+#include <QInputDialog>
+
+
 
 publisherTask::publisherTask(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::publisherTask)
 {
     ui->setupUi(this);
+
 }
 
 publisherTask::~publisherTask()
 {
     delete ui;
 
-}
-
-/*************************************************************************
-【函数名称】EditUser
-【函数功能】外部更改myUser
-【参数】user myNewUser
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.18
-【更改记录】
-*************************************************************************/
-void publisherTask::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }
 
 /*************************************************************************
@@ -47,7 +39,7 @@ void publisherTask::EditBackUp(BackUp myBackUp){
 【更改记录】
 *************************************************************************/
 void publisherTask::ShowValue(){
-    m_taskList=m_BackUp.m_List.SearchTaskForPublisher(m_BackUp.m_User);
+    m_taskList=g_backUp.m_List.SearchTaskForPublisher(g_backUp.m_User);
     m_nameedit=new QLineEdit[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
     m_table=new QTableWidget[m_taskList.size()];
@@ -79,22 +71,21 @@ void publisherTask::ShowValue(){
 【更改记录】
 *************************************************************************/
 void publisherTask::Show101(int i){
-    ui->listWidget->insertItem(i,tr("<负责人报名火热进行中>%1").arg(m_taskList[i].GetIntroduction()));
-    m_leaderList=m_BackUp.m_List.SearchLeaderForTask(m_taskList[i]);
+    ui->listWidget->insertItem(i,tr("<负责人报名火热进行中>%1").arg(m_taskList[i].GetTitle()));
+    m_leaderList=g_backUp.m_List.SearchLeaderForTask(m_taskList[i]);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label=new QLabel(tr("已报名负责人："));
-    QTableWidget *table=new QTableWidget(m_leaderList.size(),4);
+    QTableWidget *table=new QTableWidget(m_leaderList.size(),3);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setWindowTitle("已报名负责人");
     QStringList header;
-    header<<"账号"<<"用户名"<<"英语资历"<<"积分";
+    header<<"用户名"<<"英语资历"<<"积分";
     table->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_leaderList.size();j++){
-        table->setItem(j,0,new QTableWidgetItem(QString::number(m_leaderList[j].GetID())));
-        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetName()));
-        table->setItem(j,2,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
-        table->setItem(j,3,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
+        table->setItem(j,0,new QTableWidgetItem(m_leaderList[j].GetID()));
+        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
+        table->setItem(j,2,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(table);
@@ -112,27 +103,26 @@ void publisherTask::Show101(int i){
 *************************************************************************/
 void publisherTask::Show102(int i){
     m_Page=i;
-    ui->listWidget->insertItem(i,tr("<负责人报名完毕，请选择！>%1").arg(m_taskList[i].GetIntroduction()));
-    m_leaderList=m_BackUp.m_List.SearchLeaderForTask(m_taskList[i]);
+    ui->listWidget->insertItem(i,tr("<负责人报名完毕，请选择！>%1").arg(m_taskList[i].GetTitle()));
+    m_leaderList=g_backUp.m_List.SearchLeaderForTask(m_taskList[i]);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label=new QLabel(tr("已报名负责人："));
-    QTableWidget *table=new QTableWidget(m_leaderList.size(),4);
+    QTableWidget *table=new QTableWidget(m_leaderList.size(),3);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setWindowTitle("已报名负责人");
     QStringList header;
-    header<<"账号"<<"用户名"<<"英语资历"<<"积分";
+    header<<"用户名"<<"英语资历"<<"积分";
     table->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_leaderList.size();j++){
-        table->setItem(j,0,new QTableWidgetItem(QString::number(m_leaderList[j].GetID())));
-        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetName()));
-        table->setItem(j,2,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
-        table->setItem(j,3,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
+        table->setItem(j,0,new QTableWidgetItem(m_leaderList[j].GetID()));
+        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
+        table->setItem(j,2,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(table);
     QHBoxLayout *layoutName=new QHBoxLayout;
-    QLabel *labelName=new QLabel(tr("账号："));
+    QLabel *labelName=new QLabel(tr("用户名："));
     layoutName->addWidget(labelName);
     layoutName->addWidget(m_nameedit+i);
     layout->addLayout(layoutName);
@@ -152,17 +142,17 @@ void publisherTask::Show102(int i){
 【更改记录】
 *************************************************************************/
 void publisherTask::Show401(int i){
-    ui->listWidget->insertItem(i,tr("<任务翻译完毕，请确认！>%1").arg(m_taskList[i].GetIntroduction()));
+    ui->listWidget->insertItem(i,tr("<任务翻译完毕，请确认！>%1").arg(m_taskList[i].GetTitle()));
     QTabWidget *Tab=new QTabWidget;
-    QLabel *intro=new QLabel(tr("%1").arg(m_taskList[i].GetIntroduction()));
+    QLabel *intro=new QLabel(tr("%1").arg(m_taskList[i].GetTitle()));
     QTextBrowser *myTask=new QTextBrowser;
     myTask->setText(m_taskList[i].GetTask());
     QTextBrowser *myResult=new QTextBrowser;
     QLabel *inform1=new QLabel(tr("负责人酬金："));
     int iIDTask=m_taskList[i].GetID();
-    for(int j=0;j<m_BackUp.m_List.TaskLeader.size();j++){
-        if(iIDTask==m_BackUp.m_List.TaskLeader[j].GetID()){
-            myResult->setText(m_BackUp.m_List.TaskLeader[j].GetResult());
+    for(int j=0;j<g_backUp.m_List.TaskLeader.size();j++){
+        if(iIDTask==g_backUp.m_List.TaskLeader[j].GetID()){
+            myResult->setText(g_backUp.m_List.TaskLeader[j].GetResult());
         }
     }
     QVBoxLayout *layout1=new QVBoxLayout;
@@ -178,12 +168,12 @@ void publisherTask::Show401(int i){
     QWidget *window2=new QWidget;
     QVBoxLayout *layout2=new QVBoxLayout();
     QLabel *inform2=new QLabel(tr("译者："));
-    m_TaskTranslaterList=m_BackUp.m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
+    m_TaskTranslaterList=g_backUp.m_List.SearchTaskForTranslater_302(m_taskList[i].GetID());
     (m_table+i)->setColumnCount(4);
     (m_table+i)->setRowCount(m_TaskTranslaterList.size());
     (m_table+i)->setWindowTitle("译者");
     QStringList header;
-    header<<"账号"<<"译文"<<"成果"<<"酬金";
+    header<<"用户名"<<"译文"<<"成果"<<"酬金";
     (m_table+i)->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_TaskTranslaterList.size();j++){
         (m_table+i)->setItem(j,0,new QTableWidgetItem(QString::number(m_TaskTranslaterList[j].GetID())));
@@ -211,7 +201,7 @@ void publisherTask::Show401(int i){
 【更改记录】
 *************************************************************************/
 void publisherTask::ShowDefault(int i){
-    ui->listWidget->insertItem(i,tr("<翻译任务进行中！>%1").arg(m_taskList[i].GetIntroduction()));
+    ui->listWidget->insertItem(i,tr("<翻译任务进行中！>%1").arg(m_taskList[i].GetTitle()));
     QLabel *inform=new QLabel(tr("翻译任务正在火热进行中，请耐心等待！"));
     QWidget *window=new QWidget();
     QLabel *taskClass;
@@ -221,6 +211,7 @@ void publisherTask::ShowDefault(int i){
     else{
         taskClass=new QLabel(tr("翻译性质：英译中"));
     }
+    QLabel* title=new QLabel(tr("翻译标题：%1").arg(m_taskList[i].GetTitle()));
     QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
     QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(m_taskList[i].GetTask()));
     QLabel *time=new QLabel(tr("任务周期：%1天").arg(m_taskList[i].GetTime()));
@@ -229,6 +220,7 @@ void publisherTask::ShowDefault(int i){
     QVBoxLayout *layout=new QVBoxLayout();
     layout->addWidget(inform);
     layout->addWidget(taskClass);
+    layout->addWidget(title);
     layout->addWidget(intro);
     layout->addWidget(tasks);
     layout->addWidget(time);
@@ -249,7 +241,6 @@ void publisherTask::ShowDefault(int i){
 void publisherTask::on_main_clicked()
 {
     MainWindow* r=new MainWindow;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 }
@@ -263,25 +254,25 @@ void publisherTask::on_main_clicked()
 【更改记录】
 *************************************************************************/
 void publisherTask::OnClicked(int i){
-    int iIdLeader=m_nameedit[i].text().toInt();
+    QString iIdLeader=m_nameedit[i].text().trimmed();
     int iNum=ui->listWidget->currentRow();
-    int iNumInList=m_BackUp.m_List.searchTaskInList(m_taskList[iNum]);
-    m_BackUp.m_List.TaskPublisher[iNumInList].EditLeader(iIdLeader);
-    m_BackUp.m_List.TaskPublisher[iNumInList].EditFlag(201);
+    int iNumInList=g_backUp.m_List.searchTaskInList(m_taskList[iNum]);
+    g_backUp.m_List.TaskPublisher[iNumInList].EditLeader(iIdLeader);
+    g_backUp.m_List.TaskPublisher[iNumInList].EditFlag(201);
     QMessageBox::information(this, tr("提示"),
                        tr("选择负责人成功！")
                       ,tr("确定"));
-    m_BackUp.SelectLeaderDone(m_BackUp.m_User.GetID(),iIdLeader,m_taskList[iNum].GetIntroduction());
-    int iSize=m_BackUp.m_List.SignUpForLeader.size();
+    g_backUp.SelectLeaderDone(g_backUp.m_User.GetID(),iIdLeader,m_taskList[iNum].GetTitle());
+    int iSize=g_backUp.m_List.SignUpForLeader.size();
     for(int j=iSize-1;j>=0;j--){
-        if(m_BackUp.m_List.SignUpForLeader[j].GetIDTask()==m_taskList[iNum].GetID()){
-            m_BackUp.m_List.SignUpForLeader.removeAt(j);
+        if(g_backUp.m_List.SignUpForLeader[j].GetIDTask()==m_taskList[iNum].GetID()){
+            g_backUp.m_List.SignUpForLeader.removeAt(j);
         }
     }
     m_taskList[iNum].EditLeader(iIdLeader);
     m_taskList[iNum].EditFlag(201);
-    m_BackUp.m_List.updateList(m_taskList[iNum]);
-    m_BackUp.m_List.TaskLeaderAppend(m_taskList[iNum]);
+    g_backUp.m_List.updateList(m_taskList[iNum]);
+    g_backUp.m_List.TaskLeaderAppend(m_taskList[iNum]);
 }
 
 /*************************************************************************
@@ -310,33 +301,42 @@ void publisherTask::GetPage401(){
 void publisherTask::OnClicked401(int i){
     //所有译者加5分
     double moneySum=0;
+    //译者分配钱数总和相加
+    moneySum+=((m_leaderMoney+i)->text().toDouble());
+    for(int j=0;j<m_TaskTranslaterList.size();j++){
+        moneySum+=(m_table+i)->item(j,2)->text().toDouble();
+    }
+    while(g_backUp.m_User.GetMoney()<moneySum){
+        double add= QInputDialog::getDouble(this, "充值",
+                                                        "余额不足，请充值！");
+        g_backUp.m_User.AddMoney(add);
+    }
     QMessageBox::information(this, tr("提示"),
                        tr("任务确认成功！")
                       ,tr("确定"));
-    //所有表中删除和该任务有关的所有数据
-    int iIDLeader=m_taskList[i].GetLeader();
-    int iNum=m_BackUp.m_List.searchUserInList(iIDLeader);
+    g_backUp.m_User.LoseMoney(moneySum);
+    QString iIDLeader=m_taskList[i].GetLeader();
+    int iNum=g_backUp.m_List.searchUserInList(iIDLeader);
     //将负责人的余额加入表中
-    m_BackUp.m_List.User[iNum].AddMoney((m_leaderMoney+i)->text().toDouble());
+    g_backUp.m_List.User[iNum].AddMoney((m_leaderMoney+i)->text().toDouble());
     //发消息确认
-    m_BackUp.DistributeMoney_Translater(m_taskList[i].GetIntroduction(),
+    g_backUp.DistributeMoney_Translater(m_taskList[i].GetTitle(),
                                         (m_leaderMoney+i)->text().toDouble(),m_taskList[i].GetLeader());
-    moneySum+=((m_leaderMoney+i)->text().toDouble());
     //负责人加10分
-    m_BackUp.m_List.User[iNum].AddPoint(10);
+    g_backUp.m_List.User[iNum].AddPoint(10);
     for(int j=0;j<m_TaskTranslaterList.size();j++){
-        iNum=m_BackUp.m_List.searchUserInList(m_TaskTranslaterList[j].GetTranslater());
+        iNum=g_backUp.m_List.searchUserInList(m_TaskTranslaterList[j].GetTranslater());
         //将译者余额存入表中
         //(m_table+i)->item(j,3)->text().toDouble();
-        m_BackUp.m_List.User[iNum].AddMoney((m_table+i)->item(j,3)->text().toDouble());//发消息确认
-        moneySum+=(m_table+i)->item(j,3)->text().toDouble();
+        g_backUp.m_List.User[iNum].AddMoney((m_table+i)->item(j,3)->text().toDouble());//发消息确认
         //译者加5分
-        m_BackUp.m_List.User[iNum].AddPoint(5);
-        m_BackUp.DistributeMoney_Translater(m_taskList[i].GetIntroduction(),
-                                            (m_table+i)->item(j,3)->text().toDouble(),
+        g_backUp.m_List.User[iNum].AddPoint(5);
+        g_backUp.DistributeMoney_Translater(m_taskList[i].GetTitle(),
+                                            (m_table+i)->item(j,2)->text().toDouble(),
                                             m_TaskTranslaterList[j].GetTranslater());
     }
-    m_BackUp.DistributeMoney_Publisher(m_taskList[i].GetIntroduction(),m_taskList[i].GetPublisher()
+    g_backUp.DistributeMoney_Publisher(m_taskList[i].GetTitle(),m_taskList[i].GetPublisher()
                                        ,moneySum);
-    m_BackUp.m_List.Delete(m_taskList[i].GetID());
+    //所有表中删除和该任务有关的所有数据
+    g_backUp.m_List.Delete(m_taskList[i].GetID());
 }

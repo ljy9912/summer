@@ -9,11 +9,13 @@
 #include "backup.h"
 #include "sqlquery.h"
 
+
 taskPublish::taskPublish(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::taskPublish)
 {
     ui->setupUi(this);
+
 }
 
 taskPublish::~taskPublish()
@@ -45,6 +47,7 @@ void taskPublish::showValue(){
     ui->leaderMonth->setText(tr("%1月").arg(myTask.GetLeaderMonth()));
     ui->leaderDay->setText(tr("%1日").arg(myTask.GetLeaderDay()));
     ui->money->setText(tr("任务总金额：%1").arg(myTask.GetMoney()));
+    ui->title->setText(tr("翻译标题：%1").arg(myTask.GetTitle()));
 }
 
 /*************************************************************************
@@ -59,7 +62,6 @@ void taskPublish::on_editBtn_clicked()
 {
     taskPublishEdit* r=new taskPublishEdit;
     r->EditTask(myTask);
-    r->EditBackUp(m_BackUp);
     r->showValue();
     r->show();
     close();
@@ -97,23 +99,10 @@ void taskPublish::on_publishBtn_clicked()
     myTask.EditStartYear(time.year());
     myTask.EditStartMonth(time.month());
     myTask.EditStartDay(time.day());
-    m_BackUp.m_List.updateList(myTask);
-    m_BackUp.TaskPublish(m_BackUp.m_User.GetID(),myTask.GetIntroduction());
+    g_backUp.m_List.updateList(myTask);
+    g_backUp.TaskPublish(g_backUp.m_User.GetID(),myTask.GetTitle());
     MainWindow* r=new MainWindow;
-    r->EditBackUp(m_BackUp);
     r->show();
     close();
 
-}
-
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改该类的list
-【参数】list newList
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.15
-【更改记录】
-*************************************************************************/
-void taskPublish::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }

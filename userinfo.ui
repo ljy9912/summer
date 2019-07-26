@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>626</width>
     <height>300</height>
    </rect>
   </property>
@@ -39,25 +39,6 @@
     <string>编辑</string>
    </property>
   </widget>
-  <widget class="QLabel" name="ID">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>31</y>
-     <width>241</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>账号：</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="phoneNum">
    <property name="geometry">
     <rect>
@@ -77,7 +58,7 @@
     <string>手机号：</string>
    </property>
   </widget>
-  <widget class="QLabel" name="name">
+  <widget class="QLabel" name="ID">
    <property name="geometry">
     <rect>
      <x>41</x>
@@ -165,6 +146,35 @@
    <property name="text">
     <string>返回</string>
    </property>
+  </widget>
+  <widget class="QToolBox" name="toolBox">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>20</y>
+     <width>231</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="welcome">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>231</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;欢迎！&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <attribute name="label">
+     <string>Page 2</string>
+    </attribute>
+   </widget>
   </widget>
  </widget>
  <resources/>

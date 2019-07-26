@@ -13,29 +13,29 @@ public:
     BackUp& operator =(const BackUp& myBackUp);
 
 
-    void SignUpForLeader(int iID, int idTask);
-    void TaskPublish(int iID, QString intro);
+    void SignUpForLeader(QString ID, int idTask);
+    void TaskPublish(QString ID, QString intro);
     void CheckDateSnupfrLeader();
     void CheckDateSnupfrTranslater();
-    void SelectLeaderDone(int iPublisherID, int idLeader, QString intro);
-    void SetTranslaterDone(int iLeaderID);
-    void SignUpForTranslaterDone(int iID, QString intro);
-    void SelectTranslaterDone_Leader(int iLeaderID, QString intro);
-    void SelectTranslaterDone_Translater(QString intro, int iTranslaterID);
-    void SubmitResultDone_Translater(QString intro,int iTranslaterID);
-    void SubmitResultDone_Leader(QString intro,int iTranslaterID,int iLeaderID);
-    void SubmitCommentDone_Leader(QString intro, int iLeaderID, int iTranslaterID);
-    void SubmitCommentDone_Translater(QString intro, int iTranslaterID);
-    void EndTranslateDone_Leader(QString intro, int iTranslaterID, int iLeaderID);
-    void EndTranslateDone_Translater(QString intro, int iTranslaterID);
-    void StartIntegrate(QString intro,int iLeaderID);
-    void IntegratingDone_Leader(QString intro,int iLeaderID);
-    void IntegratingDone_Publisher(QString intro,int iPublisherID);
-    void DistributeMoney_Publisher(QString intro,int iPublisherID,double dMyMoney);
-    void DistributeMoney_Translater(QString intro,double dMyMoney,int iLeaderID);
+    void SelectLeaderDone(QString PublisherID, QString idLeader, QString intro);
+    void SetTranslaterDone(QString LeaderID, QString intro);
+    void SignUpForTranslaterDone(QString ID, QString intro);
+    void SelectTranslaterDone_Leader(QString LeaderID, QString intro);
+    void SelectTranslaterDone_Translater(QString intro, QString TranslaterID);
+    void SubmitResultDone_Translater(QString intro, QString TranslaterID);
+    void SubmitResultDone_Leader(QString intro, QString TranslaterID, QString LeaderID);
+    void SubmitCommentDone_Leader(QString intro, QString LeaderID, QString TranslaterID);
+    void SubmitCommentDone_Translater(QString intro, QString TranslaterID);
+    void EndTranslateDone_Leader(QString intro, QString TranslaterID, QString LeaderID);
+    void EndTranslateDone_Translater(QString intro, QString iTranslaterID);
+    void StartIntegrate(QString intro,QString LeaderID);
+    void IntegratingDone_Leader(QString intro, QString LeaderID);
+    void IntegratingDone_Publisher(QString intro, QString PublisherID);
+    void DistributeMoney_Publisher(QString intro,QString PublisherID,double dMyMoney);
+    void DistributeMoney_Translater(QString intro, double dMyMoney, QString LeaderID);
 
     list m_List;
     user m_User;
 };
-
+extern BackUp g_backUp;
 #endif // MESSAGEBACKUP_H

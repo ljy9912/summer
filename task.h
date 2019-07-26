@@ -11,14 +11,15 @@ protected:
     int taskclass;
     QString translateTask;
     QString introduction;
+    QString title;
     int time;
     int startYear;
     int startMonth;
     int startDay;
     double money;
     int flag;
-    int publisher;
-    int leader;
+    QString publisher;
+    QString leader;
 
     /*************************************************************************
     【函数名称】Get**
@@ -39,28 +40,30 @@ public:
     int GetTaskClass();
     QString GetTask();
     QString GetIntroduction();
-    int GetPublisher();
+    QString GetPublisher();
+    QString GetTitle();
     int GetTime();
     int GetStartYear();
     int GetStartMonth();
     int GetStartDay();
     double GetMoney();
     int GetFlag();
-    int GetLeader();
+    QString GetLeader();
 
 
     void EditID(int iid);
     void EditTaskClass(int taskClass);
     void EditTask(QString taskk);
     void EditIntroduction(QString iintroduction);
-    void EditPublisher(int ppublisher);
+    void EditTitle(QString newTitle);
+    void EditPublisher(QString ppublisher);
     void EditTime(int ttime);
     void EditStartYear(int nYear);
     void EditStartMonth(int nMonth);
     void EditStartDay(int nDay);
     void EditMoney(double mmoney);
     void EditFlag(int fflag);
-    void EditLeader(int iLeader);
+    void EditLeader(QString iLeader);
 
     void attachIDToTask(int id,QList<task> TaskList);
 

@@ -16,7 +16,7 @@ public:
     explicit userInfoEdit(QWidget *parent = 0);
     ~userInfoEdit();
     void showValue(user myUser);
-    void EditBackUp(BackUp myBackUp);
+
 
 private slots:
     void on_pushButton_3_clicked();
@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::userInfoEdit *ui;
-    BackUp m_BackUp;
+
 };
 
 #endif // USERINFOEDIT_H

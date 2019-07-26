@@ -18,8 +18,8 @@ class LoginDialog : public QDialog
 
 private:
     Ui::LoginDialog *ui;
-    int id;
-    BackUp m_BackUp;
+    QString m_id;
+
 
 public:
     explicit LoginDialog(QWidget *parent = 0);

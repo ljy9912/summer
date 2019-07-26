@@ -10,11 +10,13 @@
 #include "list.h"
 #include "sqlquery.h"
 
+
 Register::Register(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+
 }
 
 Register::~Register()
@@ -73,13 +75,13 @@ void Register::on_confrmbtn_clicked()
         }
         else{
           int flag=0;
-          m_BackUp.m_User.EditPassWrd(passwordvalue);
-          m_BackUp.m_User.EditName(ui->nameedit->text());
-          m_BackUp.m_User.EditPhoneNum(ui->phoneEdit->text());
-          m_BackUp.m_User.EditIDNum(ui->ID->text());
-          m_BackUp.m_User.EditEnglish(ui->EnglishEdit->text());
-          for(int i=0;i<m_BackUp.m_List.User.size();i++){
-              if((m_BackUp.m_List.User[i].GetName()==m_BackUp.m_User.GetName())){
+          g_backUp.m_User.EditPassWrd(passwordvalue);
+          g_backUp.m_User.EditID(ui->nameedit->text());
+          g_backUp.m_User.EditPhoneNum(ui->phoneEdit->text());
+          g_backUp.m_User.EditIDNum(ui->ID->text());
+          g_backUp.m_User.EditEnglish(ui->EnglishEdit->text());
+          for(int i=0;i<g_backUp.m_List.User.size();i++){
+              if((g_backUp.m_List.User[i].GetID()==g_backUp.m_User.GetID())){
                   QMessageBox::warning(this, tr("警告"),
                                      tr("用户名已被注册！")
                                     ,tr("确定"));
@@ -92,12 +94,10 @@ void Register::on_confrmbtn_clicked()
           }
           if(flag==0){
               close();
-              m_BackUp.m_User.EditID(m_BackUp.m_List.User[m_BackUp.m_List.User.size()-1].GetID()+1);
-              m_BackUp.m_List.insertIntoList(m_BackUp.m_User);
-              registerConfirm r;
-              r.EditBackUp(m_BackUp);
-              r.showValue();
-              r.show();
+              g_backUp.m_List.insertIntoList(g_backUp.m_User);
+              registerConfirm* r=new registerConfirm;
+              r->showValue();
+              r->show();
           }
     }
 }
@@ -114,18 +114,5 @@ void Register::on_pushButton_clicked()
 {
     close();
     LoginDialog* r=new LoginDialog;
-    r->EditBackUp(m_BackUp);
     r->show();
-}
-
-/*************************************************************************
-【函数名称】EditList
-【函数功能】外部更改List
-【参数】list newList
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.16
-【更改记录】
-*************************************************************************/
-void Register::EditBackUp(BackUp myBackUp){
-    m_BackUp=myBackUp;
 }

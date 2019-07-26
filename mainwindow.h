@@ -18,7 +18,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_pushButton_clicked();
@@ -39,7 +38,6 @@ private slots:
 private:
     
     Ui::MainWindow *ui;
-    BackUp m_BackUp;
 };
 
 #endif // MAINWINDOW_H
