@@ -69,3 +69,12 @@ void listSignUpForTranslater::Delete(int iIDTask){
         }
     }
 }
+
+bool listSignUpForTranslater::UserExists(QString iIDUser, int iIDTask){
+    for(int i=0;i<m_List.size();i++){
+        if(m_List[i].GetID()==iIDUser&&m_List[i].GetIDTask()==iIDTask){
+            return true;
+        }
+    }
+    return false;
+}

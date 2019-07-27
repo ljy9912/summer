@@ -2,6 +2,7 @@
 #define LISTTASKTRANSLATER_H
 #include "tasktranslater.h"
 #include "user.h"
+#include "taskleader.h"
 
 class listTaskTranslater
 {
@@ -20,6 +21,11 @@ public:
     QList <taskTranslater> SearchTaskForTranslater(int idTask);
     QList <taskTranslater> SearchTaskForTranslater_flag0(int idTask);
 
+    int GetSize_301(int iID);
+
+    void TaskLeaderAppend(taskLeader myLeader, taskTranslater myTask);
+
+    int GetID();
 
     QList<taskTranslater> m_List;
 };

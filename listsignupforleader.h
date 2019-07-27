@@ -18,6 +18,8 @@ public:
     void Delete(int iIDTask);
     QList<signUpForLeader> SearchLeaderForTask(int myTaskid);
 
+    bool UserExists(QString iIDUser,int iIDTask);
+
 //private:
     QList<signUpForLeader> m_List;
 };

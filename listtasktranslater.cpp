@@ -90,3 +90,42 @@ void listTaskTranslater::Delete(int iIDTask){
         }
     }
 }
+
+int listTaskTranslater::GetSize_301(int iID){
+    int iNum=0;
+    for(int j=0;j<m_List.size();j++){
+        if(m_List[j].GetIDTask()==iID
+                &&(m_List[j].GetFlagToLeader()==1||
+                   (m_List[j].GetFlagToLeader())==3)){
+            iNum++;
+        }
+    }
+    return iNum;
+}
+
+void listTaskTranslater::TaskLeaderAppend(taskLeader myLeader,taskTranslater myTask){
+    myTask.EditIDTask(myLeader.GetID());
+    myTask.EditTaskClass(myLeader.GetTaskClass());
+    myTask.EditTitle(myLeader.GetTitle());
+    myTask.EditIntroduction(myLeader.GetIntroduction());
+    myTask.EditTime(myLeader.GetTime());
+    myTask.EditStartYear(myLeader.GetStartYear());
+    myTask.EditStartMonth(myLeader.GetStartMonth());
+    myTask.EditStartDay(myLeader.GetStartDay());
+    myTask.EditMoney(myLeader.GetMoney());
+    myTask.EditPublisher(myLeader.GetPublisher());
+    myTask.EditLeader(myLeader.GetLeader());
+    m_List.append(myTask);
+}
+
+int listTaskTranslater::GetID(){
+    int iID;
+    //整合：生成id
+    if(m_List.isEmpty()){
+        iID=0;
+    }
+    else{
+        iID=m_List.last().GetID()+1;
+    }
+    return iID;
+}

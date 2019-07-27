@@ -18,6 +18,8 @@ public:
     QList <signUpForTranslater> SearchTranslaterForTask(taskLeader myTask);
     void Delete(int iIDTask);
 
+    bool UserExists(QString iIDUser,int iIDTask);
+
     QList<signUpForTranslater> m_List;
 };
 

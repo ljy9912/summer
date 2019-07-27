@@ -34,7 +34,6 @@ private slots:
     void GetPage102();
     void GetPage401();
 
-
 private:
     Ui::publisherTask *ui;
 

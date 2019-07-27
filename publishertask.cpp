@@ -240,9 +240,9 @@ void publisherTask::ShowDefault(int i){
 *************************************************************************/
 void publisherTask::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 /*************************************************************************
@@ -256,19 +256,32 @@ void publisherTask::on_main_clicked()
 void publisherTask::OnClicked(int i){
     QString iIdLeader=m_nameedit[i].text().trimmed();
     int iNum=ui->listWidget->currentRow();
-    int iNumInList=g_backUp.m_listTaskPublisher.SearchInList(m_taskList[iNum]);
-    g_backUp.m_listTaskPublisher.m_List[iNumInList].EditLeader(iIdLeader);
-    g_backUp.m_listTaskPublisher.m_List[iNumInList].EditFlag(201);
-    QMessageBox::information(this, tr("提示"),
-                       tr("选择负责人成功！")
-                      ,tr("确定"));
-    g_backUp.SelectLeaderDone(g_backUp.m_User.GetID(),iIdLeader,m_taskList[iNum].GetTitle());
-    g_backUp.m_listSignUpForLeader.Delete(m_taskList[iNum].GetID());
-    m_taskList[iNum].EditLeader(iIdLeader);
-    m_taskList[iNum].EditFlag(201);
-    //
-    g_backUp.m_listTaskPublisher.Update(m_taskList[iNum]);
-    g_backUp.m_listTaskLeader.TaskLeaderAppend(m_taskList[iNum]);
+    if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[iNum].GetID())){
+        int iNumInList=g_backUp.m_listTaskPublisher.SearchInList(m_taskList[iNum]);
+        g_backUp.m_listTaskPublisher.m_List[iNumInList].EditLeader(iIdLeader);
+        g_backUp.m_listTaskPublisher.m_List[iNumInList].EditFlag(201);
+        QMessageBox::information(this, tr("提示"),
+                           tr("选择负责人成功！")
+                          ,tr("确定"));
+        g_backUp.SelectLeaderDone(g_backUp.m_User.GetID(),iIdLeader,m_taskList[iNum].GetTitle());
+        g_backUp.m_listSignUpForLeader.Delete(m_taskList[iNum].GetID());
+        m_taskList[iNum].EditLeader(iIdLeader);
+        m_taskList[iNum].EditFlag(201);
+        //
+        g_backUp.m_listTaskPublisher.Update(m_taskList[iNum]);
+        g_backUp.m_listTaskLeader.TaskLeaderAppend(m_taskList[iNum]);
+        close();
+        publisherTask r;
+        r.ShowValue();
+        r.exec();
+    }
+    else{
+        QMessageBox::warning(this, tr("警告"),
+                           tr("表中无此用户！")
+                          ,tr("确定"));
+        m_nameedit[i].clear();
+        m_nameedit[i].setFocus();
+    }
 }
 
 /*************************************************************************
@@ -323,7 +336,6 @@ void publisherTask::OnClicked401(int i){
     for(int j=0;j<m_TaskTranslaterList.size();j++){
         iNum=g_backUp.m_listUser.SearchInList(m_TaskTranslaterList[j].GetTranslater());
         //将译者余额存入表中
-        //(m_table+i)->item(j,3)->text().toDouble();
         g_backUp.m_listUser.m_List[iNum].AddMoney((m_table+i)->item(j,3)->text().toDouble());//发消息确认
         //译者加5分
         g_backUp.m_listUser.m_List[iNum].AddPoint(5);
@@ -338,5 +350,11 @@ void publisherTask::OnClicked401(int i){
     g_backUp.m_listSignUpForLeader.Delete(m_taskList[i].GetID());
     g_backUp.m_listSignUpForTranslater.Delete(m_taskList[i].GetID());
     g_backUp.m_listTaskLeader.Delete(m_taskList[i].GetID());
-    g_backUp.m_listTaskPublisher.Delete(m_taskList[i].GetID());
+    m_taskList[i].EditFlag(402);
+    g_backUp.m_listTaskPublisher.Update(m_taskList[i]);
+    close();
+    publisherTask r;
+    r.ShowValue();
+    r.exec();
 }
+

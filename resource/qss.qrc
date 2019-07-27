@@ -12,5 +12,7 @@
         <file>images/warning-circle.svg</file>
         <file>images/warning-circlewhite.svg</file>
         <file>images/YUAN-circle-fillblack.svg</file>
+        <file>images/icon_cancle.png</file>
+        <file>images/log-in.png</file>
     </qresource>
 </RCC>

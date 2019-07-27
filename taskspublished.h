@@ -31,13 +31,13 @@ public:
 
 
 private slots:
-    
+
     void on_main_clicked();
 
     void GetPage101();
 
     void GetPage202();
-    
+
 private:
     Ui::tasksPublished *ui;
 

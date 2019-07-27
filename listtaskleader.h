@@ -20,6 +20,7 @@ public:
     QList <taskLeader> SearchTaskForLeader(user myUser);
     void TaskLeaderAppend(taskPublisher myLeader);
 
+
 //private:
     QList<taskLeader> m_List;
 };

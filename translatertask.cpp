@@ -49,6 +49,7 @@ translaterTask::~translaterTask()
 *************************************************************************/
 void translaterTask::ShowValue(){
     m_taskList=g_backUp.m_listTaskTranslater.SearchTaskForTranslater(g_backUp.m_User);
+    //定义界面要用到的控件
     m_result=new QTextEdit[m_taskList.size()];
     m_saveBtn=new QPushButton[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
@@ -146,6 +147,7 @@ void translaterTask::ShowValue(){
                 layout->addLayout(btn);
                 window->setLayout(layout);
                 ui->stackedWidget->addWidget(window);
+                //连接按钮和get301save函数
                 connect(m_saveBtn+i,SIGNAL(pressed()),this,SLOT(GetPage301save()));
                 connect(m_confrmBtn+i,SIGNAL(pressed()),this,SLOT(GetPage301confrm()));
             }
@@ -163,9 +165,9 @@ void translaterTask::ShowValue(){
 *************************************************************************/
 void translaterTask::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 /*************************************************************************
@@ -180,9 +182,14 @@ void translaterTask::OnClicked_301save(int i){
     QMessageBox::information(this, tr("提示"),
                        tr("翻译暂存成功！")
                       ,tr("确定"));
+
     QString myResult=(m_result+i)->toPlainText();
     m_taskList[i].EditResultEditting(myResult);
     g_backUp.m_listTaskTranslater.Update(m_taskList[i]);
+    close();
+    translaterTask r;
+    r.ShowValue();
+    r.exec();
 }
 
 /*************************************************************************
@@ -194,21 +201,32 @@ void translaterTask::OnClicked_301save(int i){
 【更改记录】
 *************************************************************************/
 void translaterTask::OnClicked_301confrm(int i){
-    QMessageBox::information(this, tr("提示"),
-                       tr("翻译提交成功！")
-                      ,tr("确定"));
-    QString myResult=(m_result+i)->toPlainText();
-    m_taskList[i].EditResult(myResult);
-    if(m_taskList[i].GetFlagToLeader()==0){
-        m_taskList[i].EditFlagToLeader(1);
+    if(!(m_result+i)->toPlainText().isEmpty()){
+        QMessageBox::information(this, tr("提示"),
+                           tr("翻译提交成功！")
+                          ,tr("确定"));
+        QString myResult=(m_result+i)->toPlainText();
+        m_taskList[i].EditResult(myResult);
+        if(m_taskList[i].GetFlagToLeader()==0){
+            m_taskList[i].EditFlagToLeader(1);
+        }
+        else if(m_taskList[i].GetFlagToLeader()==2){
+            m_taskList[i].EditFlagToLeader(3);
+        }
+        g_backUp.m_listTaskTranslater.Update(m_taskList[i]);
+        g_backUp.SubmitResultDone_Translater(m_taskList[i].GetTitle(),g_backUp.m_User.GetID());
+        g_backUp.SubmitResultDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetTranslater(),
+                                          m_taskList[i].GetLeader());
+        close();
+        translaterTask r;
+        r.ShowValue();
+        r.exec();
     }
-    else if(m_taskList[i].GetFlagToLeader()==2){
-        m_taskList[i].EditFlagToLeader(3);
+    else{
+        QMessageBox::warning(this, tr("警告"),
+                           tr("提交译文不能为空！")
+                          ,tr("确定"));
     }
-    g_backUp.m_listTaskTranslater.Update(m_taskList[i]);
-    g_backUp.SubmitResultDone_Translater(m_taskList[i].GetTitle(),g_backUp.m_User.GetID());
-    g_backUp.SubmitResultDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetTranslater(),
-                                      m_taskList[i].GetLeader());
 }
 
 /*************************************************************************
