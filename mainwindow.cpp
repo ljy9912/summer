@@ -16,7 +16,7 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QDialog(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -39,10 +39,10 @@ MainWindow::~MainWindow()
 *************************************************************************/
 void MainWindow::on_pushButton_clicked()
 {
-    userInfo r;
-    r.showValue(g_backUp.m_User);
-    r.exec();
     close();
+    userInfo r;
+    r.showValue();
+    r.exec();
 }
 
 
@@ -56,9 +56,9 @@ void MainWindow::on_pushButton_clicked()
 *************************************************************************/
 void MainWindow::on_Publish_clicked()
 {
+    close();
     taskNew r;
     r.exec();
-    close();
 }
 
 /*************************************************************************
@@ -71,26 +71,27 @@ void MainWindow::on_Publish_clicked()
 *************************************************************************/
 void MainWindow::on_getTask_clicked()
 {
+    close();
     tasksPublished r;
     r.ShowValue();
     r.exec();
-    close();
 }
 
 void MainWindow::on_myTaskBtn_clicked()
 {
+    close();
     translaterTask r;
     r.ShowValue();
     r.exec();
-    close();
 }
 
 void MainWindow::on_myTableBtn_clicked()
 {
+    close();
     leaderTask r;
     r.ShowValue();
     r.exec();
-    close();
+
 }
 
 /*************************************************************************
@@ -103,29 +104,31 @@ void MainWindow::on_myTableBtn_clicked()
 *************************************************************************/
 void MainWindow::on_publisher_clicked()
 {
+    close();
     publisherTask r;
     r.ShowValue();
     r.exec();
-    close();
+
 }
 
 void MainWindow::on_MessageBox_clicked()
 {
+    close();
     MessageBox r;
     r.ShowMessage();
     r.exec();
-    close();
+
 }
 
 void MainWindow::on_exitBtn_clicked()
 {
     SqlQuery query;
-    query.saveUser(g_backUp.m_List.User);
-    query.saveTasks(g_backUp.m_List.TaskPublisher);
-    query.saveSignUpForLeader(g_backUp.m_List.SignUpForLeader);
-    query.saveSignUpForTranslater(g_backUp.m_List.SignUpForTranslater);
-    query.saveTaskLeader(g_backUp.m_List.TaskLeader);
-    query.saveTaskTranslater(g_backUp.m_List.TaskTranslater);
-    query.saveMessage(g_backUp.m_List.message);
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
     close();
 }

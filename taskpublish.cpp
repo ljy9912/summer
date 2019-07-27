@@ -60,11 +60,12 @@ void taskPublish::showValue(){
 *************************************************************************/
 void taskPublish::on_editBtn_clicked()
 {
+    close();
     taskPublishEdit r;
     r.EditTask(myTask);
     r.showValue();
     r.exec();
-    close();
+
 }
 
 
@@ -99,7 +100,7 @@ void taskPublish::on_publishBtn_clicked()
     myTask.EditStartYear(time.year());
     myTask.EditStartMonth(time.month());
     myTask.EditStartDay(time.day());
-    g_backUp.m_List.updateList(myTask);
+    g_backUp.m_listTaskPublisher.Update(myTask);
     g_backUp.TaskPublish(g_backUp.m_User.GetID(),myTask.GetTitle());
     MainWindow* r=new MainWindow;
     r->show();

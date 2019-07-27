@@ -5,7 +5,6 @@
 #include "user.h"
 #include <QList>
 #include "taskpublisher.h"
-#include "list.h"
 #include "backup.h"
 
 namespace Ui {

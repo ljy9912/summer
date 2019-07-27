@@ -76,7 +76,7 @@ void signUpForTranslater::attachIDToUser(int ID){
     query.addBindValue(m_iIDThis);
     query.exec();
     if(query.first()){
-        m_ID=query.value(0).toInt();
+        m_ID=query.value(0).toString();
         m_PhoneNum=query.value(1).toString();
         m_IDNum=query.value(2).toString();
         m_Passwrd=query.value(3).toString();

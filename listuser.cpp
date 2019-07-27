@@ -18,6 +18,10 @@ listUser& listUser::operator =(const listUser& myList){
     return *this;
 }
 
+listUser& listUser::operator =(const QList<user>& myList){
+    m_List=myList;
+    return *this;
+}
 
 
 void listUser::Update(user myUser){
@@ -47,4 +51,13 @@ int listUser::SearchInList(user myUser){
             return i;
         }
     }
+}
+
+bool listUser::NameExist(QString name){
+    for(int i=0;i<m_List.size();i++){
+        if(m_List[i].GetID()==name){
+            return true;
+        }
+    }
+    return false;
 }

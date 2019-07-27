@@ -15,6 +15,12 @@ listSignUpForLeader::listSignUpForLeader(const listSignUpForLeader &myList){
 
 listSignUpForLeader& listSignUpForLeader::operator =(const listSignUpForLeader& myList){
     m_List=myList.m_List;
+    return *this;
+}
+
+listSignUpForLeader& listSignUpForLeader::operator =(const QList<signUpForLeader>& myList){
+    m_List=myList;
+    return *this;
 }
 
 void listSignUpForLeader::Update(signUpForLeader myTask){
@@ -51,4 +57,14 @@ void listSignUpForLeader::Delete(int iIDTask){
             m_List.removeAt(i);
         }
     }
+}
+
+QList<signUpForLeader> listSignUpForLeader::SearchLeaderForTask(int myTaskid){
+    QList<signUpForLeader> myList;
+    for(int i=0;i<m_List.size();i++){
+        if(m_List[i].GetIDTask()==myTaskid){
+            myList.append(m_List[i]);
+        }
+    }
+    return myList;
 }

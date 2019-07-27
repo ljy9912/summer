@@ -33,13 +33,16 @@ taskNew::~taskNew()
 *************************************************************************/
 void taskNew::on_canclBtn_clicked()
 {
+    //显示messagebox询问是否要退出，有选项是和否
     QMessageBox *msgbx=new QMessageBox(this);
     msgbx->setText("你确定要退出吗？这会使编辑的文本清空。");
     msgbx->setWindowTitle("警告");
     QPushButton *ysBtn=new QPushButton(tr("确定"));
     QPushButton *moreBtn=new QPushButton(tr("取消"));
+    //确定默认按钮
     msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
     msgbx->addButton(moreBtn,QMessageBox::ActionRole);
+    //按下确认按钮后清空所有信息
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->title,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->translateTask,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->introEdit,SLOT(clear()));
@@ -48,6 +51,7 @@ void taskNew::on_canclBtn_clicked()
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->leaderMonth,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->leaderDay,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->title,SLOT(setFocus()));
+    //显示
     msgbx->show();
 }
 
@@ -61,34 +65,39 @@ void taskNew::on_canclBtn_clicked()
 *************************************************************************/
 void taskNew::on_confrmBtn_clicked()
 {
-    myTask.EditTaskClass(ui->comboBox->currentIndex());
-    myTask.EditIntroduction(ui->introEdit->toPlainText());
-    myTask.EditTitle(ui->title->text());
-    myTask.EditTask(ui->translateTask->toPlainText());
-    myTask.EditTime(ui->time->text().toInt());
-    myTask.EditLeaderYear(ui->leaderYear->text().toInt());
-    myTask.EditLeaderMonth(ui->leaderMonth->text().toInt());
-    myTask.EditLeaderDay(ui->leaderDay->text().toInt());
-    myTask.EditMoney(ui->money->text().toDouble());
-    myTask.EditPublisher(g_backUp.m_User.GetID());
-    QDate time=QDate::currentDate();
-    myTask.EditStartYear(time.year());
-    myTask.EditStartMonth(time.month());
-    myTask.EditStartDay(time.day());
-    int lastID;
-    if(g_backUp.m_List.TaskPublisher.isEmpty()){
-        lastID=0;
+    //判断界面中是否有空未填
+    if(!IsEmpty()){
+    //判断输入日期是否有效
+        QDate time;
+        time.setDate(ui->leaderYear->text().toInt(),ui->leaderMonth->text().toInt()
+                     ,ui->leaderDay->text().toInt());
+        QDate current=QDate::currentDate();
+        //判断是否有效而且是否在当前日期之后
+        if(time.isValid()&&current<=time){
+            myTask.EditInfo(ui->comboBox->currentIndex(),ui->introEdit->toPlainText(),ui->title->text(),
+                            ui->title->text(),ui->time->text().toInt(),ui->leaderYear->text().toInt(),
+                            ui->leaderMonth->text().toInt(),ui->leaderDay->text().toInt(),
+                            ui->money->text().toDouble(),g_backUp.m_User.GetID());
+            myTask.EditID(g_backUp.m_listTaskPublisher.GetID());
+            g_backUp.m_listTaskPublisher.InsertIntoList(myTask);
+            close();
+            taskPublish r;
+            r.EditTask(myTask);
+            r.showValue();
+            r.exec();
+        }
+        //如果发生错误，输出警告
+        else{
+            QMessageBox::warning(this, tr("警告"),
+                               tr("输入日期无效，请重新输入！")
+                              ,tr("确定"));
+            //清空输入的无效日期
+            ui->leaderYear->clear();
+            ui->leaderMonth->clear();
+            ui->leaderDay->clear();
+            ui->leaderYear->setFocus();
+        }
     }
-    else{
-        lastID=g_backUp.m_List.TaskPublisher.last().GetID()+1;
-    }
-    myTask.EditID(lastID);
-    g_backUp.m_List.insertIntoList(myTask);
-    close();
-    taskPublish r;
-    r.EditTask(myTask);
-    r.showValue();
-    r.exec();
 }
 
 
@@ -117,4 +126,61 @@ void taskNew::on_main_clicked()
     MainWindow* r=new MainWindow;
     r->show();
     close();
+}
+
+bool taskNew::IsEmpty(){
+    if(ui->title->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("翻译标题不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->introEdit->toPlainText().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务简介不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->translateTask->toPlainText().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("翻译内容不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->time->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务周期不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->leaderYear->text().isEmpty()||ui->leaderMonth->text().isEmpty()||
+            ui->leaderDay->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("负责人截止日期不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->time->text().toInt()<=0){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务周期设定无效，请重新输入！")
+                          ,tr("确定"));
+        ui->time->clear();
+        ui->time->setFocus();
+        return true;
+    }
+    else if(ui->money->text().toDouble()<=0){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务总金额设定无效，请重新输入！")
+                          ,tr("确定"));
+        ui->money->clear();
+        ui->money->setFocus();
+        return true;
+    }
+    else if(ui->money->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务总金额不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    return false;
 }

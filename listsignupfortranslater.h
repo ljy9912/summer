@@ -5,9 +5,11 @@
 
 class listSignUpForTranslater
 {
+public:
     listSignUpForTranslater();
     listSignUpForTranslater(const listSignUpForTranslater& myList);
     ~listSignUpForTranslater();
+    listSignUpForTranslater& operator =(const QList<signUpForTranslater> &myList);
     listSignUpForTranslater& operator =(const listSignUpForTranslater& myList);
     void Update(signUpForTranslater myTask);
     int SearchInList(signUpForTranslater myTask);

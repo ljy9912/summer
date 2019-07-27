@@ -7,7 +7,6 @@
 #include "registerphonenum.h"
 #include "registerid.h"
 #include "user.h"
-#include "list.h"
 #include "sqlquery.h"
 
 
@@ -74,27 +73,23 @@ void Register::on_confrmbtn_clicked()
         show();
         }
         else{
-          int flag=0;
           g_backUp.m_User.EditPassWrd(passwordvalue);
           g_backUp.m_User.EditID(ui->nameedit->text());
           g_backUp.m_User.EditPhoneNum(ui->phoneEdit->text());
           g_backUp.m_User.EditIDNum(ui->ID->text());
           g_backUp.m_User.EditEnglish(ui->EnglishEdit->text());
-          for(int i=0;i<g_backUp.m_List.User.size();i++){
-              if((g_backUp.m_List.User[i].GetID()==g_backUp.m_User.GetID())){
-                  QMessageBox::warning(this, tr("警告"),
-                                     tr("用户名已被注册！")
-                                    ,tr("确定"));
-                  ui->nameedit->clear();
-                  ui->nameedit->setFocus();
-                  close();
-                  show();
-                  flag=1;
-                }
-          }
-          if(flag==0){
+          if(g_backUp.m_listUser.NameExist(ui->nameedit->text())){
+              QMessageBox::warning(this, tr("警告"),
+                                 tr("用户名已被注册！")
+                                ,tr("确定"));
+              ui->nameedit->clear();
+              ui->nameedit->setFocus();
               close();
-              g_backUp.m_List.insertIntoList(g_backUp.m_User);
+              show();
+            }
+          else{
+              close();
+              g_backUp.m_listUser.InsertIntoList(g_backUp.m_User);
               registerConfirm r;
               r.showValue();
               r.exec();

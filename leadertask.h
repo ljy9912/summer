@@ -2,7 +2,6 @@
 #define LEADERTASK_H
 
 #include <QDialog>
-#include "list.h"
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTableWidget>

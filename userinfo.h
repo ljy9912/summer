@@ -15,7 +15,7 @@ class userInfo : public QDialog
 public:
     explicit userInfo(QWidget *parent = 0);
     ~userInfo();
-    void showValue(user myUser);
+    void showValue();
 
     void ShowMessage();
 

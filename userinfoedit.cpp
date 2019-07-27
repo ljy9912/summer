@@ -6,6 +6,7 @@
 #include "userinfo.h"
 #include "logindialog.h"
 #include "sqlquery.h"
+#include <QInputDialog>
 
 
 
@@ -30,13 +31,13 @@ userInfoEdit::~userInfoEdit()
 【开发者及日期】李佳芸 2019.7.16
 【更改记录】
 *************************************************************************/
-void userInfoEdit::showValue(user myUser){
-    ui->ID->setText(tr("账号：%1").arg(myUser.GetID()));
-    ui->phoneEdit->setText(myUser.GetPhoneNum());
-    ui->IDNumEdit->setText(myUser.GetIDNum());
-    ui->EnglishEdit->setText(myUser.GetEnglish());
-    ui->credit->setText(tr("积分：%1").arg(myUser.GetRewrdPoint()));
-    ui->money->setText(tr("余额：%1").arg(myUser.GetMoney()));
+void userInfoEdit::showValue(){
+    ui->ID->setText(tr("账号：%1").arg(g_backUp.m_User.GetID()));
+    ui->phoneEdit->setText(g_backUp.m_User.GetPhoneNum());
+    ui->IDNumEdit->setText(g_backUp.m_User.GetIDNum());
+    ui->EnglishEdit->setText(g_backUp.m_User.GetEnglish());
+    ui->credit->setText(tr("积分：%1").arg(g_backUp.m_User.GetRewrdPoint()));
+    ui->money->setText(tr("余额：%1").arg(g_backUp.m_User.GetMoney()));
 }
 
 /*************************************************************************
@@ -91,12 +92,13 @@ void userInfoEdit::on_confrmBtn_clicked()
     g_backUp.m_User.EditIDNum(ui->IDNumEdit->text());
     g_backUp.m_User.EditPhoneNum(ui->phoneEdit->text());
     g_backUp.m_User.EditEnglish(ui->EnglishEdit->text());
-    g_backUp.m_List.updateList(g_backUp.m_User);
+    g_backUp.m_listUser.Update(g_backUp.m_User);
     QMessageBox::information(this, tr("提示"),
                        tr("信息修改成功！")
                       ,tr("确定"));
-    userInfo r;
-    r.showValue(g_backUp.m_User);
-    r.exec();
     close();
+    userInfo r;
+    r.showValue();
+    r.exec();
+
 }

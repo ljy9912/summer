@@ -16,6 +16,12 @@ listSignUpForTranslater::listSignUpForTranslater(const listSignUpForTranslater &
 
 listSignUpForTranslater& listSignUpForTranslater::operator =(const listSignUpForTranslater& myList){
     m_List=myList.m_List;
+    return *this;
+}
+
+listSignUpForTranslater& listSignUpForTranslater::operator =(const QList<signUpForTranslater>& myList){
+    m_List=myList;
+    return *this;
 }
 
 void listSignUpForTranslater::Update(signUpForTranslater myTask){

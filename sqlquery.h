@@ -4,9 +4,11 @@
 #include <QSqlQuery>
 #include "user.h"
 #include "taskpublisher.h"
-#include "list.h"
 #include "signupforleader.h"
 #include "tasktranslater.h"
+#include "signupfortranslater.h"
+#include "taskleader.h"
+#include "message.h"
 
 class SqlQuery
 {

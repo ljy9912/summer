@@ -185,3 +185,18 @@ void taskPublisher::attachIDToTask(int ID){
         title=query.value(15).toString();
     }
 }
+
+void taskPublisher::EditInfo(int taskClass, QString intro,
+                             QString Title, QString newTask, int iTime, int iLeaderYear,
+                             int iLeaderMonth, int iLeaderDay, double dMoney, QString Publisher){
+    taskclass=taskClass;
+    introduction=intro;
+    title=Title;
+    translateTask=newTask;
+    time=iTime;
+    leaderYear=iLeaderYear;
+    leaderMonth=iLeaderMonth;
+    leaderDay=iLeaderDay;
+    money=dMoney;
+    publisher=Publisher;
+}

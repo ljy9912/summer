@@ -31,13 +31,13 @@ int main(int argc, char *argv[])
     query.createTaskLeader();
     query.createTaskTranslater();
     query.createMessage();
-    g_backUp.m_List.TaskPublisher=query.GetTasks();
-    g_backUp.m_List.User=query.GetUser();
-    g_backUp.m_List.SignUpForLeader=query.GetSignUpForLeader();
-    g_backUp.m_List.SignUpForTranslater=query.GetSignUpForTranslater();
-    g_backUp.m_List.TaskLeader=query.GetTaskLeader();
-    g_backUp.m_List.TaskTranslater=query.GetTaskTranslater();
-    g_backUp.m_List.message=query.GetMessage();
+    g_backUp.m_listTaskPublisher=query.GetTasks();
+    g_backUp.m_listUser=query.GetUser();
+    g_backUp.m_listSignUpForLeader=query.GetSignUpForLeader();
+    g_backUp.m_listSignUpForTranslater=query.GetSignUpForTranslater();
+    g_backUp.m_listTaskLeader=query.GetTaskLeader();
+    g_backUp.m_listTaskTranslater=query.GetTaskTranslater();
+    g_backUp.m_listMessage=query.GetMessage();
     g_backUp.CheckDateSnupfrLeader();
     g_backUp.CheckDateSnupfrTranslater();
 

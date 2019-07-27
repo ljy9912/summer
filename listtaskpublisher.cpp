@@ -15,6 +15,11 @@ listTaskPublisher::listTaskPublisher(const listTaskPublisher &myList){
 
 listTaskPublisher& listTaskPublisher::operator =(const listTaskPublisher& myList){
     m_List=myList.m_List;
+    return *this;
+}
+
+listTaskPublisher& listTaskPublisher::operator =(const QList<taskPublisher>& myList){
+    m_List=myList;
 }
 
 void listTaskPublisher::Update(taskPublisher myTask){
@@ -61,4 +66,15 @@ void listTaskPublisher::Delete(int iIDTask){
             m_List.removeAt(i);
         }
     }
+}
+
+int listTaskPublisher::GetID(){
+    int lastID;
+    if(m_List.isEmpty()){
+        lastID=0;
+    }
+    else{
+        lastID=m_List.last().GetID()+1;
+    }
+    return lastID;
 }

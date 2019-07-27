@@ -15,7 +15,7 @@ class userInfoEdit : public QDialog
 public:
     explicit userInfoEdit(QWidget *parent = 0);
     ~userInfoEdit();
-    void showValue(user myUser);
+    void showValue();
 
 
 private slots:
@@ -24,6 +24,7 @@ private slots:
     void on_canclBtn_clicked();
 
     void on_confrmBtn_clicked();
+
 
 private:
     Ui::userInfoEdit *ui;

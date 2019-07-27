@@ -15,6 +15,12 @@ listMessage::listMessage(const listMessage &myMessage){
 
 listMessage& listMessage::operator =(const listMessage& myMessage){
     m_List=myMessage.m_List;
+    return *this;
+}
+
+listMessage& listMessage::operator =(const QList<Message>& myMessage){
+    m_List=myMessage;
+    return *this;
 }
 
 QList<Message> listMessage::SearchMessageforUser(QString idUser){
@@ -25,4 +31,12 @@ QList<Message> listMessage::SearchMessageforUser(QString idUser){
         }
     }
     return myMessage;
+}
+
+void listMessage::Delete(int iID){
+    for(int i=0;i<m_List.size();i++){
+        if(m_List[i].GetID()==iID){
+            m_List.removeAt(i);
+        }
+    }
 }

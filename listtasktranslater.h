@@ -10,6 +10,7 @@ public:
     listTaskTranslater(const listTaskTranslater& myList);
     ~listTaskTranslater();
     listTaskTranslater& operator =(const listTaskTranslater& myList);
+    listTaskTranslater& operator =(const QList<taskTranslater>& myList);
     void Update(taskTranslater myTask);
     void Delete(int iIDTask);
     int SearchInList(taskTranslater myTask);
@@ -17,7 +18,8 @@ public:
     void InsertIntoList(taskTranslater myTask);
     QList <taskTranslater> SearchTaskForTranslater(user myUser);
     QList <taskTranslater> SearchTaskForTranslater(int idTask);
-    QList <taskTranslater> SearchTaskForTranslater_302(int idTask);
+    QList <taskTranslater> SearchTaskForTranslater_flag0(int idTask);
+
 
     QList<taskTranslater> m_List;
 };

@@ -18,19 +18,17 @@ MessageBox::MessageBox(QWidget *parent) :
 MessageBox::~MessageBox()
 {
     delete ui;
-    SqlQuery query;
-
 }
 
 
 void MessageBox::ShowMessage(){
-    m_messageList=g_backUp.m_List.SearchMessageforUser(g_backUp.m_User.GetID());
+    m_messageList=g_backUp.m_listMessage.SearchMessageforUser(g_backUp.m_User.GetID());
     for(int i=0;i<m_messageList.size();i++){
         QTextBrowser* window=new QTextBrowser;
         window->setText(m_messageList[i].GetContent());
         ui->toolBox->addItem(window,m_messageList[i].GetTitle());
     }
-
+    connect(ui->toolBox,SIGNAL(currentChanged(int)),this,SLOT(OnClicked(int)));
 }
 
 void MessageBox::on_main_clicked()
@@ -38,4 +36,8 @@ void MessageBox::on_main_clicked()
     MainWindow* r=new MainWindow;
     r->show();
     close();
+}
+
+void MessageBox::OnClicked(int i){
+    g_backUp.m_listMessage.Delete(m_messageList[i-1].GetID());
 }

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui svg
 QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -39,7 +39,6 @@ SOURCES += \
     taskspublished.cpp \
     registerconfirm.cpp \
     sqlquery.cpp \
-    list.cpp \
     signupforleader.cpp \
     signupfortranslater.cpp \
     publishertask.cpp \
@@ -74,7 +73,6 @@ HEADERS += \
     registerconfirm.h \
     sqlquery.h \
     user.h \
-    list.h \
     signupforleader.h \
     signupfortranslater.h \
     publishertask.h \
@@ -110,3 +108,18 @@ FORMS += \
     leadertask.ui \
     translatertask.ui \
     messagebox.ui
+
+RESOURCES += \
+    resource/qss.qrc \
+    resource/qss.qrc
+
+DISTFILES += \
+    resource/images/check-circle.svg \
+    resource/images/copyright.svg \
+    resource/images/deleteblack.svg \
+    resource/images/editblack.svg \
+    resource/images/message.svg \
+    resource/images/messageblack.svg \
+    resource/images/warning-circle.svg \
+    resource/images/warning-circlewhite.svg \
+    resource/images/YUAN-circle-fillblack.svg

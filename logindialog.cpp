@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "user.h"
 #include "sqlquery.h"
+#include <QTextStream>
 
 
 
@@ -15,7 +16,12 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui->setupUi(this);
     setMinimumSize(300,400);
     setMaximumSize(300,400);
-
+    QFile file(":/Qss/style.qss");
+    file.open(QFile::ReadOnly);
+    QTextStream filetext(&file);
+    QString stylesheet = filetext.readAll();
+    this->setStyleSheet(stylesheet);
+    file.close();
 }
 
 LoginDialog::~LoginDialog()
@@ -38,12 +44,12 @@ void LoginDialog::on_loginBtn_clicked()
     QString idnum=ui->usrLineEdit->text().trimmed();
     QString pswrdvalue=ui->pswLineEdit->text();
     int flag=0;
-    for(int i=0;i<g_backUp.m_List.User.size();i++){
-        if(g_backUp.m_List.User[i].userWithPasswrd(idnum,pswrdvalue)){
+    for(int i=0;i<g_backUp.m_listUser.m_List.size();i++){
+        if(g_backUp.m_listUser.m_List[i].userWithPasswrd(idnum,pswrdvalue)){
             accept();
             flag=1;
             m_id=idnum;
-            g_backUp.m_User.attachIDToUser(m_id,g_backUp.m_List.User);
+            g_backUp.m_User.attachIDToUser(m_id,g_backUp.m_listUser.m_List);
             MainWindow *r=new MainWindow;
             r->show();
             close();
@@ -71,9 +77,10 @@ void LoginDialog::on_loginBtn_clicked()
 
 void LoginDialog::on_RegisterBtn_clicked()
 {
+    close();
     Register r;
     r.exec();
-    close();
+
 }
 
 /*************************************************************************

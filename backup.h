@@ -2,7 +2,13 @@
 #define MESSAGEBACKUP_H
 #include <QString>
 #include "message.h"
-#include "list.h"
+#include "listmessage.h"
+#include "listsignupforleader.h"
+#include "listsignupfortranslater.h"
+#include "listtaskleader.h"
+#include "listtaskpublisher.h"
+#include "listtasktranslater.h"
+#include "listuser.h"
 
 class BackUp
 {
@@ -34,7 +40,13 @@ public:
     void DistributeMoney_Publisher(QString intro,QString PublisherID,double dMyMoney);
     void DistributeMoney_Translater(QString intro, double dMyMoney, QString LeaderID);
 
-    list m_List;
+    listMessage m_listMessage;
+    listSignUpForLeader m_listSignUpForLeader;
+    listSignUpForTranslater m_listSignUpForTranslater;
+    listTaskPublisher m_listTaskPublisher;
+    listTaskLeader m_listTaskLeader;
+    listTaskTranslater m_listTaskTranslater;
+    listUser m_listUser;
     user m_User;
 };
 extern BackUp g_backUp;

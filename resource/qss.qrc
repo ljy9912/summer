@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/Qss">
+        <file>style.qss</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>images/check-circle.svg</file>
+        <file>images/copyright.svg</file>
+        <file>images/deleteblack.svg</file>
+        <file>images/editblack.svg</file>
+        <file>images/message.svg</file>
+        <file>images/messageblack.svg</file>
+        <file>images/warning-circle.svg</file>
+        <file>images/warning-circlewhite.svg</file>
+        <file>images/YUAN-circle-fillblack.svg</file>
+    </qresource>
+</RCC>

@@ -17,9 +17,9 @@ public:
     ~MessageBox();
     void ShowMessage();
 
-
 private slots:
     void on_main_clicked();
+    void OnClicked(int i);
 
 private:
     Ui::MessageBox *ui;

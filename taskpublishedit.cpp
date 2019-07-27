@@ -5,6 +5,7 @@
 #include "taskpublish.h"
 #include "task.h"
 #include "sqlquery.h"
+#include <QDate>
 
 
 
@@ -60,21 +61,38 @@ void taskPublishEdit::on_canclBtn_clicked()
 *************************************************************************/
 void taskPublishEdit::on_confrmBtn_clicked()
 {
-    myTask.EditTaskClass(ui->comboBox->currentIndex());
-    myTask.EditIntroduction(ui->introEdit->toPlainText());
-    myTask.EditTask(ui->translateTask->toPlainText());
-    myTask.EditTime(ui->time->text().toInt());
-    myTask.EditLeaderYear(ui->leaderYear->text().toInt());
-    myTask.EditLeaderMonth(ui->leaderMonth->text().toInt());
-    myTask.EditLeaderDay(ui->leaderDay->text().toInt());
-    myTask.EditMoney(ui->money->text().toDouble());
-    myTask.EditPublisher(g_backUp.m_User.GetID());
-    myTask.EditTitle(ui->title->text());
-    g_backUp.m_List.updateList(myTask);
-    close();
-    taskPublish r;
-    r.showValue();
-    r.exec();
+    if(!IsEmpty()){
+    //判断输入日期是否有效
+        QDate time;
+        time.setDate(ui->leaderYear->text().toInt(),ui->leaderMonth->text().toInt(),
+                     ui->leaderDay->text().toInt());
+        QDate current=QDate::currentDate();
+        //判断是否有效而且是否在当前日期之后
+        if(time.isValid()&&current<=time){
+            myTask.EditInfo(ui->comboBox->currentIndex(),ui->introEdit->toPlainText(),ui->title->text(),
+                            ui->title->text(),ui->time->text().toInt(),ui->leaderYear->text().toInt(),
+                            ui->leaderMonth->text().toInt(),ui->leaderDay->text().toInt(),
+                            ui->money->text().toDouble(),g_backUp.m_User.GetID());
+            myTask.EditID(g_backUp.m_listTaskPublisher.GetID());
+            g_backUp.m_listTaskPublisher.InsertIntoList(myTask);
+            close();
+            taskPublish r;
+            r.EditTask(myTask);
+            r.showValue();
+            r.exec();
+        }
+        //如果发生错误，输出警告
+        else{
+            QMessageBox::warning(this, tr("警告"),
+                               tr("输入日期无效，请重新输入！")
+                              ,tr("确定"));
+            //清空输入的无效日期
+            ui->leaderYear->clear();
+            ui->leaderMonth->clear();
+            ui->leaderDay->clear();
+            ui->leaderYear->setFocus();
+        }
+    }
 }
 
 void taskPublishEdit::EditTask(taskPublisher myNewTask){
@@ -101,3 +119,59 @@ void taskPublishEdit::showValue(){
     ui->title->setText(tr("%1").arg(myTask.GetTitle()));
 }
 
+bool taskPublishEdit::IsEmpty(){
+    if(ui->title->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("翻译标题不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->introEdit->toPlainText().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务简介不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->translateTask->toPlainText().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("翻译内容不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->time->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务周期不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->leaderYear->text().isEmpty()||ui->leaderMonth->text().isEmpty()||
+            ui->leaderDay->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("负责人截止日期不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->money->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务总金额不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->time->text().toInt()<=0){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务周期设定无效，请重新输入！")
+                          ,tr("确定"));
+        ui->time->clear();
+        ui->time->setFocus();
+        return true;
+    }
+    else if(ui->money->text().toDouble()<=0){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("任务总金额设定无效，请重新输入！")
+                          ,tr("确定"));
+        ui->money->clear();
+        ui->money->setFocus();
+        return true;
+    }
+    return false;
+}

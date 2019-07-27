@@ -10,7 +10,9 @@ public:
     listMessage(const listMessage& myMessage);
     ~listMessage();
     listMessage& operator=(const listMessage& myMessage);
+    listMessage& operator =(const QList<Message>& myMessage);
     QList <Message> SearchMessageforUser(QString idUser);
+    void Delete(int iID);
 
     QList<Message> m_List;
 };

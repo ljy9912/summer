@@ -17,6 +17,12 @@ listTaskTranslater::listTaskTranslater(const listTaskTranslater &myList){
 
 listTaskTranslater& listTaskTranslater::operator =(const listTaskTranslater& myList){
     m_List=myList.m_List;
+    return *this;
+}
+
+listTaskTranslater& listTaskTranslater::operator =(const QList<taskTranslater>& myList){
+    m_List=myList;
+    return *this;
 }
 
 void listTaskTranslater::Update(taskTranslater myTask){
@@ -47,7 +53,7 @@ int listTaskTranslater::SearchInList(int iID){
     }
 }
 
-QList<taskTranslater> listTaskTranslater::SearchTaskForTranslater(int idTask){
+QList<taskTranslater> listTaskTranslater::SearchTaskForTranslater_flag0(int idTask){
     QList <taskTranslater> translaterTask;
     for(int i=0;i<m_List.size();i++){
         if(m_List[i].GetIDTask()==idTask&&m_List[i].GetFlagToLeader()==0){
@@ -57,7 +63,7 @@ QList<taskTranslater> listTaskTranslater::SearchTaskForTranslater(int idTask){
     return translaterTask;
 }
 
-QList<taskTranslater> listTaskTranslater::SearchTaskForTranslater_302(int idTask){
+QList<taskTranslater> listTaskTranslater::SearchTaskForTranslater(int idTask){
     QList <taskTranslater> translaterTask;
     for(int i=0;i<m_List.size();i++){
         if(m_List[i].GetIDTask()==idTask){

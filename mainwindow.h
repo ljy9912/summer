@@ -6,12 +6,13 @@
 #include <QList>
 #include "taskpublisher.h"
 #include "backup.h"
+#include <QDialog>
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QDialog
 {
     Q_OBJECT
 
@@ -26,17 +27,17 @@ private slots:
     void on_getTask_clicked();
 
     void on_myTableBtn_clicked();
-    
+
     void on_publisher_clicked();
 
     void on_myTaskBtn_clicked();
-    
+
     void on_MessageBox_clicked();
 
     void on_exitBtn_clicked();
 
 private:
-    
+
     Ui::MainWindow *ui;
 };
 

@@ -27,6 +27,10 @@ public:
     void attachIDToTask(int id,QList<taskPublisher> TaskList);
     void attachIDToTask(int id);
 
+    void EditInfo(int taskClass, QString intro, QString title,
+                  QString task, int iTime, int iLeaderYear, int iLeaderMonth,
+                  int iLeaderDay, double dMoney, QString Publisher);
+
 private:
     int leaderYear;
     int leaderMonth;

@@ -28,6 +28,8 @@ private:
     Ui::taskPublishEdit *ui;
     taskPublisher myTask;
 
+    bool IsEmpty();
+
 };
 
 #endif // TASKPUBLISHEDIT_H

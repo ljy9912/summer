@@ -33,12 +33,12 @@ userInfo::~userInfo()
 【开发者及日期】李佳芸 2019.7.14
 【更改记录】
 *************************************************************************/
-void userInfo::showValue(user myUser){
-    ui->ID->setText(tr("用户名：%1").arg(myUser.GetID()));
-    ui->phoneNum->setText(tr("电话：%1").arg(myUser.GetPhoneNum()));
-    ui->IDNum->setText(tr("身份证号：%1").arg(myUser.GetIDNum()));
-    ui->credit->setText(tr("积分：%1").arg(myUser.GetRewrdPoint()));
-    ui->money->setText(tr("余额：%1").arg(myUser.GetMoney()));
+void userInfo::showValue(){
+    ui->ID->setText(tr("用户名：%1").arg(g_backUp.m_User.GetID()));
+    ui->phoneNum->setText(tr("电话：%1").arg(g_backUp.m_User.GetPhoneNum()));
+    ui->IDNum->setText(tr("身份证号：%1").arg(g_backUp.m_User.GetIDNum()));
+    ui->credit->setText(tr("积分：%1").arg(g_backUp.m_User.GetRewrdPoint()));
+    ui->money->setText(tr("余额：%1").arg(g_backUp.m_User.GetMoney()));
 }
 
 /*************************************************************************
@@ -51,10 +51,11 @@ void userInfo::showValue(user myUser){
 *************************************************************************/
 void userInfo::on_editBtn_clicked()
 {
-    userInfoEdit r;
-    r.showValue(g_backUp.m_User);
-    r.exec();
     close();
+    userInfoEdit r;
+    r.showValue();
+    r.exec();
+
 }
 
 /*************************************************************************
@@ -70,14 +71,16 @@ void userInfo::on_moneyBtn_clicked()
    double add= QInputDialog::getDouble(this, "充值",
                                                    "请输入充值钱数");
 
-   int i=g_backUp.m_List.searchUserInList(g_backUp.m_User);
-   double money=g_backUp.m_List.User[i].GetMoney();
+   int i=g_backUp.m_listUser.SearchInList(g_backUp.m_User);
+   double money=g_backUp.m_listUser.m_List[i].GetMoney();
    money+=add;
-   g_backUp.m_List.User[i].EditMoney(money);
+   g_backUp.m_listUser.m_List[i].EditMoney(money);
    g_backUp.m_User.EditMoney(money);
    ui->money->setText(tr("余额：%1").arg(money));
    close();
-   show();
+   userInfo r;
+   r.showValue();
+   r.exec();
 }
 
 /*************************************************************************
@@ -90,14 +93,14 @@ void userInfo::on_moneyBtn_clicked()
 *************************************************************************/
 void userInfo::on_main_clicked()
 {
-    MainWindow r;
-    r.show();
+    MainWindow* r=new MainWindow;
+    r->show();
     close();
 }
 
 void userInfo::ShowMessage(){
     QList<Message> messageList;
-    messageList=g_backUp.m_List.SearchMessageforUser(g_backUp.m_User.GetID());
+    messageList=g_backUp.m_listMessage.SearchMessageforUser(g_backUp.m_User.GetID());
     for(int i=0;i<messageList.size();i++){
         QTextBrowser* window=new QTextBrowser;
         window->setText(messageList[i].GetContent());

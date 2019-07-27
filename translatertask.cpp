@@ -48,7 +48,7 @@ translaterTask::~translaterTask()
 【更改记录】
 *************************************************************************/
 void translaterTask::ShowValue(){
-    m_taskList=g_backUp.m_List.SearchTaskForTranslater(g_backUp.m_User);
+    m_taskList=g_backUp.m_listTaskTranslater.SearchTaskForTranslater(g_backUp.m_User);
     m_result=new QTextEdit[m_taskList.size()];
     m_saveBtn=new QPushButton[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
@@ -90,7 +90,7 @@ void translaterTask::ShowValue(){
                 layout->addWidget(date);
                 layout->addWidget(money);
                 layout->addWidget(label2);
-                (m_result+i)->setText(m_taskList[i].GetResultEditting());
+                (m_result+i)->setText(m_taskList[i].GetResult());
                 layout->addWidget(m_result+i);
                 QHBoxLayout *btn=new QHBoxLayout;
                 (m_saveBtn+i)->setText(tr("暂存"));
@@ -100,8 +100,8 @@ void translaterTask::ShowValue(){
                 layout->addLayout(btn);
                 window->setLayout(layout);
                 ui->stackedWidget->addWidget(window);
-                connect(m_saveBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301save()));
-                connect(m_confrmBtn+i,SIGNAL(clicked()),this,SLOT(GetPage301confrm()));
+                connect(m_saveBtn+i,SIGNAL(pressed()),this,SLOT(GetPage301save()));
+                connect(m_confrmBtn+i,SIGNAL(pressed()),this,SLOT(GetPage301confrm()));
             }
             //译者修改翻译的界面，显示译者原来的翻译和历史评价
             else if(m_taskList[i].GetFlagToLeader()==2){
@@ -138,7 +138,7 @@ void translaterTask::ShowValue(){
                 layout->addWidget(label1);
                 layout->addWidget(comment);
                 layout->addWidget(label2);
-                (m_result+i)->setText(m_taskList[i].GetResultEditting());
+                (m_result+i)->setText(m_taskList[i].GetResult());
                 layout->addWidget(m_result+i);
                 QHBoxLayout *btn=new QHBoxLayout;
                 btn->addWidget(m_saveBtn+i);
@@ -182,7 +182,7 @@ void translaterTask::OnClicked_301save(int i){
                       ,tr("确定"));
     QString myResult=(m_result+i)->toPlainText();
     m_taskList[i].EditResultEditting(myResult);
-    g_backUp.m_List.updateList(m_taskList[i]);
+    g_backUp.m_listTaskTranslater.Update(m_taskList[i]);
 }
 
 /*************************************************************************
@@ -205,10 +205,10 @@ void translaterTask::OnClicked_301confrm(int i){
     else if(m_taskList[i].GetFlagToLeader()==2){
         m_taskList[i].EditFlagToLeader(3);
     }
-    g_backUp.m_List.updateList(m_taskList[i]);
-    g_backUp.SubmitCommentDone_Translater(m_taskList[i].GetTitle(),g_backUp.m_User.GetID());
-    g_backUp.SubmitCommentDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetLeader(),
-                                      m_taskList[i].GetTranslater());
+    g_backUp.m_listTaskTranslater.Update(m_taskList[i]);
+    g_backUp.SubmitResultDone_Translater(m_taskList[i].GetTitle(),g_backUp.m_User.GetID());
+    g_backUp.SubmitResultDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetTranslater(),
+                                      m_taskList[i].GetLeader());
 }
 
 /*************************************************************************

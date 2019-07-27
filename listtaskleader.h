@@ -11,6 +11,7 @@ public:
     listTaskLeader(const listTaskLeader& myList);
     ~listTaskLeader();
     listTaskLeader& operator =(const listTaskLeader& myList);
+    listTaskLeader& operator =(const QList<taskLeader>& myList);
     void Update(taskLeader myTask);
     void Delete(int iIDTask);
     int SearchInList(taskLeader myTask);

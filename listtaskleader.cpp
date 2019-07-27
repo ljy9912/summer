@@ -15,6 +15,12 @@ listTaskLeader::listTaskLeader(const listTaskLeader &myList){
 
 listTaskLeader& listTaskLeader::operator =(const listTaskLeader& myList){
     m_List=myList.m_List;
+    return *this;
+}
+
+listTaskLeader& listTaskLeader::operator =(const QList<taskLeader>& myList){
+    m_List=myList;
+    return *this;
 }
 
 void listTaskLeader::Update(taskLeader myTask){

@@ -4,7 +4,6 @@
 #include <QMessageBox>
 #include "sqlquery.h"
 #include "logindialog.h"
-#include "list.h"
 
 
 

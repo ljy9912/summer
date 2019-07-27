@@ -32,7 +32,8 @@ private:
     Ui::taskNew *ui;
 
     taskPublisher myTask;
-    list List;
+
+    bool IsEmpty();
 };
 
 #endif // PUBLISHNEW_H
