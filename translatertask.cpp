@@ -206,17 +206,8 @@ void translaterTask::OnClicked_301confrm(int i){
                            tr("翻译提交成功！")
                           ,tr("确定"));
         QString myResult=(m_result+i)->toPlainText();
-        m_taskList[i].EditResult(myResult);
-        if(m_taskList[i].GetFlagToLeader()==0){
-            m_taskList[i].EditFlagToLeader(1);
-        }
-        else if(m_taskList[i].GetFlagToLeader()==2){
-            m_taskList[i].EditFlagToLeader(3);
-        }
-        g_backUp.m_listTaskTranslater.Update(m_taskList[i]);
-        g_backUp.SubmitResultDone_Translater(m_taskList[i].GetTitle(),g_backUp.m_User.GetID());
-        g_backUp.SubmitResultDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetTranslater(),
-                                          m_taskList[i].GetLeader());
+
+        g_backUp.SubmitResultDone(m_taskList[i],myResult);
         close();
         translaterTask r;
         r.ShowValue();

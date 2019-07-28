@@ -95,13 +95,8 @@ void taskPublish::on_publishBtn_clicked()
     QMessageBox::information(this, tr("提示"),
                        tr("任务已发布！")
                       ,tr("确定"));
-    myTask.EditFlag(101);
-    QDate time=QDate::currentDate();
-    myTask.EditStartYear(time.year());
-    myTask.EditStartMonth(time.month());
-    myTask.EditStartDay(time.day());
-    g_backUp.m_listTaskPublisher.Update(myTask);
-    g_backUp.TaskPublish(g_backUp.m_User.GetID(),myTask.GetTitle());
+
+    g_backUp.TaskPublish(myTask);
     MainWindow* r=new MainWindow;
     r->show();
     close();

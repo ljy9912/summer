@@ -73,11 +73,6 @@ void Register::on_confrmbtn_clicked()
         show();
         }
         else{
-          g_backUp.m_User.EditPassWrd(passwordvalue);
-          g_backUp.m_User.EditID(ui->nameedit->text());
-          g_backUp.m_User.EditPhoneNum(ui->phoneEdit->text());
-          g_backUp.m_User.EditIDNum(ui->ID->text());
-          g_backUp.m_User.EditEnglish(ui->EnglishEdit->text());
           if(g_backUp.m_listUser.NameExist(ui->nameedit->text())){
               QMessageBox::warning(this, tr("警告"),
                                  tr("用户名已被注册！")
@@ -89,7 +84,8 @@ void Register::on_confrmbtn_clicked()
             }
           else{
               close();
-              g_backUp.m_listUser.InsertIntoList(g_backUp.m_User);
+              g_backUp.Register(passwordvalue,ui->nameedit->text(),ui->phoneEdit->text(),
+                                ui->ID->text(),ui->EnglishEdit->text());
               registerConfirm r;
               r.showValue();
               r.exec();

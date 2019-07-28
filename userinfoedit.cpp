@@ -89,10 +89,7 @@ void userInfoEdit::on_canclBtn_clicked()
 *************************************************************************/
 void userInfoEdit::on_confrmBtn_clicked()
 {
-    g_backUp.m_User.EditIDNum(ui->IDNumEdit->text());
-    g_backUp.m_User.EditPhoneNum(ui->phoneEdit->text());
-    g_backUp.m_User.EditEnglish(ui->EnglishEdit->text());
-    g_backUp.m_listUser.Update(g_backUp.m_User);
+    g_backUp.UserInfoEdit(ui->ID->text(),ui->phoneEdit->text(),ui->EnglishEdit->text());
     QMessageBox::information(this, tr("提示"),
                        tr("信息修改成功！")
                       ,tr("确定"));

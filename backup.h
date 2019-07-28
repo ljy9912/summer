@@ -19,26 +19,29 @@ public:
     BackUp& operator =(const BackUp& myBackUp);
 
 
-    void SignUpForLeader(QString ID, int idTask);
-    void TaskPublish(QString ID, QString intro);
+    void SignUpForLeader(int i);
+    void TaskPublish(taskPublisher myTask);
     void CheckDateSnupfrLeader();
     void CheckDateSnupfrTranslater();
     void SelectLeaderDone(QString PublisherID, QString idLeader, QString intro);
-    void SetTranslaterDone(QString LeaderID, QString intro);
-    void SignUpForTranslaterDone(QString ID, QString intro);
-    void SelectTranslaterDone_Leader(QString LeaderID, QString intro);
-    void SelectTranslaterDone_Translater(QString intro, QString TranslaterID);
-    void SubmitResultDone_Translater(QString intro, QString TranslaterID);
-    void SubmitResultDone_Leader(QString intro, QString TranslaterID, QString LeaderID);
-    void SubmitCommentDone_Leader(QString intro, QString LeaderID, QString TranslaterID);
+    void SetTranslaterDone(taskLeader myLeader, int iTranslaterYear, int iTranslaterMonth, int iTranslaterDay);
+    void SignUpForTranslaterDone(int i);
+    void SelectTranslaterDone_Leader(taskLeader myTask);
+    void SelectTranslaterDone_Translater(taskLeader Task, signUpForTranslater myTranslater,
+                                         int iEndYear, int iEndMonth, int iEndDay, QString newTask);
+    void SubmitResultDone(taskTranslater myTask, QString myResult);
+    void SubmitCommentDone(taskTranslater myTask,QString newComment);
     void SubmitCommentDone_Translater(QString intro, QString TranslaterID);
     void EndTranslateDone_Leader(QString intro, QString TranslaterID, QString LeaderID);
-    void EndTranslateDone_Translater(QString intro, QString iTranslaterID);
+    void EndTranslateDone_Translater(taskLeader myTaskLeader, taskTranslater myTaskTranslater);
     void StartIntegrate(QString intro,QString LeaderID);
-    void IntegratingDone_Leader(QString intro, QString LeaderID);
-    void IntegratingDone_Publisher(QString intro, QString PublisherID);
+    void IntegratingDone(taskLeader myTask, QString newResult);
     void DistributeMoney_Publisher(QString intro,QString PublisherID,double dMyMoney);
     void DistributeMoney_Translater(QString intro, double dMyMoney, QString LeaderID);
+
+    void Register(QString passwordvalue, QString nameValue, QString phoneValue,
+                  QString IDNum, QString English);
+    void UserInfoEdit(QString IDValue, QString PhoneValue, QString EnglishValue);
 
     listMessage m_listMessage;
     listSignUpForLeader m_listSignUpForLeader;

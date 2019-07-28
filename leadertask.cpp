@@ -179,18 +179,12 @@ void leaderTask::OnClicked_201(int i){
         time.setDate(iTranslaterYear,iTranslaterMonth,iTranslaterDay);
         if(time.isValid()){
             //如果输入有效，存储并提示设置日期成功
-            int iNum=ui->listWidget->currentRow();
-            m_taskList[iNum].EditTranslaterYear(iTranslaterYear);
-            m_taskList[iNum].EditTranslaterMonth(iTranslaterMonth);
-            m_taskList[iNum].EditTranslaterDay(iTranslaterDay);
-            m_taskList[iNum].EditFlag(202);
-            g_backUp.m_listTaskLeader.Update(m_taskList[iNum]);
-            int iNumInList=g_backUp.m_listTaskPublisher.SearchInList(m_taskList[iNum].GetID());
-            g_backUp.m_listTaskPublisher.m_List[iNumInList].EditFlag(202);
+
             QMessageBox::information(this, tr("提示"),
                                tr("译者报名截止时间设置成功！")
                               ,tr("确定"));
-            g_backUp.SetTranslaterDone(g_backUp.m_User.GetID(),m_taskList[iNum].GetTitle());
+            int iNum=ui->listWidget->currentRow();
+            g_backUp.SetTranslaterDone(m_taskList[iNum],iTranslaterYear,iTranslaterMonth,iTranslaterDay);
             close();
             leaderTask r;
             r.ShowValue();
@@ -325,11 +319,6 @@ void leaderTask::GetPage203(){
 void leaderTask::OnClicked_203(int i){
     int iFlag=0;
     int iNum=ui->listWidget->currentRow();
-    int iSize=g_backUp.m_listSignUpForTranslater.m_List.size();
-    g_backUp.SelectTranslaterDone_Leader(g_backUp.m_User.GetID(),m_taskList[iNum].GetTitle());
-    //改变任务状态为译者开始翻译状态
-    m_taskList[iNum].EditFlag(301);
-    g_backUp.m_listTaskLeader.Update(m_taskList[iNum]);
     for(int j=0;j<m_translaterList.size();j++){
         //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
         int iEndYear;
@@ -381,29 +370,20 @@ void leaderTask::OnClicked_203(int i){
         }
         if(iFlag==1){
             //从表格中用户填写的截至日期当中提取截至的年月日
-            taskTranslater myTask;
-            myTask.EditEndYear(iEndYear);
-            myTask.EditEndMonth(iEndMonth);
-            myTask.EditEndDay(iEndDay);
             QString newTask=m_table[i]->item(j,3)->text();
-            myTask.EditTask(newTask);
-            myTask.EditFlag(301);
-            myTask.EditTranslater(m_translaterList[j].GetID());
-            myTask.EditID(g_backUp.m_listTaskTranslater.GetID());
-            g_backUp.m_listTaskTranslater.TaskLeaderAppend(m_taskList[i],myTask);
 
-            //将译者任务对象插入list中
-            g_backUp.m_listTaskTranslater.m_List.append(myTask);
-            g_backUp.SelectTranslaterDone_Translater(m_taskList[iNum].GetTitle(),m_translaterList[j].GetID());
+            g_backUp.SelectTranslaterDone_Translater(m_taskList[iNum],m_translaterList[j],iEndYear,
+                                                     iEndMonth,iEndDay,newTask);
         }
     }
     if(iFlag==1){
         QMessageBox::information(this, tr("提示"),
                            tr("分配任务成功！")
                           ,tr("确定"));
-        //删除译者报名表中的所有该任务的报名信息
-        iSize=g_backUp.m_listSignUpForTranslater.m_List.size();
-        g_backUp.m_listSignUpForTranslater.Delete(m_taskList[i].GetID());
+
+        g_backUp.SelectTranslaterDone_Leader(m_taskList[iNum]);
+        //改变任务状态为译者开始翻译状态
+
         close();
         leaderTask r;
         r.ShowValue();
@@ -581,10 +561,7 @@ void leaderTask::OnClicked_301save(int i,int j){
                        tr("评价暂存成功！")
                       ,tr("确定"));
     //存储译者暂存的评价
-    m_translaterTaskList[j].EditCommentEditting((m_NewComment[i]+j
-                                                 )->toPlainText());
-    //确保任务状态为3
-    m_translaterTaskList[j].EditFlagToLeader(3);
+    m_translaterTaskList[j].EditCommentEditting((m_NewComment[i]+j)->toPlainText());
     //将新保存的信息存入内存
     g_backUp.m_listTaskTranslater.Update(m_translaterTaskList[j]);
     close();
@@ -607,19 +584,10 @@ void leaderTask::OnClicked_301confrm(int i,int j){
         QMessageBox::information(this, tr("提示"),
                            tr("评价成功！")
                           ,tr("确定"));
-        //存储译者提交的评价
-        m_translaterTaskList[j].AddComment((m_NewComment[i]+j)->toPlainText());
-        m_translaterTaskList[j].EditCommentEditting(NULL);
-        //更改任务状态使得评价在译者处显示
-        m_translaterTaskList[j].EditFlagToLeader(2);
-        //将更改的信息写入内存
-        g_backUp.m_listTaskTranslater.Update(m_translaterTaskList[j]);
+        QString newComment=(m_NewComment[i]+j)->toPlainText();
+
         //向译者和负责人发送信息提醒
-        g_backUp.SubmitCommentDone_Leader(m_translaterTaskList[j].GetTitle()
-                                          ,m_translaterTaskList[j].GetLeader(),
-                                          m_translaterTaskList[j].GetTranslater());
-        g_backUp.SubmitCommentDone_Translater(m_translaterTaskList[j].GetTitle(),
-                                              m_translaterTaskList[j].GetTranslater());
+        g_backUp.SubmitCommentDone(m_translaterTaskList[j],newComment);
         //切换页面
         close();
         leaderTask r;
@@ -647,36 +615,8 @@ void leaderTask::OnClicked_301end(int i,int j){
                        tr("收稿成功！")
                       ,tr("确定"));
     //更改任务状态
-    m_translaterTaskList[j].EditFlagToLeader(5);
-    g_backUp.m_listTaskTranslater.Update(m_translaterTaskList[j]);
-    //发送信息告诉译者任务通过，不用修改，等酬金
-    //检测是否所有任务都已经通过
-    int flag=1;
-    for(int t=0;t<g_backUp.m_listTaskTranslater.m_List.size();t++){
-        if(g_backUp.m_listTaskTranslater.m_List[t].GetIDTask()==
-                m_translaterTaskList[j].GetIDTask()){
-            if(g_backUp.m_listTaskTranslater.m_List[t].GetFlagToLeader()!=5){
-                flag=0;
-            }
-        }
-    }
-    if(flag==1){
-        //如果所有译文都已经通过，更改任务状态为译者整合译文
-        m_taskList[i].EditFlag(302);
-        //将更改的信息写入内存
-        g_backUp.m_listTaskLeader.Update(m_taskList[i]);
-        //向负责人发送可以整合译文的信息
-        g_backUp.StartIntegrate(m_taskList[i].GetTitle(),m_taskList[i].GetLeader());
-    }
-    else{
-        //向负责人发送信息
-        g_backUp.EndTranslateDone_Leader(m_taskList[i].GetTitle()
-                                         ,m_translaterTaskList[j].GetTranslater()
-                                         ,m_taskList[i].GetLeader());
-    }
-    m_translaterTaskList[j];
-    g_backUp.EndTranslateDone_Translater(m_taskList[i].GetTitle()
-                                         ,m_translaterTaskList[j].GetTranslater());
+
+    g_backUp.EndTranslateDone_Translater(m_taskList[i],m_translaterTaskList[j]);
     //切换页面
     close();
     leaderTask r;
@@ -805,15 +745,10 @@ void leaderTask::OnClicked_302confrm(int i){
         QMessageBox::information(this, tr("提示"),
                            tr("译文提交成功！")
                           ,tr("确定"));
-        m_taskList[i].EditResult((m_myResult+i)->toPlainText());
-        //更改任务状态为发布者确认任务，存储信息
-        m_taskList[i].EditFlag(401);
-        g_backUp.m_listTaskLeader.Update(m_taskList[i]);
-        int iNum=g_backUp.m_listTaskPublisher.SearchInList(m_taskList[i].GetID());
-        g_backUp.m_listTaskPublisher.m_List[iNum].EditFlag(401);
+        QString newResult=(m_myResult+i)->toPlainText();
+
         //向负责人和发布者发送消息
-        g_backUp.IntegratingDone_Leader(m_taskList[i].GetTitle(),m_taskList[i].GetLeader());
-        g_backUp.IntegratingDone_Publisher(m_taskList[i].GetTitle(),m_taskList[i].GetPublisher());
+        g_backUp.IntegratingDone(m_taskList[i],newResult);
         close();
         leaderTask r;
         r.ShowValue();

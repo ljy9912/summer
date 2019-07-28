@@ -396,14 +396,11 @@ void tasksPublished::OnClicked101(int i){
                               ,tr("确定"));
         }
         else{
-            int idtask=myTask.GetID();
-            int idthis=g_backUp.m_listSignUpForLeader.m_List.last().GetIDThis()+1;
-            signUpForLeader leader(g_backUp.m_User,idtask,idthis);
-            g_backUp.m_listSignUpForLeader.m_List.append(leader);
             QMessageBox::information(this, tr("提示"),
                                tr("报名成功！")
                               ,tr("确定"));
-            g_backUp.SignUpForLeader(g_backUp.m_User.GetID(),idtask);
+            //后台执行负责人报名操作
+            g_backUp.SignUpForLeader(i);
         }
     }
     else{
@@ -417,14 +414,12 @@ void tasksPublished::OnClicked202(int i){
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
     //判断用户是否已经报过名了
     if(!g_backUp.m_listSignUpForTranslater.UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
-        int idtask=myTask.GetID();
-        int idthis=g_backUp.m_listSignUpForTranslater.m_List.last().GetIDThis()+1;
-        signUpForTranslater translater(g_backUp.m_User,idtask,idthis);
-        g_backUp.m_listSignUpForTranslater.m_List.append(translater);
+
         QMessageBox::information(this, tr("提示"),
                            tr("报名成功！")
                           ,tr("确定"));
-        g_backUp.SignUpForTranslaterDone(g_backUp.m_User.GetID(),myTask.GetTitle());
+        //后台执行译者报名操作
+        g_backUp.SignUpForTranslaterDone(i);
     }
     else{
         QMessageBox::warning(this, tr("警告"),
