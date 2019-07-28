@@ -28,10 +28,12 @@ public:
 
 private slots:
     void on_main_clicked();
-    void OnClicked(int i);
+    void OnClicked102confrm(int i);
+    void OnClicked102prolong(int i);
     void OnClicked401(int i);
 
-    void GetPage102();
+    void GetPage102confrm();
+    void GetPage102prolong();
     void GetPage401();
 
 private:
@@ -43,6 +45,7 @@ private:
 
     QLineEdit *m_nameedit;
     QPushButton *m_confrmBtn;
+    QPushButton* m_prolongBtn;
     QList<taskTranslater> m_TaskTranslaterList;
     QTableWidget* m_table;
     QLineEdit* m_leaderMoney;

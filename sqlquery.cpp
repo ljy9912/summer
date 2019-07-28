@@ -105,135 +105,150 @@ void SqlQuery::createMessage(){
 }
 
 const QList<user> SqlQuery::GetUser(){
-    query.exec("select * from users");
-    query.first();
-    QString id=query.value(0).toString();
-    user myUser;
-    myUser.attachIDToUser(id);
     QList <user> listUser;
-    listUser.append(myUser);
-    while(query.next()){
+    int iNum=query.exec("select count(*) from users");
+    if(query.exec("select count(*) from users")!=0){
+        query.exec("select * from users");
+        query.first();
         QString id=query.value(0).toString();
         user myUser;
         myUser.attachIDToUser(id);
         listUser.append(myUser);
+        while(query.next()){
+            QString id=query.value(0).toString();
+            user myUser;
+            myUser.attachIDToUser(id);
+            listUser.append(myUser);
+        }
     }
     return listUser;
 }
 
 const QList<taskPublisher> SqlQuery::GetTasks(){
-    if(!query.exec("select * from tasks"))
-        qDebug() << query.lastError();
-      else
-        qDebug() << "get tasks";
     QList <taskPublisher> listTask;
-    query.first();
-    int id=query.value(0).toInt();
-    taskPublisher myTask;
-    myTask.attachIDToTask(id);
-    listTask.append(myTask);
-    while(query.next()){
+    if(query.exec("select count(*) from tasks")!=0){
+        query.first();
         int id=query.value(0).toInt();
         taskPublisher myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlag(203);
-        //listTask.append(myTask);
-        //myTask.EditFlag(101);
-        //myTask.EditLeaderDay(25);
         listTask.append(myTask);
+        while(query.next()){
+            int id=query.value(0).toInt();
+            taskPublisher myTask;
+            myTask.attachIDToTask(id);
+            //myTask.EditFlag(203);
+            //listTask.append(myTask);
+            //myTask.EditFlag(101);
+            //myTask.EditLeaderDay(25);
+            listTask.append(myTask);
+        }
     }
     return listTask;
 }
 
 const QList<signUpForLeader> SqlQuery::GetSignUpForLeader(){
     QList <signUpForLeader> listLeader;
-    query.exec("select * from signupforleaders");
-    query.first();
-    int id=query.value(8).toInt();
-    signUpForLeader myLeader;
-    myLeader.attachIDToUser(id);
-    listLeader.append(myLeader);
-    myLeader.EditIDTask(1);
-    listLeader.append(myLeader);
-    while(query.next()){
+    if(query.exec("select count(*) from signupforleader")!=0){
+        query.exec("select * from signupforleaders");
+        query.first();
         int id=query.value(8).toInt();
         signUpForLeader myLeader;
         myLeader.attachIDToUser(id);
-        //myLeader.EditFlag(1);
         listLeader.append(myLeader);
-        //listLeader.append(myLeader);
+        myLeader.EditIDTask(1);
+        listLeader.append(myLeader);
+        while(query.next()){
+            int id=query.value(8).toInt();
+            signUpForLeader myLeader;
+            myLeader.attachIDToUser(id);
+            //myLeader.EditFlag(1);
+            listLeader.append(myLeader);
+            //listLeader.append(myLeader);
+        }
     }
     return listLeader;
 }
 
 const QList<signUpForTranslater> SqlQuery::GetSignUpForTranslater(){
-    query.exec("select * from signupfortranslaters");
-    query.first();
     QList <signUpForTranslater> listTranslater;
-    int id=query.value(8).toInt();
-    signUpForTranslater myTranslater;
-    myTranslater.attachIDToUser(id);
-    listTranslater.append(myTranslater);
-    while(query.next()){
+    if(query.exec("select count(*) from signupfortranslater")!=0){
+        query.exec("select * from signupfortranslaters");
+        query.first();
+
         int id=query.value(8).toInt();
         signUpForTranslater myTranslater;
         myTranslater.attachIDToUser(id);
         listTranslater.append(myTranslater);
+        while(query.next()){
+            int id=query.value(8).toInt();
+            signUpForTranslater myTranslater;
+            myTranslater.attachIDToUser(id);
+            listTranslater.append(myTranslater);
+        }
     }
     return listTranslater;
 }
 
 const QList<taskLeader> SqlQuery::GetTaskLeader(){
-    query.exec("select * from taskleader");
     QList <taskLeader> listTask;
-    query.first();
-    int id=query.value(0).toInt();
-    taskLeader myTask;
-    myTask.attachIDToTask(id);
-    listTask.append(myTask);
-    while(query.next()){
+    if(query.exec("select count(*) from taskleader")!=0){
+        query.exec("select * from taskleader");
+
+        query.first();
         int id=query.value(0).toInt();
         taskLeader myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlag(301);
-        myTask.EditTranslaterDay(25);
         listTask.append(myTask);
+        while(query.next()){
+            int id=query.value(0).toInt();
+            taskLeader myTask;
+            myTask.attachIDToTask(id);
+            //myTask.EditFlag(301);
+            myTask.EditTranslaterDay(25);
+            listTask.append(myTask);
+        }
     }
     return listTask;
 }
 
 const QList<taskTranslater> SqlQuery::GetTaskTranslater(){
-    query.exec("select * from tasktranslater");
     QList <taskTranslater> listTask;
-    query.first();
-    int id=query.value(0).toInt();
-    taskTranslater myTask;
-    myTask.attachIDToTask(id);
-    listTask.append(myTask);
-    while(query.next()){
+    if(query.exec("select count(*) from tasktranslater")!=0){
+        query.exec("select * from tasktranslater");
+
+        query.first();
         int id=query.value(0).toInt();
         taskTranslater myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlagToLeader(3);
         listTask.append(myTask);
+        while(query.next()){
+            int id=query.value(0).toInt();
+            taskTranslater myTask;
+            myTask.attachIDToTask(id);
+            //myTask.EditFlagToLeader(3);
+            listTask.append(myTask);
+        }
     }
     return listTask;
 }
 
 const QList<Message> SqlQuery::GetMessage(){
-    query.exec("select * from message");
     QList <Message> listMessage;
-    query.first();
-    int id=query.value(0).toInt();
-    Message myMessage;
-    myMessage.AttachIDToMessage(id);
-    listMessage.append(myMessage);
-    while(query.next()){
+    if(!query.exec("select count(*) from message")){
+        query.exec("select * from message");
+
+        query.first();
         int id=query.value(0).toInt();
         Message myMessage;
         myMessage.AttachIDToMessage(id);
-        //myTask.EditFlagToLeader(3);
         listMessage.append(myMessage);
+        while(query.next()){
+            int id=query.value(0).toInt();
+            Message myMessage;
+            myMessage.AttachIDToMessage(id);
+            //myTask.EditFlagToLeader(3);
+            listMessage.append(myMessage);
+        }
     }
     return listMessage;
 }

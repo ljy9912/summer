@@ -18,5 +18,9 @@
         <file>images/log-in.svg</file>
         <file>images/log-inwhite.svg</file>
         <file>background/login.svg</file>
+        <file>background/login.png</file>
+        <file>images/icon_cancle.svg</file>
+        <file>images/login.jpg</file>
+        <file>background/mainwindow.png</file>
     </qresource>
 </RCC>

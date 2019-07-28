@@ -23,13 +23,15 @@ MessageBox::~MessageBox()
 
 
 void MessageBox::ShowMessage(){
+    QToolBox* toolBox=new QToolBox;
     m_messageList=g_backUp.m_listMessage.SearchMessageforUser(g_backUp.m_User.GetID());
     for(int i=0;i<m_messageList.size();i++){
         QTextBrowser* window=new QTextBrowser;
         window->setText(m_messageList[i].GetContent());
-        ui->toolBox->addItem(window,m_messageList[i].GetTitle());
+        toolBox->addItem(window,m_messageList[i].GetTitle());
     }
-    connect(ui->toolBox,SIGNAL(currentChanged(int)),this,SLOT(OnClicked(int)));
+    connect(toolBox,SIGNAL(currentChanged(int)),this,SLOT(OnClicked(int)));
+    ui->stackedWidget->addWidget(toolBox);
 }
 
 void MessageBox::on_main_clicked()

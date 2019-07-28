@@ -17,16 +17,20 @@ LoginDialog::LoginDialog(QWidget *parent) :
     QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
             color: white;   border-radius: 10px; \
             border-style: outset;}"
-           "QPushButton:hover{background-color:rgb(178,235,242); color: white;}"
-          "QPushButton:pressed{background-color:#198fb6;\
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
                            border-style: inset; }";
+    QString EditStyle="QLineEdit{border-radius:2px groove #BDBDBD;border:1px groove #BDBDBD;}";
     ui->loginBtn->setStyleSheet(BtnStyle1);
     ui->exitBtn->setStyleSheet(BtnStyle1);
-    QFrame* frame=new QFrame;
-    frame->resize(300,400);
-    frame->setStyleSheet("#frame{border-image: url(qrc:/background/login.svg);"
-                         "border-top-left-radius:15px;border-top-right-radius:15px;"
-                         "border-bottom-left-radius:15px;border-bottom-right-radius:15px;}");
+    ui->usrLineEdit->setStyleSheet(EditStyle);
+    ui->pswLineEdit->setStyleSheet(EditStyle);
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+    "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+                      "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->RegisterBtn->setStyleSheet(BtnStyle2);
+    setMaximumSize(600,800);
+    setMinimumSize(600,800);
 }
 
 LoginDialog::~LoginDialog()
@@ -55,9 +59,9 @@ void LoginDialog::on_loginBtn_clicked()
             flag=1;
             m_id=idnum;
             g_backUp.m_User.attachIDToUser(m_id,g_backUp.m_listUser.m_List);
-            MainWindow *r=new MainWindow;
-            r->show();
             close();
+            MainWindow r;
+            r.exec();
             break;
         }
     }

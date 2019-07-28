@@ -12,6 +12,8 @@
 #include "translatertask.h"
 #include "sqlquery.h"
 #include "messagebox.h"
+#include <QDesktopWidget>
+#include <QRect>
 
 
 
@@ -20,6 +22,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setMaximumSize(1920,1080);
+    setMinimumSize(1920,1080);
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{background-color:#607D8B;\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    ui->exitBtn->setStyleSheet(BtnStyle2);
+    ui->MessageBox->setStyleSheet(BtnStyle1);
+    ui->myTableBtn->setStyleSheet(BtnStyle1);
+    ui->myTaskBtn->setStyleSheet(BtnStyle1);
+    ui->pushButton->setStyleSheet(BtnStyle1);
+    ui->getTask->setStyleSheet(BtnStyle1);
+    ui->Publish->setStyleSheet(BtnStyle1);
+    ui->publisher->setStyleSheet(BtnStyle1);
+    QDesktopWidget *deskdop = QApplication::desktop();
+    move((deskdop->width() - this->width())/2, (deskdop->height() - this->height())/2);
 
 }
 

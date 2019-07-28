@@ -39,7 +39,7 @@ void BackUp::SignUpForLeader(int i){
     signUpForLeader leader(m_User,idtask,idthis);
     m_listSignUpForLeader.m_List.append(leader);
     QDateTime time=QDateTime::currentDateTime();
-    Message myMessage(m_listMessage.m_List.last().GetID()+1);
+    Message myMessage(m_listMessage.GetID());
     myMessage.EditTitle("报名负责人成功！");
     int iNum=m_listTaskPublisher.SearchInList(idtask);
     myMessage.EditContent(QObject::tr("%1\n您刚才报名了%2翻译任务的负责人，请耐心等待发布者审核与选择！")
@@ -57,13 +57,7 @@ void BackUp::TaskPublish(taskPublisher myTask){
     myTask.EditStartDay(time.day());
     m_listTaskPublisher.Update(myTask);
 
-    Message myMessage;
-    if(m_listMessage.m_List.isEmpty()){
-        myMessage.EditID(0);
-    }
-    else{
-        myMessage.EditID(m_listMessage.m_List.last().GetID()+1);
-    }
+    Message myMessage(m_listMessage.GetID());
     myMessage.EditTitle("创建新任务成功！");
     myMessage.EditContent(QObject::tr("%1\n您刚才创建了%2新任务，负责人正在火热报名中，"
                                       "记得在负责人报名截止时选择负责人噢！").arg(time.toString()).arg(myTask.GetTitle()));
@@ -79,7 +73,7 @@ void BackUp::CheckDateSnupfrLeader(){
         QDate currentdate;
         currentdate=QDate::currentDate();
         if(date1<currentdate&&m_listTaskPublisher.m_List[i].GetFlag()==101){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("负责人报名结束了");
             newMessage.EditContent(QObject::tr("%4\n负责人报名已于%1年%2月%3日结束，快点击“我是发布者”选择负责人吧！").
                                    arg(m_listTaskPublisher.m_List[i].GetLeaderYear())
@@ -100,7 +94,7 @@ void BackUp::CheckDateSnupfrTranslater(){
         QDate currentdate;
         currentdate=QDate::currentDate();
         if(date1<currentdate&&m_listTaskLeader.m_List[i].GetFlag()==202){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("译者报名结束了");
             newMessage.EditContent(QObject::tr("%4\n译者报名已于%1年%2月%3日结束，快点击“我是负责人”选择译者并分配任务吧！").
                                    arg(m_listTaskLeader.m_List[i].GetTranslaterYear())
@@ -129,13 +123,13 @@ void BackUp::SelectLeaderDone(taskPublisher myTask,QString iIdLeader){
 
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("选择负责人成功！");
     newMessage.EditContent(QObject::tr("%3\n您成功为任务%1选择负责人%2,请耐心等待负责人和译者翻译任务吧！")
                           .arg(myTask.GetTitle()).arg(iIdLeader).arg(time.toString()));
     newMessage.EditUser(myTask.GetPublisher());
     m_listMessage.m_List.append(newMessage);
-    newMessage.EditID(m_listMessage.m_List.last().GetID()+1);
+    newMessage.EditID(m_listMessage.GetID());
     newMessage.EditTitle("恭喜成功当选负责人！");
     newMessage.EditContent(QObject::tr("%2\n恭喜您被选为任务%1的负责人！快点击“我是负责人”设定译者报名结束日期开始招募译者吧！")
                           .arg(myTask.GetTitle()).arg(time.toString()));
@@ -153,7 +147,7 @@ void BackUp::SetTranslaterDone(taskLeader myLeader,int iTranslaterYear,int iTran
     int iNumInList=m_listTaskPublisher.SearchInList(myLeader.GetID());
     m_listTaskPublisher.m_List[iNumInList].EditFlag(202);
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("成功设定译者报名截止日期");
     newMessage.EditContent(QObject::tr("%2\n您刚才成功设定了%1任务译者报名截止日期，译者正在火热报名中，记得在译者报名截止时选择译者并分配任务噢！")
                            .arg(myLeader.GetTitle()).arg(time.toString()));
@@ -167,7 +161,7 @@ void BackUp::SignUpForTranslaterDone(int i){
     signUpForTranslater translater(m_User,idtask,idthis);
     g_backUp.m_listSignUpForTranslater.m_List.append(translater);
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("报名翻译任务成功！");
     newMessage.EditContent(QObject::tr("%2\n您刚才报名了%1任务，请耐心等待负责人审核与分配任务！")
                            .arg(m_listTaskPublisher.m_List[i].GetTitle())
@@ -183,7 +177,7 @@ void BackUp::SelectTranslaterDone_Leader(taskLeader myTask){
     m_listTaskLeader.Update(myTask);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("选择译者，分配任务成功！");
     newMessage.EditContent(QObject::tr("%2\n您刚才进行了%1任务的选择译者与分配任务的工作，翻译任务已经火热开始，记得适时"
                                        "登陆查看译者提交的译文并进行评价噢！").arg(myTask.GetTitle())
@@ -208,7 +202,7 @@ void BackUp::SelectTranslaterDone_Translater(taskLeader Task,signUpForTranslater
     m_listTaskTranslater.m_List.append(myTask);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("恭喜被选为译者！");
     newMessage.EditContent(QObject::tr("%2\n恭喜您被选为任务%1的译者！快点击“我是译者”查看您的翻译任务并开始翻译吧！")
                            .arg(Task.GetTitle()).arg(time.toString()));
@@ -227,14 +221,14 @@ void BackUp::SubmitResultDone(taskTranslater myTask, QString myResult){
     m_listTaskTranslater.Update(myTask);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage1(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage1(m_listMessage.GetID());
     newMessage1.EditTitle("提交译文成功！");
     newMessage1.EditContent(QObject::tr("%2\n您翻译的任务%1提交译文成功！请耐心等待负责人的评价吧！")
                            .arg(myTask.GetTitle()).arg(time.toString()));
     newMessage1.EditUser(myTask.GetTranslater());
     m_listMessage.m_List.append(newMessage1);
 
-    Message newMessage2(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage2(m_listMessage.GetID());
     newMessage2.EditTitle("有译者提交译文啦！");
     newMessage2.EditContent(QObject::tr("%3\n译者%1刚刚提交了任务%2的译文，快点击“我是负责人”查看译文并进行评价吧！")
                            .arg(myTask.GetTranslater()).arg(myTask.GetTitle()).arg(time.toString()));
@@ -253,13 +247,13 @@ void BackUp::SubmitCommentDone(taskTranslater myTask, QString newComment){
     m_listTaskTranslater.Update(myTask);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage1(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage1(m_listMessage.GetID());
     newMessage1.EditTitle("提交评价成功！");
     newMessage1.EditContent(QObject::tr("%3\n您提交了任务%1的译者%2的评价，请耐心等待译者的修改吧！").
                            arg(myTask.GetTitle()).arg(myTask.GetTranslater()).arg(time.toString()));
     newMessage1.EditUser(myTask.GetLeader());
     m_listMessage.m_List.append(newMessage1);
-    Message newMessage2(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage2(m_listMessage.GetID());
     newMessage2.EditTitle("负责人有新的评价啦！");
     newMessage2.EditContent(QObject::tr("%2\n您翻译的任务%1有新的评价啦，快点击“我是译者”查看评价并修改吧！")
                            .arg(myTask.GetTitle()).arg(time.toString()));
@@ -270,7 +264,7 @@ void BackUp::SubmitCommentDone(taskTranslater myTask, QString newComment){
 
 void BackUp::EndTranslateDone_Leader(QString intro, QString TranslaterID, QString LeaderID){
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("译文收稿成功！");
     newMessage.EditContent(QObject::tr("%3\n您负责的任务%1的译者%2的译文收稿成功！请继续和其它译者一起努力吧！")
                            .arg(intro).arg(TranslaterID).arg(time.toString()));
@@ -309,7 +303,7 @@ void BackUp::EndTranslateDone_Translater(taskLeader myTaskLeader, taskTranslater
     }
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("恭喜您的译文已经通过！");
     newMessage.EditContent(QObject::tr("%2\n您翻译的任务%1的译文已经通过！请耐心等待发布者分配酬金吧！")
                            .arg(myTaskLeader.GetTitle()).arg(time.toString()));
@@ -319,7 +313,7 @@ void BackUp::EndTranslateDone_Translater(taskLeader myTaskLeader, taskTranslater
 
 void BackUp::StartIntegrate(QString intro, QString LeaderID){
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("可以整合译文了！");
     newMessage.EditContent(QObject::tr("%2\n您负责的任务%1的译文已经全部通过！快点击“我是负责人”整合译文吧！")
                            .arg(intro).arg(time.toString()));
@@ -336,14 +330,14 @@ void BackUp::IntegratingDone(taskLeader myTask, QString newResult){
     m_listTaskPublisher.m_List[iNum].EditFlag(401);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage1(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage1(m_listMessage.GetID());
     newMessage1.EditTitle("译文提交成功！");
     newMessage1.EditContent(QObject::tr("%2\n您负责的任务%1的译文提交成功！请耐心等待发布者审核并分配酬金吧！")
                            .arg(myTask.GetTitle()).arg(time.toString()));
     newMessage1.EditUser(myTask.GetLeader());
     m_listMessage.m_List.append(newMessage1);
 
-    Message newMessage2(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage2(m_listMessage.GetID());
     newMessage2.EditTitle("负责人提交译文啦！");
     newMessage2.EditContent(QObject::tr("%2\n您发布的任务%1的译文已经提交！快点击“我是发布者”验收并分配酬金吧！")
                            .arg(myTask.GetTitle()).arg(time.toString()));
@@ -354,7 +348,7 @@ void BackUp::IntegratingDone(taskLeader myTask, QString newResult){
 
 void BackUp::DistributeMoney_Publisher(taskPublisher myTask,double dMyMoney){
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("分配酬金成功！");
     newMessage.EditContent(QObject::tr("%3\n您发布的任务%1的酬金分配完毕，共支付%2元，请注意账户余额变动。")
                            .arg(myTask.GetTitle()).arg(dMyMoney).arg(time.toString()));
@@ -376,7 +370,7 @@ void BackUp::DistributeMoney_Leader(double dMoney,taskPublisher myTask){
     m_listUser.m_List[iNum].AddPoint(10);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("酬金到账啦！");
     newMessage.EditContent(QObject::tr("%3\n您参与翻译的任务%1的酬金%2元已到账，请注意查收！")
                            .arg(myTask.GetTitle()).arg(dMoney).arg(time.toString()));
@@ -392,7 +386,7 @@ void BackUp::DistributeMoney_Translater(double dMoney, taskTranslater myTask){
     m_listUser.m_List[iNum].AddPoint(5);
 
     QDateTime time=QDateTime::currentDateTime();
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("酬金到账啦！");
     newMessage.EditContent(QObject::tr("%3\n您参与翻译的任务%1的酬金%2元已到账，请注意查收！")
                            .arg(myTask.GetTitle()).arg(dMoney).arg(time.toString()));
@@ -409,7 +403,7 @@ void BackUp::Register(QString passwordvalue,QString nameValue,QString phoneValue
     m_User.EditEnglish(English);
     m_listUser.InsertIntoList(m_User);
 
-    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    Message newMessage(m_listMessage.GetID());
     newMessage.EditTitle("欢迎使用众包翻译平台！");
     newMessage.EditContent(QObject::tr("您刚才注册并成为众包翻译平台的一名用户，本平台为中英互译平台，共有发布者，"
                                        "负责人，译者三种角色，负责人报名要求为110分，发布者和译者均为无门槛参与，"
@@ -439,9 +433,9 @@ void BackUp::TaskPublishEdit(taskPublisher myTask,int iTaskClass,QString intro,Q
 void BackUp::CheckDateForLeader(){
     QDateTime time=QDateTime::currentDateTime();
     for(int i=0;i<m_listTaskPublisher.m_List.size();i++){
-        QDate date1(m_listTaskPublisher.m_List[i].GetLeaderYear(),
-                    m_listTaskPublisher.m_List[i].GetLeaderMonth(),
-                    m_listTaskPublisher.m_List[i].GetLeaderDay());
+        QDate date1(m_listTaskPublisher.m_List[i].GetStartYear(),
+                    m_listTaskPublisher.m_List[i].GetStartMonth(),
+                    m_listTaskPublisher.m_List[i].GetStartDay());
         date1.addDays(m_listTaskPublisher.m_List[i].GetTime());
         QDate currentdate;
         currentdate=QDate::currentDate();
@@ -452,7 +446,7 @@ void BackUp::CheckDateForLeader(){
                                     m_listTaskPublisher.m_List[i].GetFlag()==203||
                                     m_listTaskPublisher.m_List[i].GetFlag()==301||
                                     m_listTaskPublisher.m_List[i].GetFlag()==302)){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("距发布者定的截止日期还剩1天，请抓紧时间！");
             newMessage.EditContent(QObject::tr("%4\n距发布者定的截止日期还剩1天，请抓紧时间！").
                                   arg(time.toString()));
@@ -465,7 +459,7 @@ void BackUp::CheckDateForLeader(){
                                          m_listTaskPublisher.m_List[i].GetFlag()==203||
                                          m_listTaskPublisher.m_List[i].GetFlag()==301||
                                          m_listTaskPublisher.m_List[i].GetFlag()==302)){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("距发布者定的截止日期还剩7天，请抓紧时间！");
             newMessage.EditContent(QObject::tr("%4\n距发布者定的截止日期还剩7天，请抓紧时间！").
                                   arg(time.toString()));
@@ -478,7 +472,7 @@ void BackUp::CheckDateForLeader(){
                                          m_listTaskPublisher.m_List[i].GetFlag()==203||
                                          m_listTaskPublisher.m_List[i].GetFlag()==301||
                                          m_listTaskPublisher.m_List[i].GetFlag()==302)){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("发布者规定时间已到，请抓紧时间提交译文！");
             newMessage.EditContent(QObject::tr("%4\n发布者规定时间已到，请抓紧时间提交译文！").
                                   arg(time.toString()));
@@ -494,7 +488,6 @@ void BackUp::CheckDateForTranslater(){
         QDate date1(m_listTaskTranslater.m_List[i].GetEndYear(),
                     m_listTaskTranslater.m_List[i].GetEndMonth(),
                     m_listTaskTranslater.m_List[i].GetEndDay());
-        date1.addDays(m_listTaskTranslater.m_List[i].GetTime());
         QDate currentdate;
         currentdate=QDate::currentDate();
         if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
@@ -503,7 +496,7 @@ void BackUp::CheckDateForTranslater(){
                                     m_listTaskTranslater.m_List[i].GetFlag()==203||
                                     m_listTaskTranslater.m_List[i].GetFlag()==301||
                                     m_listTaskTranslater.m_List[i].GetFlag()==302)){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("距负责人定的截止日期还剩1天，请抓紧时间！");
             newMessage.EditContent(QObject::tr("%4\n距负责人定的截止日期还剩1天，请抓紧时间！").
                                   arg(time.toString()));
@@ -516,7 +509,7 @@ void BackUp::CheckDateForTranslater(){
                                          m_listTaskTranslater.m_List[i].GetFlag()==203||
                                          m_listTaskTranslater.m_List[i].GetFlag()==301||
                                          m_listTaskTranslater.m_List[i].GetFlag()==302)){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("距负责人定的截止日期还剩7天，请抓紧时间！");
             newMessage.EditContent(QObject::tr("%4\n距负责人定的截止日期还剩7天，请抓紧时间！").
                                   arg(time.toString()));
@@ -529,7 +522,7 @@ void BackUp::CheckDateForTranslater(){
                                          m_listTaskTranslater.m_List[i].GetFlag()==203||
                                          m_listTaskTranslater.m_List[i].GetFlag()==301||
                                          m_listTaskTranslater.m_List[i].GetFlag()==302)){
-            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            Message newMessage(m_listMessage.GetID());
             newMessage.EditTitle("负责人规定时间已到，请抓紧时间提交译文！");
             newMessage.EditContent(QObject::tr("%4\n负责人规定时间已到，请抓紧时间提交译文！").
                                   arg(time.toString()));
@@ -537,4 +530,26 @@ void BackUp::CheckDateForTranslater(){
             m_listMessage.m_List.append(newMessage);
         }
     }
+}
+
+void BackUp::Prolong_102(int iAdd, taskPublisher myTask){
+    QDate time;
+    time.setDate(myTask.GetLeaderYear(),myTask.GetLeaderMonth(),myTask.GetLeaderDay());
+    time.addDays(iAdd);
+    myTask.EditLeaderYear(time.year());
+    myTask.EditLeaderMonth(time.month());
+    myTask.EditLeaderDay(time.day());
+    myTask.EditFlag(101);
+    m_listTaskPublisher.Update(myTask);
+}
+
+void BackUp::Prolong_203(int iAdd, taskLeader myTask){
+    QDate time;
+    time.setDate(myTask.GetTranslaterYear(),myTask.GetTranslaterMonth(),myTask.GetTranslaterDay());
+    time.addDays(iAdd);
+    myTask.EditTranslaterYear(time.year());
+    myTask.EditTranslaterMonth(time.month());
+    myTask.EditTranslaterDay(time.day());
+    myTask.EditFlag(202);
+    m_listTaskLeader.Update(myTask);
 }

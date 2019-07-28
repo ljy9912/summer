@@ -13,6 +13,7 @@ public:
     listMessage& operator =(const QList<Message>& myMessage);
     QList <Message> SearchMessageforUser(QString idUser);
     void Delete(int iID);
+    int GetID();
 
     QList<Message> m_List;
 };

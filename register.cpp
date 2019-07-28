@@ -71,8 +71,6 @@ void Register::on_confrmbtn_clicked()
             ui->pswrdedit->clear();
             ui->cnfrmpswrdedit->clear();
             ui->pswrdedit->setFocus();
-            close();
-            show();
             }
             else{
               if(g_backUp.m_listUser.NameExist(ui->nameedit->text())){
@@ -81,8 +79,6 @@ void Register::on_confrmbtn_clicked()
                                     ,tr("确定"));
                   ui->nameedit->clear();
                   ui->nameedit->setFocus();
-                  close();
-                  show();
                 }
               else{
                   close();

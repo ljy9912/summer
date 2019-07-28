@@ -33,7 +33,8 @@ signals:
 private slots:
     void on_main_clicked();
     void GetPage201();
-    void GetPage203();
+    void GetPage203confrm();
+    void GetPage203prolong();
     void GetPage301save();
     void GetPage301confrm();
     void GetPage301end();
@@ -41,7 +42,8 @@ private slots:
     void GetPage302confrm();
 public:
     void OnClicked_201(int i);
-    void OnClicked_203(int i);
+    void OnClicked_203confrm(int i);
+    void OnClicked_203prolong(int i);
     void OnClicked_301save(int i,int j);
     void OnClicked_301confrm(int i,int j);
     void OnClicked_301end(int i,int j);
@@ -60,6 +62,7 @@ private:
     QLineEdit *m_monthEdit;
     QLineEdit *m_dayEdit;
     QPushButton **m_confrmBtn;
+    QPushButton* m_prolongBtn;
     QPushButton **m_saveBtn;
     QPushButton** m_endBtn;
     QTableWidget **m_table;

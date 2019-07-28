@@ -13,6 +13,7 @@
 #include <QTabWidget>
 #include "sqlquery.h"
 #include <QDate>
+#include <QInputDialog>
 
 
 leaderTask::leaderTask(QWidget *parent) :
@@ -88,6 +89,7 @@ void leaderTask::ShowValue(){
     m_NewComment=new QTextEdit*[m_taskList.size()];
     m_endBtn=new QPushButton*[m_taskList.size()];
     m_myResult=new QTextEdit[m_taskList.size()];
+    m_prolongBtn=new QPushButton[m_taskList.size()];
     //分任务状态显示不同页面的详细信息
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
@@ -320,13 +322,17 @@ void leaderTask::Show203(int i){
     layout->addWidget(label2);
     layout->addWidget(m_table[i]);
     m_confrmBtn[i]=new QPushButton(tr("确定"));
-    layout->addWidget(m_confrmBtn[i]);
+    m_prolongBtn[i].setText("延期");
+    QHBoxLayout* Btn=new QHBoxLayout;
+    Btn->addWidget(m_confrmBtn[i]);
+    Btn->addWidget(m_prolongBtn+i);
+    layout->addLayout(Btn);
     window->setLayout(layout);
     ui->stackedWidget->addWidget(window);
     //如果负责人分配任务完成，确认按钮被点击，将表格中的内容存储
     //连接按钮和GetPage203函数
-    connect(m_confrmBtn[i],SIGNAL(pressed()),this,SLOT(GetPage203()));
-
+    connect(m_confrmBtn[i],SIGNAL(pressed()),this,SLOT(GetPage203confrm()));
+    connect((m_prolongBtn+i),SIGNAL(pressed()),this,SLOT(GetPage203prolong()));
 }
 
 /*************************************************************************
@@ -337,10 +343,18 @@ void leaderTask::Show203(int i){
 【开发者及日期】李佳芸 2019.7.23
 【更改记录】
 *************************************************************************/
-void leaderTask::GetPage203(){
+void leaderTask::GetPage203confrm(){
     for(int i=0;i<m_taskList.size();i++){
         if(m_confrmBtn[i]->isDown()){
-            OnClicked_203(i);
+            OnClicked_203confrm(i);
+        }
+    }
+}
+
+void leaderTask::GetPage203prolong(){
+    for(int i=0;i<m_taskList.size();i++){
+        if((m_prolongBtn+i)->isDown()){
+            OnClicked_203prolong(i);
         }
     }
 }
@@ -354,7 +368,7 @@ void leaderTask::GetPage203(){
 【开发者及日期】李佳芸 2019.7.23
 【更改记录】
 *************************************************************************/
-void leaderTask::OnClicked_203(int i){
+void leaderTask::OnClicked_203confrm(int i){
     int iFlag=0;
     int iNum=ui->listWidget->currentRow();
     for(int j=0;j<m_translaterList.size();j++){
@@ -426,7 +440,17 @@ void leaderTask::OnClicked_203(int i){
         leaderTask r;
         r.ShowValue();
         r.exec();
+    }
 }
+
+void leaderTask::OnClicked_203prolong(int i){
+    int iAdd= QInputDialog::getInt(this, "延期","请输入延期天数");
+    if(iAdd>0){
+        QMessageBox::information(this, tr("提示"),
+                           tr("延期成功！")
+                          ,tr("确定"));
+
+    }
 }
 
 /*************************************************************************

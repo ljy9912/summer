@@ -15,6 +15,8 @@ Message::Message(int iNum){
     m_iID=iNum;
     m_iFlag=0;
     m_IDUser="";
+    m_content="";
+    m_title="";
 }
 
 Message::~Message(){

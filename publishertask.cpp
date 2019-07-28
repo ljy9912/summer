@@ -36,6 +36,8 @@ publisherTask::~publisherTask()
     m_table=NULL;
     delete[] m_leaderMoney;
     m_leaderMoney=NULL;
+    delete[] m_prolongBtn;
+    m_prolongBtn=NULL;
 }
 
 /*************************************************************************
@@ -50,6 +52,7 @@ void publisherTask::ShowValue(){
     m_taskList=g_backUp.m_listTaskPublisher.SearchTaskForPublisher(g_backUp.m_User);
     m_nameedit=new QLineEdit[m_taskList.size()];
     m_confrmBtn=new QPushButton[m_taskList.size()];
+    m_prolongBtn=new QPushButton[m_taskList.size()];
     m_table=new QTableWidget[m_taskList.size()];
     m_leaderMoney=new QLineEdit[m_taskList.size()];
     for(int i=0;i<m_taskList.size();i++){
@@ -135,10 +138,15 @@ void publisherTask::Show102(int i){
     layoutName->addWidget(m_nameedit+i);
     layout->addLayout(layoutName);
     m_confrmBtn[i].setText(tr("确定"));
-    layout->addWidget(m_confrmBtn+i);
+    m_prolongBtn[i].setText(tr("延期"));
+    QHBoxLayout* Btn=new QHBoxLayout;
+    Btn->addWidget(m_confrmBtn+i);
+    Btn->addWidget(m_prolongBtn+i);
+    layout->addLayout(Btn);
     window->setLayout(layout);
     ui->stackedWidget->addWidget(window);
-    connect((m_confrmBtn+i),SIGNAL(pressed()),this,SLOT(GetPage102()));
+    connect((m_confrmBtn+i),SIGNAL(pressed()),this,SLOT(GetPage102confrm()));
+    connect((m_prolongBtn+i),SIGNAL(pressed()),this,SLOT(GetPage102prolong()));
 }
 
 /*************************************************************************
@@ -261,7 +269,7 @@ void publisherTask::on_main_clicked()
 【开发者及日期】李佳芸 2019.7.21
 【更改记录】
 *************************************************************************/
-void publisherTask::OnClicked(int i){
+void publisherTask::OnClicked102confrm(int i){
     QString iIdLeader=m_nameedit[i].text().trimmed();
     int iNum=ui->listWidget->currentRow();
     if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[iNum].GetID())){
@@ -293,12 +301,36 @@ void publisherTask::OnClicked(int i){
 【开发者及日期】李佳芸 2019.7.21
 【更改记录】
 *************************************************************************/
-void publisherTask::GetPage102(){
+void publisherTask::GetPage102confrm(){
     for(int i=0;i<m_taskList.size();i++){
         if((m_confrmBtn+i)->isDown()){
-            OnClicked(i);
+            OnClicked102confrm(i);
         }
     }
+}
+
+void publisherTask::GetPage102prolong(){
+    for(int i=0;i<m_taskList.size();i++){
+        if((m_prolongBtn+i)->isDown()){
+            OnClicked102prolong(i);
+        }
+    }
+}
+
+void publisherTask::OnClicked102prolong(int i){
+    int iAdd= QInputDialog::getInt(this, "延期","请输入延期天数");
+    if(iAdd>0){
+        g_backUp.Prolong_102(iAdd,m_taskList[i]);
+        QMessageBox::information(this, tr("提示"),
+                           tr("延期成功！")
+                          ,tr("确定"));
+    }
+    else{
+        QMessageBox::warning(this, tr("警告"),
+                           tr("输入日期无效！")
+                          ,tr("确定"));
+    }
+
 }
 
 void publisherTask::GetPage401(){

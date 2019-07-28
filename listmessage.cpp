@@ -40,3 +40,12 @@ void listMessage::Delete(int iID){
         }
     }
 }
+
+int listMessage::GetID(){
+    if(m_List.isEmpty()){
+        return 0;
+    }
+    else{
+        return m_List.last().GetID()+1;
+    }
+}
