@@ -9,19 +9,12 @@
 【开发者及日期】李佳芸 2019.7.15
 【更改记录】
 *************************************************************************/
-taskPublisher::taskPublisher(){
-    id=0;
-    taskclass=0;
-    publisher="";
-    time=0;
+taskPublisher::taskPublisher():task(){
     leaderYear=0;
     leaderMonth=0;
     leaderDay=0;
-    startYear=0;
-    startMonth=0;
-    startDay=0;
-    money=0;
-    flag=0;
+    m_result="";
+    m_resultEditting="";
 }
 
 /*************************************************************************

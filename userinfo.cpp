@@ -22,7 +22,7 @@ userInfo::userInfo(QWidget *parent) :
 userInfo::~userInfo()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************
@@ -93,9 +93,9 @@ void userInfo::on_moneyBtn_clicked()
 *************************************************************************/
 void userInfo::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 void userInfo::ShowMessage(){

@@ -18,7 +18,7 @@ registerConfirm::registerConfirm(QWidget *parent) :
 registerConfirm::~registerConfirm()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************

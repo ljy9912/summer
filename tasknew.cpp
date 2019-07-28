@@ -20,7 +20,7 @@ taskNew::taskNew(QWidget *parent) :
 taskNew::~taskNew()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************
@@ -123,9 +123,9 @@ void taskNew::showValue(){
 
 void taskNew::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 bool taskNew::IsEmpty(){

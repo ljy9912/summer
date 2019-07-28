@@ -7,6 +7,8 @@ Message::Message()
     m_iFlag=0;
     m_iID=0;
     m_IDUser="";
+    m_content="";
+    m_title="";
 }
 
 Message::Message(int iNum){

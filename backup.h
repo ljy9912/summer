@@ -21,9 +21,11 @@ public:
 
     void SignUpForLeader(int i);
     void TaskPublish(taskPublisher myTask);
+    void CheckDateForLeader();
+    void CheckDateForTranslater();
     void CheckDateSnupfrLeader();
     void CheckDateSnupfrTranslater();
-    void SelectLeaderDone(QString PublisherID, QString idLeader, QString intro);
+    void SelectLeaderDone(taskPublisher myTask, QString iIdLeader);
     void SetTranslaterDone(taskLeader myLeader, int iTranslaterYear, int iTranslaterMonth, int iTranslaterDay);
     void SignUpForTranslaterDone(int i);
     void SelectTranslaterDone_Leader(taskLeader myTask);
@@ -36,12 +38,14 @@ public:
     void EndTranslateDone_Translater(taskLeader myTaskLeader, taskTranslater myTaskTranslater);
     void StartIntegrate(QString intro,QString LeaderID);
     void IntegratingDone(taskLeader myTask, QString newResult);
-    void DistributeMoney_Publisher(QString intro,QString PublisherID,double dMyMoney);
-    void DistributeMoney_Translater(QString intro, double dMyMoney, QString LeaderID);
+    void DistributeMoney_Publisher(taskPublisher myTask, double dMyMoney);
+    void DistributeMoney_Translater(double dMoney, taskTranslater myTask);
+    void DistributeMoney_Leader(double dMoney,taskPublisher myTask);
 
     void Register(QString passwordvalue, QString nameValue, QString phoneValue,
                   QString IDNum, QString English);
     void UserInfoEdit(QString IDValue, QString PhoneValue, QString EnglishValue);
+    void TaskPublishEdit(taskPublisher myTask, int iTaskClass, QString intro, QString title, QString NewTask, int iTime, int iLeaderYear, int iLeaderMonth, int iLeaderDay, double dMoney);
 
     listMessage m_listMessage;
     listSignUpForLeader m_listSignUpForLeader;

@@ -26,7 +26,45 @@ leaderTask::leaderTask(QWidget *parent) :
 leaderTask::~leaderTask()
 {
     delete ui;
-
+    ui=NULL;
+    delete[] m_yearEdit;
+    m_yearEdit=NULL;
+    delete[] m_monthEdit;
+    m_monthEdit=NULL;
+    delete[] m_dayEdit;
+    m_dayEdit=NULL;
+    for(int i=0;i<m_taskList.size();i++){
+        delete[] *(m_confrmBtn+i);
+        *(m_confrmBtn+i)=NULL;
+    }
+    delete[] m_confrmBtn;
+    m_confrmBtn=NULL;
+    for(int i=0;i<m_taskList.size();i++){
+        delete[] *(m_saveBtn+i);
+        *(m_saveBtn+i)=NULL;
+    }
+    delete[] m_saveBtn;
+    m_saveBtn=NULL;
+    for(int i=0;i<m_taskList.size();i++){
+        delete[] *(m_endBtn+i);
+        *(m_endBtn+i)=NULL;
+    }
+    delete[] m_endBtn;
+    m_endBtn=NULL;
+    for(int i=0;i<m_taskList.size();i++){
+        delete[] *(m_table+i);
+        *(m_table+i)=NULL;
+    }
+    delete[] m_table;
+    m_table=NULL;
+    for(int i=0;i<m_taskList.size();i++){
+        delete[] *(m_NewComment+i);
+        *(m_NewComment+i)=NULL;
+    }
+    delete[] m_NewComment;
+    m_NewComment=NULL;
+    delete[] m_myResult;
+    m_myResult=NULL;
 }
 
 

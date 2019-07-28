@@ -62,7 +62,6 @@ HEADERS += \
         mainwindow.h \
     logindialog.h \
     register.h \
-    connection.h \
     userinfo.h \
     userinfoedit.h \
     tasknew.h \

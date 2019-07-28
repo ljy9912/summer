@@ -2,14 +2,28 @@
 #include <QApplication>
 #include "logindialog.h"
 #include "register.h"
-#include "connection.h"
 #include "taskspublished.h"
 #include <QList>
 #include "user.h"
 #include "task.h"
 #include <QSqlQuery>
 #include "backup.h"
+#include <QMessageBox>
+#include "sqlquery.h"
 
+static bool createConnection()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("database.db");
+    if (!db.open()) {
+        QMessageBox::critical(0, qApp->tr("Cannot open database"),
+            qApp->tr("Unable to establish a database connection."
+                     ), QMessageBox::Cancel);
+        return false;
+    }
+
+    return true;
+}
 
 BackUp g_backUp;
 int main(int argc, char *argv[])
@@ -44,3 +58,5 @@ int main(int argc, char *argv[])
     r.show();
     return a.exec();
 }
+
+

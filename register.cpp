@@ -2,7 +2,6 @@
 #include "ui_register.h"
 #include <QMessageBox>
 #include "registerconfirm.h"
-#include "connection.h"
 #include "logindialog.h"
 #include "registerphonenum.h"
 #include "registerid.h"
@@ -21,7 +20,9 @@ Register::Register(QWidget *parent) :
 Register::~Register()
 {
     delete ui;
-
+    ui=NULL;
+    delete dlg;
+    dlg=NULL;
 }
 
 /*************************************************************************
@@ -62,34 +63,36 @@ void Register::on_confrmbtn_clicked()
 {
     QString passwordvalue=ui->pswrdedit->text();
     QString confirmpswrdvalue=ui->cnfrmpswrdedit->text();
-    if(passwordvalue!=confirmpswrdvalue){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("密码与确认密码不符，请重新输入！")
-                          ,tr("确定"));
-        ui->pswrdedit->clear();
-        ui->cnfrmpswrdedit->clear();
-        ui->pswrdedit->setFocus();
-        close();
-        show();
-        }
-        else{
-          if(g_backUp.m_listUser.NameExist(ui->nameedit->text())){
-              QMessageBox::warning(this, tr("警告"),
-                                 tr("用户名已被注册！")
-                                ,tr("确定"));
-              ui->nameedit->clear();
-              ui->nameedit->setFocus();
-              close();
-              show();
+    if(!IsEmpty()){
+        if(passwordvalue!=confirmpswrdvalue){
+            QMessageBox::warning(this, tr("警告"),
+                               tr("密码与确认密码不符，请重新输入！")
+                              ,tr("确定"));
+            ui->pswrdedit->clear();
+            ui->cnfrmpswrdedit->clear();
+            ui->pswrdedit->setFocus();
+            close();
+            show();
             }
-          else{
-              close();
-              g_backUp.Register(passwordvalue,ui->nameedit->text(),ui->phoneEdit->text(),
-                                ui->ID->text(),ui->EnglishEdit->text());
-              registerConfirm r;
-              r.showValue();
-              r.exec();
-          }
+            else{
+              if(g_backUp.m_listUser.NameExist(ui->nameedit->text())){
+                  QMessageBox::warning(this, tr("警告"),
+                                     tr("用户名已被注册！")
+                                    ,tr("确定"));
+                  ui->nameedit->clear();
+                  ui->nameedit->setFocus();
+                  close();
+                  show();
+                }
+              else{
+                  close();
+                  g_backUp.Register(passwordvalue,ui->nameedit->text(),ui->phoneEdit->text(),
+                                    ui->ID->text(),ui->EnglishEdit->text());
+                  registerConfirm r;
+                  r.showValue();
+                  r.exec();
+              }
+        }
     }
 }
 
@@ -104,6 +107,34 @@ void Register::on_confrmbtn_clicked()
 void Register::on_pushButton_clicked()
 {
     close();
-    LoginDialog* r=new LoginDialog;
-    r->show();
+    LoginDialog r;
+    r.exec();
+}
+
+bool Register::IsEmpty(){
+    if(ui->nameedit->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("用户名不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->EnglishEdit->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("英语资历不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->pswrdedit->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("密码不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    else if(ui->cnfrmpswrdedit->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("确认密码不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    return false;
 }

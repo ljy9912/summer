@@ -2,8 +2,17 @@
 #include <QSqlQuery>
 #include <QDateTime>
 
-taskTranslater::taskTranslater()
+taskTranslater::taskTranslater():task()
 {
+    m_iEndYear=0;
+    m_iEndMonth=0;
+    m_iEndDay=0;
+    m_iTranslater="";
+    m_iIDTask=0;
+    m_result="";
+    m_resultEditting="";
+    m_comment="";
+    m_commentEditting="";
     m_flagToLeader=0;
 }
 

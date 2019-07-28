@@ -20,7 +20,7 @@ userInfoEdit::userInfoEdit(QWidget *parent) :
 userInfoEdit::~userInfoEdit()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************
@@ -50,9 +50,9 @@ void userInfoEdit::showValue(){
 *************************************************************************/
 void userInfoEdit::on_pushButton_3_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 /*************************************************************************
@@ -89,13 +89,25 @@ void userInfoEdit::on_canclBtn_clicked()
 *************************************************************************/
 void userInfoEdit::on_confrmBtn_clicked()
 {
-    g_backUp.UserInfoEdit(ui->ID->text(),ui->phoneEdit->text(),ui->EnglishEdit->text());
-    QMessageBox::information(this, tr("提示"),
-                       tr("信息修改成功！")
-                      ,tr("确定"));
-    close();
-    userInfo r;
-    r.showValue();
-    r.exec();
+    if(!IsEmpty()){
+        g_backUp.UserInfoEdit(ui->ID->text(),ui->phoneEdit->text(),ui->EnglishEdit->text());
+        QMessageBox::information(this, tr("提示"),
+                           tr("信息修改成功！")
+                          ,tr("确定"));
+        close();
+        userInfo r;
+        r.showValue();
+        r.exec();
+    }
 
+}
+
+bool userInfoEdit::IsEmpty(){
+    if(ui->EnglishEdit->text().isEmpty()){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("英语资历不能为空！")
+                          ,tr("确定"));
+        return true;
+    }
+    return false;
 }

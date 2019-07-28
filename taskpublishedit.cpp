@@ -20,7 +20,7 @@ taskPublishEdit::taskPublishEdit(QWidget *parent) :
 taskPublishEdit::~taskPublishEdit()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************
@@ -69,12 +69,10 @@ void taskPublishEdit::on_confrmBtn_clicked()
         QDate current=QDate::currentDate();
         //判断是否有效而且是否在当前日期之后
         if(time.isValid()&&current<=time){
-            myTask.EditInfo(ui->comboBox->currentIndex(),ui->introEdit->toPlainText(),ui->title->text(),
-                            ui->title->text(),ui->time->text().toInt(),ui->leaderYear->text().toInt(),
+            g_backUp.TaskPublishEdit(myTask,ui->comboBox->currentIndex(),ui->introEdit->toPlainText(),ui->title->text(),
+                            ui->translateTask->toPlainText(),ui->time->text().toInt(),ui->leaderYear->text().toInt(),
                             ui->leaderMonth->text().toInt(),ui->leaderDay->text().toInt(),
-                            ui->money->text().toDouble(),g_backUp.m_User.GetID());
-            myTask.EditID(g_backUp.m_listTaskPublisher.GetID());
-            g_backUp.m_listTaskPublisher.InsertIntoList(myTask);
+                            ui->money->text().toDouble());
             close();
             taskPublish r;
             r.EditTask(myTask);

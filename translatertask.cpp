@@ -30,6 +30,7 @@ translaterTask::translaterTask(QWidget *parent) :
 translaterTask::~translaterTask()
 {
     delete ui;
+    ui=NULL;
     delete m_confrmBtn;
     m_confrmBtn=NULL;
     delete m_saveBtn;

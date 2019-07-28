@@ -21,7 +21,7 @@ taskPublish::taskPublish(QWidget *parent) :
 taskPublish::~taskPublish()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************
@@ -97,8 +97,7 @@ void taskPublish::on_publishBtn_clicked()
                       ,tr("确定"));
 
     g_backUp.TaskPublish(myTask);
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
-
+    MainWindow r;
+    r.exec();
 }

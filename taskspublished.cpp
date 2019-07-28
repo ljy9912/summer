@@ -28,6 +28,7 @@ tasksPublished::tasksPublished(QWidget *parent) :
 tasksPublished::~tasksPublished()
 {
     delete ui;
+    ui=NULL;
     delete m_applyBtn;
     m_applyBtn=NULL;
 }
@@ -43,9 +44,9 @@ tasksPublished::~tasksPublished()
 *************************************************************************/
 void tasksPublished::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 
@@ -79,7 +80,7 @@ void tasksPublished::ShowValue(){
             ShowValue203(i);
             break;
         case 401:
-            ui->listWidget->insertItem(i,tr("<负责人确认中>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+            ui->listWidget->insertItem(i,tr("<发布者确认中>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
             ShowValue203(i);
             break;
         case 402:
@@ -257,10 +258,11 @@ void tasksPublished::ShowValue202(int i){
     QTextBrowser *Task=new QTextBrowser;
     Task->setText(myTask.GetTask());
     QLabel *time=new QLabel(tr("任务周期：%1天").arg(myTask.GetTime()));
-    QLabel *date=new QLabel(tr("译者报名截止日期：%1年%2月%3日").arg(myTask
-                                                          .GetLeaderYear())
-                            .arg(myTask.GetLeaderMonth())
-                            .arg(myTask.GetLeaderDay()));
+    int iNum=g_backUp.m_listTaskLeader.SearchInList(myTask.GetID());
+    QLabel *date=new QLabel(tr("译者报名截止日期：%1年%2月%3日").arg(g_backUp.m_listTaskLeader.m_List[iNum]
+                                                          .GetTranslaterYear())
+                            .arg(g_backUp.m_listTaskLeader.m_List[iNum].GetTranslaterMonth())
+                            .arg(g_backUp.m_listTaskLeader.m_List[iNum].GetTranslaterDay()));
     QLabel *money=new QLabel(tr("任务总金额：%1元").arg(myTask.GetMoney()));
     QLabel* leader=new QLabel(tr("负责人：%1").arg(myTask.GetLeader()));
     m_applyBtn[i].setText("申请译者");
@@ -340,6 +342,8 @@ void tasksPublished::ShowValue203(int i){
     //声明一个tableWidget
     QTableWidget* table=new QTableWidget((translaterList.size()+1),5);
     table->setWindowTitle("译者");
+    //设置表格为不可编辑
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //声明表头
     QStringList header;
     header<<"用户名"<<"角色"<<"电话"<<"英语资历"<<"积分";
@@ -351,15 +355,15 @@ void tasksPublished::ShowValue203(int i){
     user myLeader=g_backUp.m_listUser.m_List[iNum];
     table->setItem(0,2,new QTableWidgetItem(myLeader.GetPhoneNum()));
     table->setItem(0,3,new QTableWidgetItem(myLeader.GetEnglish()));
-    table->setItem(0,4,new QTableWidgetItem(myLeader.GetRewrdPoint()));
-    for(int j=0;j<translaterList.size();j++){
-        table->setItem(j,0,new QTableWidgetItem(translaterList[j].GetTranslater()));
+    table->setItem(0,4,new QTableWidgetItem(QString::number(myLeader.GetRewrdPoint())));
+    for(int j=1;j<(translaterList.size()+1);j++){
+        table->setItem(j,0,new QTableWidgetItem(translaterList[j-1].GetTranslater()));
         table->setItem(j,1,new QTableWidgetItem("译者"));
         iNum=g_backUp.m_listUser.SearchInList(myTask.GetLeader());
         user myTranslater=g_backUp.m_listUser.m_List[iNum];
         table->setItem(j,2,new QTableWidgetItem(myTranslater.GetPhoneNum()));
         table->setItem(j,3,new QTableWidgetItem(myTranslater.GetEnglish()));
-        table->setItem(j,4,new QTableWidgetItem(myTranslater.GetRewrdPoint()));
+        table->setItem(j,4,new QTableWidgetItem(QString::number(myTranslater.GetRewrdPoint())));
     }
     layout2->addWidget(inform2);
     layout2->addWidget(table);
@@ -401,6 +405,10 @@ void tasksPublished::OnClicked101(int i){
                               ,tr("确定"));
             //后台执行负责人报名操作
             g_backUp.SignUpForLeader(i);
+            close();
+            tasksPublished r;
+            r.ShowValue();;
+            r.exec();
         }
     }
     else{
@@ -420,6 +428,10 @@ void tasksPublished::OnClicked202(int i){
                           ,tr("确定"));
         //后台执行译者报名操作
         g_backUp.SignUpForTranslaterDone(i);
+        close();
+        tasksPublished r;
+        r.ShowValue();
+        r.exec();
     }
     else{
         QMessageBox::warning(this, tr("警告"),

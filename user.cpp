@@ -16,6 +16,11 @@
 user::user(){
     m_iRewrdPoint=100;
     m_dMoney=0;
+    m_ID="";
+    m_PhoneNum="";
+    m_IDNum="";
+    m_English="";
+    m_Passwrd="";
 }
 
 user::user(const user& myNewUser){

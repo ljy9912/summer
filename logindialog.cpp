@@ -14,20 +14,25 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-    setMinimumSize(300,400);
-    setMaximumSize(300,400);
-    QFile file(":/Qss/style.qss");
-    file.open(QFile::ReadOnly);
-    QTextStream filetext(&file);
-    QString stylesheet = filetext.readAll();
-    this->setStyleSheet(stylesheet);
-    file.close();
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:rgb(178,235,242); color: white;}"
+          "QPushButton:pressed{background-color:#198fb6;\
+                           border-style: inset; }";
+    ui->loginBtn->setStyleSheet(BtnStyle1);
+    ui->exitBtn->setStyleSheet(BtnStyle1);
+    QFrame* frame=new QFrame;
+    frame->resize(300,400);
+    frame->setStyleSheet("#frame{border-image: url(qrc:/background/login.svg);"
+                         "border-top-left-radius:15px;border-top-right-radius:15px;"
+                         "border-bottom-left-radius:15px;border-bottom-right-radius:15px;}");
 }
 
 LoginDialog::~LoginDialog()
 {
     delete ui;
-
+    ui=NULL;
 }
 
 /*************************************************************************

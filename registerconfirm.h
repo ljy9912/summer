@@ -21,6 +21,7 @@ public:
 
     void showValue();
 
+
 private:
     Ui::registerConfirm *ui;
 

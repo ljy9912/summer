@@ -18,6 +18,7 @@ MessageBox::MessageBox(QWidget *parent) :
 MessageBox::~MessageBox()
 {
     delete ui;
+    ui=NULL;
 }
 
 
@@ -33,9 +34,9 @@ void MessageBox::ShowMessage(){
 
 void MessageBox::on_main_clicked()
 {
-    MainWindow* r=new MainWindow;
-    r->show();
     close();
+    MainWindow r;
+    r.exec();
 }
 
 void MessageBox::OnClicked(int i){

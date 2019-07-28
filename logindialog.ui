@@ -529,7 +529,10 @@
    </property>
    <property name="icon">
     <iconset resource="resource/qss.qrc">
-     <normaloff>:/images/log-in.png</normaloff>:/images/log-in.png</iconset>
+     <normaloff>:/images/log-inwhite.svg</normaloff>:/images/log-inwhite.svg</iconset>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="exitBtn">

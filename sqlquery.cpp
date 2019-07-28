@@ -138,8 +138,8 @@ const QList<taskPublisher> SqlQuery::GetTasks(){
         myTask.attachIDToTask(id);
         //myTask.EditFlag(203);
         //listTask.append(myTask);
-        //myTask.EditFlag(202);
-        myTask.EditLeaderDay(25);
+        //myTask.EditFlag(101);
+        //myTask.EditLeaderDay(25);
         listTask.append(myTask);
     }
     return listTask;
@@ -196,6 +196,7 @@ const QList<taskLeader> SqlQuery::GetTaskLeader(){
         taskLeader myTask;
         myTask.attachIDToTask(id);
         //myTask.EditFlag(301);
+        myTask.EditTranslaterDay(25);
         listTask.append(myTask);
     }
     return listTask;

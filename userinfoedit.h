@@ -16,7 +16,7 @@ public:
     explicit userInfoEdit(QWidget *parent = 0);
     ~userInfoEdit();
     void showValue();
-
+    bool IsEmpty();
 
 private slots:
     void on_pushButton_3_clicked();
@@ -24,6 +24,8 @@ private slots:
     void on_canclBtn_clicked();
 
     void on_confrmBtn_clicked();
+
+
 
 
 private:

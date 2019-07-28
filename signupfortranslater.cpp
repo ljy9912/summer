@@ -1,9 +1,10 @@
 #include "signupfortranslater.h"
 #include <QSqlQuery>
 
-signUpForTranslater::signUpForTranslater()
+signUpForTranslater::signUpForTranslater():user()
 {
-
+    m_iIdTask=0;
+    m_iIDThis=0;
 }
 
 /*************************************************************************

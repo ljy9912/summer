@@ -13,9 +13,17 @@
 task::task(){
     id=0;
     taskclass=0;
+    translateTask="";
+    introduction="";
+    title="";
     time=0;
+    startYear=0;
+    startMonth=0;
+    startDay=0;
     money=0;
     flag=0;
+    publisher="";
+    leader="";
 }
 
 /*************************************************************************

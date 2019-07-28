@@ -3,6 +3,7 @@
 #include <QList>
 #include <QString>
 #include <QDate>
+#include <QTableWidget>
 
 BackUp::BackUp()
 {
@@ -114,19 +115,31 @@ void BackUp::CheckDateSnupfrTranslater(){
     }
 }
 
-void BackUp::SelectLeaderDone(QString PublisherID, QString idLeader, QString intro){
+void BackUp::SelectLeaderDone(taskPublisher myTask,QString iIdLeader){
+    int iNumInList=m_listTaskPublisher.SearchInList(myTask);
+    m_listTaskPublisher.m_List[iNumInList].EditLeader(iIdLeader);
+    m_listTaskPublisher.m_List[iNumInList].EditFlag(201);
+    m_listSignUpForLeader.Delete(myTask.GetID());
+    myTask.EditLeader(iIdLeader);
+    myTask.EditFlag(201);
+    //
+    m_listTaskPublisher.Update(myTask);
+    m_listTaskLeader.TaskLeaderAppend(myTask);
+
+
+
     QDateTime time=QDateTime::currentDateTime();
     Message newMessage(m_listMessage.m_List.last().GetID()+1);
     newMessage.EditTitle("选择负责人成功！");
     newMessage.EditContent(QObject::tr("%3\n您成功为任务%1选择负责人%2,请耐心等待负责人和译者翻译任务吧！")
-                          .arg(intro).arg(idLeader).arg(time.toString()));
-    newMessage.EditUser(PublisherID);
+                          .arg(myTask.GetTitle()).arg(iIdLeader).arg(time.toString()));
+    newMessage.EditUser(myTask.GetPublisher());
     m_listMessage.m_List.append(newMessage);
     newMessage.EditID(m_listMessage.m_List.last().GetID()+1);
     newMessage.EditTitle("恭喜成功当选负责人！");
     newMessage.EditContent(QObject::tr("%2\n恭喜您被选为任务%1的负责人！快点击“我是负责人”设定译者报名结束日期开始招募译者吧！")
-                          .arg(intro).arg(time.toString()));
-    newMessage.EditUser(idLeader);
+                          .arg(myTask.GetTitle()).arg(time.toString()));
+    newMessage.EditUser(iIdLeader);
     m_listMessage.m_List.append(newMessage);
 }
 
@@ -254,9 +267,6 @@ void BackUp::SubmitCommentDone(taskTranslater myTask, QString newComment){
     m_listMessage.m_List.append(newMessage2);
 }
 
-void BackUp::SubmitCommentDone_Translater(QString intro, QString TranslaterID){
-
-}
 
 void BackUp::EndTranslateDone_Leader(QString intro, QString TranslaterID, QString LeaderID){
     QDateTime time=QDateTime::currentDateTime();
@@ -342,23 +352,51 @@ void BackUp::IntegratingDone(taskLeader myTask, QString newResult){
 }
 
 
-void BackUp::DistributeMoney_Publisher(QString intro, QString PublisherID, double dMyMoney){
+void BackUp::DistributeMoney_Publisher(taskPublisher myTask,double dMyMoney){
     QDateTime time=QDateTime::currentDateTime();
     Message newMessage(m_listMessage.m_List.last().GetID()+1);
     newMessage.EditTitle("分配酬金成功！");
     newMessage.EditContent(QObject::tr("%3\n您发布的任务%1的酬金分配完毕，共支付%2元，请注意账户余额变动。")
-                           .arg(intro).arg(dMyMoney).arg(time.toString()));
-    newMessage.EditUser(PublisherID);
+                           .arg(myTask.GetTitle()).arg(dMyMoney).arg(time.toString()));
+    newMessage.EditUser(m_User.GetID());
     m_listMessage.m_List.append(newMessage);
+
+    //所有表中删除和该任务有关的所有数据
+    g_backUp.m_listTaskLeader.Delete(myTask.GetID());
+    g_backUp.m_listSignUpForLeader.Delete(myTask.GetID());
+    g_backUp.m_listSignUpForTranslater.Delete(myTask.GetID());
+    g_backUp.m_listTaskLeader.Delete(myTask.GetID());
+    myTask.EditFlag(402);
+    g_backUp.m_listTaskPublisher.Update(myTask);
 }
 
-void BackUp::DistributeMoney_Translater(QString intro, double dMyMoney, QString LeaderID){
+void BackUp::DistributeMoney_Leader(double dMoney,taskPublisher myTask){
+    int iNum=m_listUser.SearchInList(myTask.GetLeader());
+    m_listUser.m_List[iNum].AddMoney(dMoney);//发消息确认
+    m_listUser.m_List[iNum].AddPoint(10);
+
     QDateTime time=QDateTime::currentDateTime();
     Message newMessage(m_listMessage.m_List.last().GetID()+1);
     newMessage.EditTitle("酬金到账啦！");
     newMessage.EditContent(QObject::tr("%3\n您参与翻译的任务%1的酬金%2元已到账，请注意查收！")
-                           .arg(intro).arg(dMyMoney).arg(time.toString()));
-    newMessage.EditUser(LeaderID);
+                           .arg(myTask.GetTitle()).arg(dMoney).arg(time.toString()));
+    newMessage.EditUser(myTask.GetLeader());
+    m_listMessage.m_List.append(newMessage);
+}
+
+void BackUp::DistributeMoney_Translater(double dMoney, taskTranslater myTask){
+    int iNum=m_listUser.SearchInList(myTask.GetTranslater());
+    //将译者余额存入表中
+    m_listUser.m_List[iNum].AddMoney(dMoney);//发消息确认
+    //译者加5分
+    m_listUser.m_List[iNum].AddPoint(5);
+
+    QDateTime time=QDateTime::currentDateTime();
+    Message newMessage(m_listMessage.m_List.last().GetID()+1);
+    newMessage.EditTitle("酬金到账啦！");
+    newMessage.EditContent(QObject::tr("%3\n您参与翻译的任务%1的酬金%2元已到账，请注意查收！")
+                           .arg(myTask.GetTitle()).arg(dMoney).arg(time.toString()));
+    newMessage.EditUser(myTask.GetLeader());
     m_listMessage.m_List.append(newMessage);
 }
 
@@ -385,4 +423,118 @@ void BackUp::UserInfoEdit(QString IDValue,QString PhoneValue,QString EnglishValu
     m_User.EditPhoneNum(PhoneValue);
     m_User.EditEnglish(EnglishValue);
     m_listUser.Update(m_User);
+}
+
+void BackUp::TaskPublishEdit(taskPublisher myTask,int iTaskClass,QString intro,QString title,
+                             QString NewTask,int iTime,int iLeaderYear,int iLeaderMonth,int iLeaderDay,
+                             double dMoney){
+    myTask.EditInfo(iTaskClass,intro,title,
+                    NewTask,iTime,iLeaderYear,
+                    iLeaderMonth,iLeaderDay,
+                    dMoney,m_User.GetID());
+    myTask.EditID(m_listTaskPublisher.GetID());
+    m_listTaskPublisher.Update(myTask);
+}
+
+void BackUp::CheckDateForLeader(){
+    QDateTime time=QDateTime::currentDateTime();
+    for(int i=0;i<m_listTaskPublisher.m_List.size();i++){
+        QDate date1(m_listTaskPublisher.m_List[i].GetLeaderYear(),
+                    m_listTaskPublisher.m_List[i].GetLeaderMonth(),
+                    m_listTaskPublisher.m_List[i].GetLeaderDay());
+        date1.addDays(m_listTaskPublisher.m_List[i].GetTime());
+        QDate currentdate;
+        currentdate=QDate::currentDate();
+        if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
+            currentdate.day()-date1.day()==1)
+                &&(m_listTaskPublisher.m_List[i].GetFlag()==201||
+                                    m_listTaskPublisher.m_List[i].GetFlag()==202||
+                                    m_listTaskPublisher.m_List[i].GetFlag()==203||
+                                    m_listTaskPublisher.m_List[i].GetFlag()==301||
+                                    m_listTaskPublisher.m_List[i].GetFlag()==302)){
+            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            newMessage.EditTitle("距发布者定的截止日期还剩1天，请抓紧时间！");
+            newMessage.EditContent(QObject::tr("%4\n距发布者定的截止日期还剩1天，请抓紧时间！").
+                                  arg(time.toString()));
+            newMessage.EditUser(m_listTaskLeader.m_List[i].GetLeader());
+            m_listMessage.m_List.append(newMessage);
+        }
+        else if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
+                 currentdate.day()-date1.day()==7)&&(m_listTaskPublisher.m_List[i].GetFlag()==201||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==202||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==203||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==301||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==302)){
+            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            newMessage.EditTitle("距发布者定的截止日期还剩7天，请抓紧时间！");
+            newMessage.EditContent(QObject::tr("%4\n距发布者定的截止日期还剩7天，请抓紧时间！").
+                                  arg(time.toString()));
+            newMessage.EditUser(m_listTaskLeader.m_List[i].GetLeader());
+            m_listMessage.m_List.append(newMessage);
+        }
+        else if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
+                 currentdate.day()-date1.day()<=0)&&(m_listTaskPublisher.m_List[i].GetFlag()==201||
+                                                          m_listTaskPublisher.m_List[i].GetFlag()==202||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==203||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==301||
+                                         m_listTaskPublisher.m_List[i].GetFlag()==302)){
+            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            newMessage.EditTitle("发布者规定时间已到，请抓紧时间提交译文！");
+            newMessage.EditContent(QObject::tr("%4\n发布者规定时间已到，请抓紧时间提交译文！").
+                                  arg(time.toString()));
+            newMessage.EditUser(m_listTaskPublisher.m_List[i].GetLeader());
+            m_listMessage.m_List.append(newMessage);
+        }
+    }
+}
+
+void BackUp::CheckDateForTranslater(){
+    QDateTime time=QDateTime::currentDateTime();
+    for(int i=0;i<m_listTaskTranslater.m_List.size();i++){
+        QDate date1(m_listTaskTranslater.m_List[i].GetEndYear(),
+                    m_listTaskTranslater.m_List[i].GetEndMonth(),
+                    m_listTaskTranslater.m_List[i].GetEndDay());
+        date1.addDays(m_listTaskTranslater.m_List[i].GetTime());
+        QDate currentdate;
+        currentdate=QDate::currentDate();
+        if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
+            currentdate.day()-date1.day()==1)&&(m_listTaskTranslater.m_List[i].GetFlag()==201||
+                                    m_listTaskTranslater.m_List[i].GetFlag()==202||
+                                    m_listTaskTranslater.m_List[i].GetFlag()==203||
+                                    m_listTaskTranslater.m_List[i].GetFlag()==301||
+                                    m_listTaskTranslater.m_List[i].GetFlag()==302)){
+            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            newMessage.EditTitle("距负责人定的截止日期还剩1天，请抓紧时间！");
+            newMessage.EditContent(QObject::tr("%4\n距负责人定的截止日期还剩1天，请抓紧时间！").
+                                  arg(time.toString()));
+            newMessage.EditUser(m_listTaskTranslater.m_List[i].GetLeader());
+            m_listMessage.m_List.append(newMessage);
+        }
+        else if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
+                 currentdate.day()-date1.day()==7)&&(m_listTaskTranslater.m_List[i].GetFlag()==201||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==202||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==203||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==301||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==302)){
+            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            newMessage.EditTitle("距负责人定的截止日期还剩7天，请抓紧时间！");
+            newMessage.EditContent(QObject::tr("%4\n距负责人定的截止日期还剩7天，请抓紧时间！").
+                                  arg(time.toString()));
+            newMessage.EditUser(m_listTaskTranslater.m_List[i].GetLeader());
+            m_listMessage.m_List.append(newMessage);
+        }
+        else if((currentdate.year()==date1.year()&&currentdate.month()==date1.month()&&
+                 currentdate.day()-date1.day()<=0)&&(m_listTaskTranslater.m_List[i].GetFlag()==201
+                                                          ||m_listTaskTranslater.m_List[i].GetFlag()==202||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==203||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==301||
+                                         m_listTaskTranslater.m_List[i].GetFlag()==302)){
+            Message newMessage(m_listMessage.m_List.last().GetID()+1);
+            newMessage.EditTitle("负责人规定时间已到，请抓紧时间提交译文！");
+            newMessage.EditContent(QObject::tr("%4\n负责人规定时间已到，请抓紧时间提交译文！").
+                                  arg(time.toString()));
+            newMessage.EditUser(m_listTaskTranslater.m_List[i].GetLeader());
+            m_listMessage.m_List.append(newMessage);
+        }
+    }
 }

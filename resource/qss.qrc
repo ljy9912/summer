@@ -14,5 +14,9 @@
         <file>images/YUAN-circle-fillblack.svg</file>
         <file>images/icon_cancle.png</file>
         <file>images/log-in.png</file>
+        <file>images/book.svg</file>
+        <file>images/log-in.svg</file>
+        <file>images/log-inwhite.svg</file>
+        <file>background/login.svg</file>
     </qresource>
 </RCC>

@@ -1,9 +1,13 @@
 #include "taskleader.h"
 #include <QSqlQuery>
 
-taskLeader::taskLeader()
+taskLeader::taskLeader():task()
 {
-
+    m_iTranslaterYear=0;
+    m_iTranslaterMonth=0;
+    m_iTranslaterDay=0;
+    m_Result="";
+    m_ResultEditting="";
 }
 
 taskLeader::~taskLeader()
