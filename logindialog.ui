@@ -83,13 +83,14 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
     <property name="font">
      <font>
       <family>等线</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="placeholderText">
-     <string>请输入用户名</string>
+     <string>  请输入用户名</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="pswLineEdit">
@@ -104,6 +105,7 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
     <property name="font">
      <font>
       <family>等线</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="text">
@@ -113,7 +115,7 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
      <enum>QLineEdit::Password</enum>
     </property>
     <property name="placeholderText">
-     <string>请输入密码</string>
+     <string>  请输入密码</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -474,6 +476,7 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
     </property>
     <property name="font">
      <font>
+      <family>等线</family>
       <weight>75</weight>
       <bold>true</bold>
       <underline>true</underline>

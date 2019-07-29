@@ -19,6 +19,7 @@ public:
     void showValue();
 
 
+
 private slots:
     void on_canclBtn_clicked();
 
@@ -29,6 +30,7 @@ private:
     taskPublisher myTask;
 
     bool IsEmpty();
+    void SetStyle();
 
 };
 

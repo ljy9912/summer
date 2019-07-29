@@ -31,6 +31,8 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui->RegisterBtn->setStyleSheet(BtnStyle2);
     setMaximumSize(600,800);
     setMinimumSize(600,800);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }
 
 LoginDialog::~LoginDialog()

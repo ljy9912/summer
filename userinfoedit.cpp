@@ -15,6 +15,20 @@ userInfoEdit::userInfoEdit(QWidget *parent) :
     ui(new Ui::userInfoEdit)
 {
     ui->setupUi(this);
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->confrmBtn->setStyleSheet(BtnStyle1);
+    ui->canclBtn->setStyleSheet(BtnStyle1);
+    ui->pushButton_3->setStyleSheet(BtnStyle2);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }
 
 userInfoEdit::~userInfoEdit()

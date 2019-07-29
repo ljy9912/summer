@@ -97,7 +97,6 @@ FORMS += \
     register.ui \
     userinfo.ui \
     userinfoedit.ui \
-    usermoney.ui \
     tasknew.ui \
     taskpublish.ui \
     taskpublishedit.ui \

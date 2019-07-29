@@ -17,7 +17,6 @@ public:
     ~userInfo();
     void showValue();
 
-    void ShowMessage();
 
 private slots:
     void on_editBtn_clicked();
@@ -26,12 +25,13 @@ private slots:
 
 private:
     Ui::userInfo *ui;
+    QList<Message> m_messageList;
 
 signals:
     void dlgreturn(int);
 
 private slots:
-    void on_main_clicked();
+    void on_Main_clicked();
 };
 
 #endif // USERINFO_H

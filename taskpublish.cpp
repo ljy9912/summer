@@ -40,12 +40,11 @@ void taskPublish::showValue(){
     else{
         ui->taskclass->setText("翻译性质：英译中");
     }
-    ui->task->setText(tr("翻译任务：%1").arg(myTask.GetTask()));
-    ui->intro->setText(tr("任务简介：%1").arg(myTask.GetIntroduction()));
+    ui->taskBrowser->setText(myTask.GetTask());
+    ui->introBrowser->setText(myTask.GetIntroduction());
     ui->time->setText(tr("任务周期：%1").arg(myTask.GetTime()));
-    ui->leaderYear->setText(tr("%1年").arg(myTask.GetLeaderYear()));
-    ui->leaderMonth->setText(tr("%1月").arg(myTask.GetLeaderMonth()));
-    ui->leaderDay->setText(tr("%1日").arg(myTask.GetLeaderDay()));
+    ui->leaderDate->setText(tr("负责人报名截止时间：%1年%2月%3日").arg(myTask.GetLeaderYear())
+                            .arg(myTask.GetLeaderMonth()).arg(myTask.GetLeaderDay()));
     ui->money->setText(tr("任务总金额：%1").arg(myTask.GetMoney()));
     ui->title->setText(tr("翻译标题：%1").arg(myTask.GetTitle()));
 }
@@ -100,4 +99,17 @@ void taskPublish::on_publishBtn_clicked()
     close();
     MainWindow r;
     r.exec();
+}
+
+void taskPublish::SetStyle(){
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    ui->publishBtn->setStyleSheet(BtnStyle1);
+    ui->editBtn->setStyleSheet(BtnStyle1);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }

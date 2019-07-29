@@ -46,7 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->publisher->setStyleSheet(BtnStyle1);
     QDesktopWidget *deskdop = QApplication::desktop();
     move((deskdop->width() - this->width())/2, (deskdop->height() - this->height())/2);
-
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }
 
 MainWindow::~MainWindow()
@@ -157,4 +158,5 @@ void MainWindow::on_exitBtn_clicked()
     query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
     query.saveMessage(g_backUp.m_listMessage.m_List);
     close();
+    exit(0);
 }

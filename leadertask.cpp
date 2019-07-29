@@ -377,6 +377,7 @@ void leaderTask::OnClicked_203confrm(int i){
         int iEndMonth;
         int iEndDay;
         if(m_table[i]->item(j,3)!=NULL||(m_table[i]->item(j,3)&&m_table[i]->item(j,3)->text()!=tr(""))){
+            iFlag=2;
             if(m_table[i]->item(j,4)!=NULL||(m_table[i]->item(j,4)&&m_table[i]->item(j,4)->text()!=tr(""))){
                 //检验输入的日期是否合法
                 QString EndDate=m_table[i]->item(j,4)->text();
@@ -441,6 +442,11 @@ void leaderTask::OnClicked_203confrm(int i){
         r.ShowValue();
         r.exec();
     }
+    else if(iFlag==0){
+        QMessageBox::warning(this, tr("警告"),
+                           tr("并未分配任务！")
+                          ,tr("确定"));
+    }
 }
 
 void leaderTask::OnClicked_203prolong(int i){
@@ -463,8 +469,6 @@ void leaderTask::OnClicked_203prolong(int i){
 *************************************************************************/
 void leaderTask::Show301(int i){
     m_iPage=i;
-    ui->listWidget->insertItem(i,tr("<译者的翻译出炉！请点评！>%1")
-                               .arg(m_taskList[i].GetTitle()));
     //筛选已经提交的文章或已经修改并且提交的文章
     for(int j=0;j<g_backUp.m_listTaskTranslater.m_List.size();j++){
         if(g_backUp.m_listTaskTranslater.m_List[j].GetIDTask()==m_taskList[i].GetID()
@@ -472,6 +476,10 @@ void leaderTask::Show301(int i){
                    (g_backUp.m_listTaskTranslater.m_List[j].GetFlagToLeader())==3)){
             m_translaterTaskList.append(g_backUp.m_listTaskTranslater.m_List[j]);
         }
+    }
+    if(!m_translaterTaskList.isEmpty()){
+        ui->listWidget->insertItem(i,tr("<译者的翻译出炉！请点评！>%1")
+                                   .arg(m_taskList[i].GetTitle()));
     }
     //对每一个译者构建一个tabWidget来显示对应的译文并让负责人进行评价
     QTabWidget *Tab=new QTabWidget;

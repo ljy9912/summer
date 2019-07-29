@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include "sqlquery.h"
 #include <QTextBrowser>
+#include <QToolBox>
 
 
 
@@ -17,6 +18,20 @@ userInfo::userInfo(QWidget *parent) :
     ui(new Ui::userInfo)
 {
     ui->setupUi(this);
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->editBtn->setStyleSheet(BtnStyle1);
+    ui->moneyBtn->setStyleSheet(BtnStyle1);
+    ui->Main->setStyleSheet(BtnStyle2);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }
 
 userInfo::~userInfo()
@@ -39,6 +54,7 @@ void userInfo::showValue(){
     ui->IDNum->setText(tr("身份证号：%1").arg(g_backUp.m_User.GetIDNum()));
     ui->credit->setText(tr("积分：%1").arg(g_backUp.m_User.GetRewrdPoint()));
     ui->money->setText(tr("余额：%1").arg(g_backUp.m_User.GetMoney()));
+    ui->English->setText(tr("英语资历：%1").arg(g_backUp.m_User.GetEnglish()));
 }
 
 /*************************************************************************
@@ -84,27 +100,18 @@ void userInfo::on_moneyBtn_clicked()
 }
 
 /*************************************************************************
-【函数名称】on_main_clicked
+【函数名称】on_Main_clicked
 【函数功能】按下main后，返回主界面
 【参数】无
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.12
 【更改记录】
-*************************************************************************/
-void userInfo::on_main_clicked()
+**************************************************************************/
+
+
+void userInfo::on_Main_clicked()
 {
     close();
     MainWindow r;
     r.exec();
-}
-
-void userInfo::ShowMessage(){
-    QList<Message> messageList;
-    messageList=g_backUp.m_listMessage.SearchMessageforUser(g_backUp.m_User.GetID());
-    for(int i=0;i<messageList.size();i++){
-        QTextBrowser* window=new QTextBrowser;
-        window->setText(messageList[i].GetContent());
-        ui->toolBox->addItem(window,messageList[i].GetTitle());
-    }
-
 }

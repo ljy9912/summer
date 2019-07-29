@@ -29,6 +29,7 @@ private slots:
 private:
     Ui::taskPublish *ui;
     taskPublisher myTask;
+    void SetStyle();
 
 
 signals:

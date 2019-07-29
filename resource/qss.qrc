@@ -22,5 +22,15 @@
         <file>images/icon_cancle.svg</file>
         <file>images/login.jpg</file>
         <file>background/mainwindow.png</file>
+        <file>background/register.png</file>
+        <file>background/confirm.png</file>
+        <file>background/registerconfrm.png</file>
+        <file>background/tasknew.png</file>
+        <file>images/arrowdown.svg</file>
+        <file>images/arrowdown.png</file>
+        <file>background/userinfo.png</file>
+        <file>background/userinfoedit.png</file>
+        <file>background/taskconfrm.png</file>
+        <file>background/taskpublishedit.png</file>
     </qresource>
 </RCC>

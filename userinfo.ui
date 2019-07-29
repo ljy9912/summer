@@ -6,174 +6,216 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>626</width>
-    <height>300</height>
+    <width>600</width>
+    <height>800</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>600</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>600</width>
+    <height>800</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="moneyBtn">
+  <property name="styleSheet">
+   <string notr="true">#frame{border-image: url(:/background/userinfo.png);
+border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;}</string>
+  </property>
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>154</y>
-     <width>81</width>
-     <height>21</height>
+     <x>-1</x>
+     <y>0</y>
+     <width>611</width>
+     <height>801</height>
     </rect>
    </property>
-   <property name="text">
-    <string>充值</string>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-  </widget>
-  <widget class="QPushButton" name="editBtn">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>194</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="text">
-    <string>编辑</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="phoneNum">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>81</y>
-     <width>281</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>手机号：</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="ID">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>56</y>
-     <width>251</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>用户名：</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="IDNum">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>106</y>
-     <width>301</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>身份证号：</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="credit">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>132</y>
-     <width>241</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>积分：</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="money">
-   <property name="geometry">
-    <rect>
-     <x>41</x>
-     <y>157</y>
-     <width>181</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>余额：</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="main">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>195</y>
-     <width>80</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>返回</string>
-   </property>
-  </widget>
-  <widget class="QToolBox" name="toolBox">
-   <property name="geometry">
-    <rect>
-     <x>380</x>
-     <y>20</y>
-     <width>231</width>
-     <height>221</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="welcome">
+   <widget class="QLabel" name="ID">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>231</width>
-      <height>200</height>
+      <x>150</x>
+      <y>200</y>
+      <width>251</width>
+      <height>61</height>
      </rect>
     </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;欢迎！&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
     </property>
-    <attribute name="label">
-     <string>Page 2</string>
-    </attribute>
+    <property name="text">
+     <string>用户名：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="phoneNum">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>281</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>手机号：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="IDNum">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>375</y>
+      <width>301</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>身份证号：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="credit">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>530</y>
+      <width>241</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>积分：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="money">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>610</y>
+      <width>281</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>余额：</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="editBtn">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>670</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>编辑</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="moneyBtn">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>670</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>充值</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Main">
+    <property name="geometry">
+     <rect>
+      <x>238</x>
+      <y>750</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <weight>50</weight>
+      <bold>false</bold>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>返回主页面</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="English">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>443</y>
+      <width>341</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>英语资历：</string>
+    </property>
    </widget>
   </widget>
  </widget>
