@@ -38,9 +38,14 @@ void taskNew::on_canclBtn_clicked()
     QMessageBox *msgbx=new QMessageBox(this);
     msgbx->setText("你确定要退出吗？这会使编辑的文本清空。");
     msgbx->setWindowTitle("警告");
+    msgbx->setStyleSheet("background:white;font:12pt,\"等线\";");
     QPushButton *ysBtn=new QPushButton(tr("确定"));
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
     QPushButton *moreBtn=new QPushButton(tr("取消"));
     //确定默认按钮
+    moreBtn->setStyleSheet(m_BtnStyle1);
+    moreBtn->setFixedSize(171,51);
     msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
     msgbx->addButton(moreBtn,QMessageBox::ActionRole);
     //按下确认按钮后清空所有信息
@@ -89,9 +94,7 @@ void taskNew::on_confrmBtn_clicked()
         }
         //如果发生错误，输出警告
         else{
-            QMessageBox::warning(this, tr("警告"),
-                               tr("输入日期无效，请重新输入！")
-                              ,tr("确定"));
+            SetWarningBox("输入日期无效，请重新输入！");
             //清空输入的无效日期
             ui->leaderYear->clear();
             ui->leaderMonth->clear();
@@ -125,56 +128,40 @@ void taskNew::showValue(){
 
 bool taskNew::IsEmpty(){
     if(ui->title->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("翻译标题不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("翻译标题不能为空！");
         return true;
     }
     else if(ui->introEdit->toPlainText().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("任务简介不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("任务简介不能为空！");
         return true;
     }
     else if(ui->translateTask->toPlainText().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("翻译内容不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("翻译内容不能为空！");
         return true;
     }
     else if(ui->time->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("任务周期不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("任务周期不能为空！");
         return true;
     }
     else if(ui->leaderYear->text().isEmpty()||ui->leaderMonth->text().isEmpty()||
             ui->leaderDay->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("负责人截止日期不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("负责人截止日期不能为空！");
         return true;
     }
     else if(ui->time->text().toInt()<=0){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("任务周期设定无效，请重新输入！")
-                          ,tr("确定"));
+        SetWarningBox("任务周期设定无效，请重新输入！");
         ui->time->clear();
         ui->time->setFocus();
         return true;
     }
     else if(ui->money->text().toDouble()<=0){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("任务总金额设定无效，请重新输入！")
-                          ,tr("确定"));
+        SetWarningBox("任务总金额设定无效，请重新输入！");
         ui->money->clear();
         ui->money->setFocus();
         return true;
     }
     else if(ui->money->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("任务总金额不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("任务总金额不能为空！");
         return true;
     }
     return false;
@@ -188,7 +175,7 @@ void taskNew::on_Main_clicked()
 }
 
 void taskNew::SetStyle(){
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+    m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
             color: white;   border-radius: 10px; \
             border-style: outset;}"
            "QPushButton:hover{background-color:#198fb6; color: white;}"
@@ -198,8 +185,8 @@ void taskNew::SetStyle(){
             "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
             "QPushButton:pressed{background-color:white;color:#303F9F;}";
 
-   ui->canclBtn->setStyleSheet(BtnStyle1);
-   ui->confrmBtn->setStyleSheet(BtnStyle1);
+   ui->canclBtn->setStyleSheet(m_BtnStyle1);
+   ui->confrmBtn->setStyleSheet(m_BtnStyle1);
    ui->Main->setStyleSheet(BtnStyle2);
    QString ComboBox="QComboBox{background-color:#B2EBF2;"
            "color: black;   border-radius: 10px;}"
@@ -216,4 +203,17 @@ void taskNew::SetStyle(){
    setWindowFlags(Qt::FramelessWindowHint);
    setAttribute(Qt::WA_TranslucentBackground,true);
 
+}
+
+void taskNew::SetWarningBox(QString Text){
+   QMessageBox message(this);
+   message.setIconPixmap(QPixmap(":/images/warning.svg"));
+   message.setStyleSheet("font:12pt,\"等线\";background:white;");
+   message.setText(Text);
+   message.setWindowTitle("警告");
+   QPushButton* ysBtn=new QPushButton("确定");
+   ysBtn->setStyleSheet(m_BtnStyle1);
+   ysBtn->setFixedSize(171,51);
+   message.addButton(ysBtn,QMessageBox::AcceptRole);
+   message.exec();
 }

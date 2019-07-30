@@ -14,25 +14,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    QString EditStyle="QLineEdit{border-radius:2px groove #BDBDBD;border:1px groove #BDBDBD;}";
-    ui->loginBtn->setStyleSheet(BtnStyle1);
-    ui->exitBtn->setStyleSheet(BtnStyle1);
-    ui->usrLineEdit->setStyleSheet(EditStyle);
-    ui->pswLineEdit->setStyleSheet(EditStyle);
-    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
-    "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
-                      "QPushButton:pressed{background-color:white;color:#303F9F;}";
-    ui->RegisterBtn->setStyleSheet(BtnStyle2);
-    setMaximumSize(600,800);
-    setMinimumSize(600,800);
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground,true);
+    SetStyle();
 }
 
 LoginDialog::~LoginDialog()
@@ -51,30 +33,29 @@ LoginDialog::~LoginDialog()
 【更改记录】
 *************************************************************************/
 void LoginDialog::on_loginBtn_clicked()
-{
-    QString idnum=ui->usrLineEdit->text().trimmed();
-    QString pswrdvalue=ui->pswLineEdit->text();
-    int flag=0;
-    for(int i=0;i<g_backUp.m_listUser.m_List.size();i++){
-        if(g_backUp.m_listUser.m_List[i].userWithPasswrd(idnum,pswrdvalue)){
-            accept();
-            flag=1;
-            m_id=idnum;
-            g_backUp.m_User.attachIDToUser(m_id,g_backUp.m_listUser.m_List);
-            close();
-            MainWindow r;
-            r.exec();
-            break;
+{   if(!IsEmpty()){
+        QString idnum=ui->usrLineEdit->text().trimmed();
+        QString pswrdvalue=ui->pswLineEdit->text();
+        int flag=0;
+        for(int i=0;i<g_backUp.m_listUser.m_List.size();i++){
+            if(g_backUp.m_listUser.m_List[i].userWithPasswrd(idnum,pswrdvalue)){
+                accept();
+                flag=1;
+                m_id=idnum;
+                g_backUp.m_User.attachIDToUser(m_id,g_backUp.m_listUser.m_List);
+                close();
+                MainWindow r;
+                r.exec();
+                break;
+            }
+        }
+        if(flag==0){
+              SetWarningBox("用户名或密码错误！");
+              ui->usrLineEdit->clear();
+              ui->pswLineEdit->clear();
+              ui->usrLineEdit->setFocus();
         }
     }
-    if(flag==0){
-          QMessageBox::warning(this, tr("警告"),
-                               tr("用户名或密码错误！"),
-                                QMessageBox::tr("确定"));
-          ui->usrLineEdit->clear();
-          ui->pswLineEdit->clear();
-          ui->usrLineEdit->setFocus();
-       }
 }
 
 /*************************************************************************
@@ -104,15 +85,70 @@ void LoginDialog::on_RegisterBtn_clicked()
 *************************************************************************/
 void LoginDialog::on_exitBtn_clicked()
 {
-    QMessageBox *msgbx=new QMessageBox(this);
-    msgbx->setText("你确定要退出吗？这会使编辑的文本清空。");
-    msgbx->setWindowTitle("警告");
+    SetCanclBox();
+
+}
+
+void LoginDialog::SetStyle(){
+    m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString EditStyle="QLineEdit{border-radius:2px groove #BDBDBD;border:1px groove #BDBDBD;}";
+    ui->loginBtn->setStyleSheet(m_BtnStyle1);
+    ui->exitBtn->setStyleSheet(m_BtnStyle1);
+    ui->usrLineEdit->setStyleSheet(EditStyle);
+    ui->pswLineEdit->setStyleSheet(EditStyle);
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+    "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+                      "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->RegisterBtn->setStyleSheet(BtnStyle2);
+    setMaximumSize(600,800);
+    setMinimumSize(600,800);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
+}
+
+void LoginDialog::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.setWindowTitle("警告");
+    message.exec();
+}
+
+void LoginDialog::SetCanclBox(){
+    QMessageBox msgbx;
+    msgbx.setText("你确定要退出吗？这会使编辑的文本清空。");
+    msgbx.setIconPixmap(QPixmap(":/images/warning.svg"));
     QPushButton *ysBtn=new QPushButton(tr("确定"));
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
     QPushButton *moreBtn=new QPushButton(tr("取消"));
-    msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
-    msgbx->addButton(moreBtn,QMessageBox::ActionRole);
+    moreBtn->setStyleSheet(m_BtnStyle1);
+    moreBtn->setFixedSize(171,51);
+    msgbx.addButton(ysBtn,QMessageBox::AcceptRole);
+    msgbx.addButton(moreBtn,QMessageBox::ActionRole);
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->usrLineEdit,SLOT(setFocus()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->usrLineEdit,SLOT(clear()));
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->pswLineEdit,SLOT(clear()));
-    msgbx->show();
+    msgbx.setWindowTitle("警告");
+    msgbx.setStyleSheet("background:white;font:\"等线\";");
+    msgbx.exec();
+}
+
+bool LoginDialog::IsEmpty(){
+    if(ui->usrLineEdit->text().isEmpty()){
+        SetWarningBox("用户名不能为空！");
+    }
+    else if(ui->pswLineEdit->text().isEmpty()){
+        SetWarningBox("密码不能为空！!");
+    }
 }

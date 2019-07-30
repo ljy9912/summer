@@ -336,9 +336,7 @@ void publisherTask::OnClicked102confrm(int i){
     int iNum=ui->listWidget->currentRow();
     if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[iNum].GetID())){
 
-        QMessageBox::information(this, tr("提示"),
-                           tr("选择负责人成功！")
-                          ,tr("确定"));
+        SetInformBox("选择负责人成功！");
         g_backUp.SelectLeaderDone(m_taskList[iNum],iIdLeader);
 
         close();
@@ -347,9 +345,7 @@ void publisherTask::OnClicked102confrm(int i){
         r.exec();
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("表中无此用户！")
-                          ,tr("确定"));
+        SetWarningBox("表中无此用户！");
         m_nameedit[i].clear();
         m_nameedit[i].setFocus();
     }
@@ -381,16 +377,12 @@ void publisherTask::GetPage102prolong(){
 
 void publisherTask::OnClicked102prolong(int i){
     int iAdd= QInputDialog::getInt(this, "延期","请输入延期天数");
-    if(iAdd>0){
+    if(iAdd>=0){
         g_backUp.Prolong_102(iAdd,m_taskList[i]);
-        QMessageBox::information(this, tr("提示"),
-                           tr("延期成功！")
-                          ,tr("确定"));
+        SetInformBox("延期成功！");
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("输入日期无效！")
-                          ,tr("确定"));
+        SetWarningBox("延期天数不能为负!");
     }
 
 }
@@ -414,9 +406,7 @@ void publisherTask::OnClicked401(int i){
                  moneySum+=(m_table+i)->item(j,3)->text().toDouble();
             }
             else{
-                QMessageBox::warning(this, tr("警告"),
-                                   tr("用户酬金不能为空！")
-                                  ,tr("确定"));
+                SetWarningBox("用户酬金不能为空！");
                 iFlag=0;
             }
         }
@@ -426,9 +416,7 @@ void publisherTask::OnClicked401(int i){
                                                                 "余额不足，请充值！");
                 g_backUp.m_User.AddMoney(add);
             }
-            QMessageBox::information(this, tr("提示"),
-                               tr("任务确认成功！")
-                              ,tr("确定"));
+            SetInformBox("任务确认成功！");
             g_backUp.m_User.LoseMoney(moneySum);
             //将负责人的余额加入表中
             double dMyMoney=(m_leaderMoney+i)->text().toDouble();
@@ -450,9 +438,7 @@ void publisherTask::OnClicked401(int i){
             r.exec();
         }
         else{
-            QMessageBox::warning(this, tr("警告"),
-                               tr("负责人金额不能为空！")
-                              ,tr("确定"));
+            SetWarningBox("负责人金额不能为空！");
         }
     }
 }
@@ -531,4 +517,30 @@ void publisherTask::on_Main_clicked()
     close();
     MainWindow r;
     r.exec();
+}
+
+void publisherTask::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}
+
+void publisherTask::SetInformBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/information.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("提示");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
 }

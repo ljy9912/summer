@@ -91,9 +91,7 @@ void taskPublish::EditTask(taskPublisher myNewTask){
 *************************************************************************/
 void taskPublish::on_publishBtn_clicked()
 {
-    QMessageBox::information(this, tr("提示"),
-                       tr("任务已发布！")
-                      ,tr("确定"));
+    SetInformBox("任务已发布！");
 
     g_backUp.TaskPublish(myTask);
     close();
@@ -102,14 +100,27 @@ void taskPublish::on_publishBtn_clicked()
 }
 
 void taskPublish::SetStyle(){
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+    m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
             color: white;   border-radius: 10px; \
             border-style: outset;}"
            "QPushButton:hover{background-color:#198fb6; color: white;}"
           "QPushButton:pressed{background-color:#3F51B5;\
                            border-style: inset; }";
-    ui->publishBtn->setStyleSheet(BtnStyle1);
-    ui->editBtn->setStyleSheet(BtnStyle1);
+    ui->publishBtn->setStyleSheet(m_BtnStyle1);
+    ui->editBtn->setStyleSheet(m_BtnStyle1);
     setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground,true);
+}
+
+void taskPublish::SetInformBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/information.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("提示");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
 }

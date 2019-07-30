@@ -34,6 +34,10 @@ private slots:
 private:
     Ui::Register *ui;
     registerConfirm *dlg;
+    void SetStyle();
+    void SetCanclBox();
+    QString m_BtnStyle1;
+    void SetWarningBox(QString text);
 
 };
 

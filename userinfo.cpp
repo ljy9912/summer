@@ -18,20 +18,7 @@ userInfo::userInfo(QWidget *parent) :
     ui(new Ui::userInfo)
 {
     ui->setupUi(this);
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
-          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
-          "QPushButton:pressed{background-color:white;color:#303F9F;}";
-    ui->editBtn->setStyleSheet(BtnStyle1);
-    ui->moneyBtn->setStyleSheet(BtnStyle1);
-    ui->Main->setStyleSheet(BtnStyle2);
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground,true);
+    SetStyle();
 }
 
 userInfo::~userInfo()
@@ -84,19 +71,26 @@ void userInfo::on_editBtn_clicked()
 *************************************************************************/
 void userInfo::on_moneyBtn_clicked()
 {
-   double add= QInputDialog::getDouble(this, "充值",
-                                                   "请输入充值钱数");
-
-   int i=g_backUp.m_listUser.SearchInList(g_backUp.m_User);
-   double money=g_backUp.m_listUser.m_List[i].GetMoney();
-   money+=add;
-   g_backUp.m_listUser.m_List[i].EditMoney(money);
-   g_backUp.m_User.EditMoney(money);
-   ui->money->setText(tr("余额：%1").arg(money));
-   close();
-   userInfo r;
-   r.showValue();
-   r.exec();
+    QInputDialog dialog;
+    dialog.setStyleSheet("background:white;font:12pt,\"等线\";");
+    dialog.setTextValue("请输入充值数");
+    dialog.setWindowTitle("充值");
+    double add=dialog.getDouble(this,"充值","请输入充值数");
+   if(add>=0){
+       int i=g_backUp.m_listUser.SearchInList(g_backUp.m_User);
+       double money=g_backUp.m_listUser.m_List[i].GetMoney();
+       money+=add;
+       g_backUp.m_listUser.m_List[i].EditMoney(money);
+       g_backUp.m_User.EditMoney(money);
+       ui->money->setText(tr("余额：%1").arg(money));
+       close();
+       userInfo r;
+       r.showValue();
+       r.exec();
+   }
+   else{
+       SetWarningBox("充值钱数不能为负！");
+   }
 }
 
 /*************************************************************************
@@ -114,4 +108,34 @@ void userInfo::on_Main_clicked()
     close();
     MainWindow r;
     r.exec();
+}
+
+void userInfo::SetStyle(){
+    m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->editBtn->setStyleSheet(m_BtnStyle1);
+    ui->moneyBtn->setStyleSheet(m_BtnStyle1);
+    ui->Main->setStyleSheet(BtnStyle2);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
+}
+
+void userInfo::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
 }

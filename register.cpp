@@ -14,20 +14,7 @@ Register::Register(QWidget *parent) :
     ui(new Ui::Register)
 {
     ui->setupUi(this);
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
-          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
-          "QPushButton:pressed{background-color:white;color:#303F9F;}";
-    ui->confrmbtn->setStyleSheet(BtnStyle1);
-    ui->canclbtn->setStyleSheet(BtnStyle1);
-    ui->pushButton->setStyleSheet(BtnStyle2);
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground,true);
+    SetStyle();
 
 
 }
@@ -50,17 +37,7 @@ Register::~Register()
 *************************************************************************/
 void Register::on_canclbtn_clicked()
 {
-    QMessageBox *msgbx=new QMessageBox(this);
-    msgbx->setText("你确定要退出吗？这会使编辑的文本清空。");
-    msgbx->setWindowTitle("警告");
-    QPushButton *ysBtn=new QPushButton(tr("确定"));
-    QPushButton *moreBtn=new QPushButton(tr("取消"));
-    msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
-    msgbx->addButton(moreBtn,QMessageBox::ActionRole);
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->nameedit,SLOT(setFocus()));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->nameedit,SLOT(clear()));
-    QObject::connect(ysBtn,SIGNAL(clicked()),ui->pswrdedit,SLOT(clear()));
-    msgbx->show();
+    SetCanclBox();
 }
 
 
@@ -80,18 +57,14 @@ void Register::on_confrmbtn_clicked()
     QString confirmpswrdvalue=ui->cnfrmpswrdedit->text();
     if(!IsEmpty()){
         if(passwordvalue!=confirmpswrdvalue){
-            QMessageBox::warning(this, tr("警告"),
-                               tr("密码与确认密码不符，请重新输入！")
-                              ,tr("确定"));
+            SetWarningBox("密码与确认密码不符，请重新输入！");
             ui->pswrdedit->clear();
             ui->cnfrmpswrdedit->clear();
             ui->pswrdedit->setFocus();
             }
             else{
               if(g_backUp.m_listUser.NameExist(ui->nameedit->text())){
-                  QMessageBox::warning(this, tr("警告"),
-                                     tr("用户名已被注册！")
-                                    ,tr("确定"));
+                  SetWarningBox("用户名已被注册！");
                   ui->nameedit->clear();
                   ui->nameedit->setFocus();
                 }
@@ -124,28 +97,69 @@ void Register::on_pushButton_clicked()
 
 bool Register::IsEmpty(){
     if(ui->nameedit->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("用户名不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("用户名不能为空！");
         return true;
     }
     else if(ui->EnglishEdit->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("英语资历不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("英语资历不能为空！");
         return true;
     }
     else if(ui->pswrdedit->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("密码不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("密码不能为空！");
         return true;
     }
     else if(ui->cnfrmpswrdedit->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("确认密码不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("确认密码不能为空！");
         return true;
     }
     return false;
+}
+
+void Register::SetStyle(){
+    m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->confrmbtn->setStyleSheet(m_BtnStyle1);
+    ui->canclbtn->setStyleSheet(m_BtnStyle1);
+    ui->pushButton->setStyleSheet(BtnStyle2);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
+}
+
+void Register::SetCanclBox(){
+    QMessageBox *msgbx=new QMessageBox(this);
+    msgbx->setText("你确定要退出吗？这会使编辑的文本清空。");
+    msgbx->setIconPixmap(QPixmap(":/images/warning.svg"));
+    msgbx->setWindowTitle("警告");
+    QPushButton *ysBtn=new QPushButton(tr("确定"));
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    QPushButton *moreBtn=new QPushButton(tr("取消"));
+    moreBtn->setStyleSheet(m_BtnStyle1);
+    moreBtn->setFixedSize(171,51);
+    msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
+    msgbx->addButton(moreBtn,QMessageBox::ActionRole);
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->nameedit,SLOT(setFocus()));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->nameedit,SLOT(clear()));
+    QObject::connect(ysBtn,SIGNAL(clicked()),ui->pswrdedit,SLOT(clear()));
+    msgbx->show();
+}
+
+void Register::SetWarningBox(QString text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(text);
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.setWindowTitle("警告");
+    message.exec();
 }

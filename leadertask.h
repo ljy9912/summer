@@ -9,6 +9,7 @@
 #include "backup.h"
 #include <QTabWidget>
 #include <QListWidget>
+#include <QMessageBox>
 
 namespace Ui {
 class leaderTask;
@@ -84,6 +85,8 @@ private:
 
     void SetStyle();
     void SetTabStyle(QTabWidget* tab);
+    void SetInformBox(QString text);
+    void SetWarningBox(QString Text);
 };
 
 #endif // LEADERTASK_H

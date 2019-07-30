@@ -30,6 +30,8 @@ private:
     Ui::taskPublish *ui;
     taskPublisher myTask;
     void SetStyle();
+    void SetInformBox(QString text);
+    QString m_BtnStyle1;
 
 
 signals:

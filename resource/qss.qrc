@@ -50,5 +50,7 @@
         <file>images/edit.svg</file>
         <file>images/comment.svg</file>
         <file>background/messagebox.png</file>
+        <file>images/information.svg</file>
+        <file>images/warning.svg</file>
     </qresource>
 </RCC>

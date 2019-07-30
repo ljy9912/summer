@@ -482,14 +482,10 @@ void tasksPublished::OnClicked101(int i){
     //判断用户是否已经报过名了
     if(!g_backUp.m_listSignUpForLeader.UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
         if(g_backUp.m_User.GetRewrdPoint()<100){
-            QMessageBox::warning(this, tr("警告"),
-                               tr("积分不足，请努力完成更多翻译任务后再来申请吧！")
-                              ,tr("确定"));
+            SetWarningBox("积分不足，请努力完成更多翻译任务后再来申请吧！");
         }
         else{
-            QMessageBox::information(this, tr("提示"),
-                               tr("报名成功！")
-                              ,tr("确定"));
+            SetInformBox("报名成功！");
             //后台执行负责人报名操作
             g_backUp.SignUpForLeader(i);
             close();
@@ -499,9 +495,7 @@ void tasksPublished::OnClicked101(int i){
         }
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("您已经报过名了！")
-                          ,tr("确定"));
+        SetWarningBox("您已经报过名了！");
     }
 }
 
@@ -510,9 +504,7 @@ void tasksPublished::OnClicked202(int i){
     //判断用户是否已经报过名了
     if(!g_backUp.m_listSignUpForTranslater.UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
 
-        QMessageBox::information(this, tr("提示"),
-                           tr("报名成功！")
-                          ,tr("确定"));
+        SetInformBox("报名成功！");
         //后台执行译者报名操作
         g_backUp.SignUpForTranslaterDone(i);
         close();
@@ -521,9 +513,7 @@ void tasksPublished::OnClicked202(int i){
         r.exec();
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("您已经报过名了！")
-                          ,tr("确定"));
+        SetWarningBox("您已经报过名了！");
     }
 }
 
@@ -597,3 +587,28 @@ void tasksPublished::SetTabStyle(QTabWidget* tab){
                                  "font:12pt,\"等线\";}");
 }
 
+void tasksPublished::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}
+
+void tasksPublished::SetInformBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/information.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("提示");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}

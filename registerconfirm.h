@@ -24,7 +24,7 @@ public:
 
 private:
     Ui::registerConfirm *ui;
-
+    void SetStyle();
 
 private slots:
     void on_pushButton_clicked();

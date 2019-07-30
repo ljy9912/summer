@@ -241,9 +241,7 @@ void leaderTask::GetPage201(){
 void leaderTask::OnClicked_201(int i){
     //判断输入是否有空，如果有，提示重新输入
     if(m_yearEdit[i].text().isEmpty()||m_monthEdit[i].text().isEmpty()||m_dayEdit[i].text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("截止日期不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("截止日期不能为空！");
     }
     //如果输入日期没有空，判断输入日期是否有效
     else{
@@ -255,9 +253,7 @@ void leaderTask::OnClicked_201(int i){
         if(time.isValid()){
             //如果输入有效，存储并提示设置日期成功
 
-            QMessageBox::information(this, tr("提示"),
-                               tr("译者报名截止时间设置成功！")
-                              ,tr("确定"));
+            SetInformBox("译者报名截止时间设置成功！");
             g_backUp.SetTranslaterDone(m_taskList[i],iTranslaterYear,iTranslaterMonth,iTranslaterDay);
             close();
             leaderTask r;
@@ -266,9 +262,7 @@ void leaderTask::OnClicked_201(int i){
         }
         //如果输入无效，提示重新输入，并清空用户输入的数据
         else{
-            QMessageBox::warning(this, tr("警告"),
-                               tr("输入的日期无效，请重新输入！")
-                              ,tr("确定"));
+            SetWarningBox("输入的日期无效，请重新输入！");
             m_yearEdit[i].clear();
             m_monthEdit[i].clear();
             m_dayEdit[i].clear();
@@ -451,9 +445,7 @@ void leaderTask::OnClicked_203confrm(int i){
                         iFlag=1;;
                     }
                     else{
-                        QMessageBox::warning(this, tr("警告"),
-                                           tr("输入日期不正确，请重新输入！")
-                                          ,tr("确定"));
+                        SetWarningBox("输入日期不正确，请重新输入！");
                         m_table[i]->item(j,4)->setText("");
                         close();
                         leaderTask r;
@@ -463,9 +455,7 @@ void leaderTask::OnClicked_203confrm(int i){
                     }
                 }
                 else{
-                    QMessageBox::warning(this, tr("警告"),
-                                       tr("输入日期格式不正确，请重新输入！")
-                                      ,tr("确定"));
+                    SetWarningBox("输入日期格式不正确，请重新输入！");
                     m_table[i]->item(j,4)->setText("");
                     leaderTask r;
                     r.ShowValue();
@@ -474,9 +464,7 @@ void leaderTask::OnClicked_203confrm(int i){
                 }
             }
             else{
-                QMessageBox::warning(this, tr("警告"),
-                                   tr("输入日期不完整！")
-                                  ,tr("确定"));
+                SetWarningBox("输入日期不完整！");
                 break;
             }
         }
@@ -489,9 +477,7 @@ void leaderTask::OnClicked_203confrm(int i){
         }
     }
     if(iFlag==1){
-        QMessageBox::information(this, tr("提示"),
-                           tr("分配任务成功！")
-                          ,tr("确定"));
+        SetInformBox("分配任务成功！");
 
         g_backUp.SelectTranslaterDone_Leader(m_taskList[i]);
         //改变任务状态为译者开始翻译状态
@@ -502,19 +488,17 @@ void leaderTask::OnClicked_203confrm(int i){
         r.exec();
     }
     else if(iFlag==0){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("并未分配任务！")
-                          ,tr("确定"));
+        SetWarningBox("并未分配任务！");
     }
 }
 
 void leaderTask::OnClicked_203prolong(int i){
     int iAdd= QInputDialog::getInt(this, "延期","请输入延期天数");
-    if(iAdd>0){
-        QMessageBox::information(this, tr("提示"),
-                           tr("延期成功！")
-                          ,tr("确定"));
-
+    if(iAdd>=0){
+        SetInformBox("延期成功！");
+    }
+    else{
+        SetWarningBox("延期天数不能为负！");
     }
 }
 
@@ -708,9 +692,7 @@ j参数
 【更改记录】
 *************************************************************************/
 void leaderTask::OnClicked_301save(int i,int j){
-    QMessageBox::information(this, tr("提示"),
-                       tr("评价暂存成功！")
-                      ,tr("确定"));
+    SetInformBox("评价暂存成功！");
     //存储译者暂存的评价
     m_translaterTaskList[i][j].EditCommentEditting((m_NewComment[i]+j)->toPlainText());
     //将新保存的信息存入内存
@@ -732,9 +714,7 @@ j参数
 *************************************************************************/
 void leaderTask::OnClicked_301confrm(int i,int j){
     if(!(m_NewComment[i]+j)->toPlainText().isEmpty()){
-        QMessageBox::information(this, tr("提示"),
-                           tr("评价成功！")
-                          ,tr("确定"));
+        SetInformBox("评价成功！");
         QString newComment=(m_NewComment[i]+j)->toPlainText();
 
         //向译者和负责人发送信息提醒
@@ -746,9 +726,7 @@ void leaderTask::OnClicked_301confrm(int i,int j){
         r.exec();
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("评价不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("评价不能为空！");
     }
 }
 
@@ -762,9 +740,7 @@ j参数
 【更改记录】
 *************************************************************************/
 void leaderTask::OnClicked_301end(int i,int j){
-    QMessageBox::information(this, tr("提示"),
-                       tr("收稿成功！")
-                      ,tr("确定"));
+    SetInformBox("收稿成功！");
     //更改任务状态
 
     g_backUp.EndTranslateDone_Translater(m_taskList[i],m_translaterTaskList[i][j]);
@@ -873,9 +849,7 @@ void leaderTask::GetPage302save(){
 【更改记录】
 *************************************************************************/
 void leaderTask::OnClicked_302save(int i){
-    QMessageBox::information(this, tr("提示"),
-                       tr("译文整合暂存成功！")
-                      ,tr("确定"));
+    SetInformBox("译文整合暂存成功！");
     m_taskList[i].EditResultEditting((m_myResult+i)->toPlainText());
     g_backUp.m_listTaskLeader.Update(m_taskList[i]);
     close();
@@ -912,9 +886,7 @@ void leaderTask::GetPage302confrm(){
 *************************************************************************/
 void leaderTask::OnClicked_302confrm(int i){
     if(!(m_myResult+i)->toPlainText().isEmpty()){
-        QMessageBox::information(this, tr("提示"),
-                           tr("译文提交成功！")
-                          ,tr("确定"));
+        SetInformBox("译文提交成功！");
         QString newResult=(m_myResult+i)->toPlainText();
 
         //向负责人和发布者发送消息
@@ -925,9 +897,8 @@ void leaderTask::OnClicked_302confrm(int i){
         r.exec();
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("整合译文不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("整合译文不能为空！");
+
     }
 }
 
@@ -1014,4 +985,30 @@ void leaderTask::SetTabStyle(QTabWidget* tab){
                                  "font:12pt,\"等线\";border-bottom:2px solid rgb(0, 188, 212);}"
                                  "QTabBar::hover:{color:rgb(0, 188, 212);background:transparent;"
                                  "font:12pt,\"等线\";}");
+}
+
+void leaderTask::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}
+
+void leaderTask::SetInformBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/information.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("提示");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
 }

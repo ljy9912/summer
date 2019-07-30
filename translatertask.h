@@ -53,6 +53,8 @@ private:
 
     void SetTableStyle(QTableWidget* table);
     void SetListStyle(QListWidget* list);
+    void SetWarningBox(QString text);
+    void SetInformBox(QString text);
 
     void SetStyle();
 };

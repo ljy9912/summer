@@ -35,6 +35,8 @@ private:
 
     bool IsEmpty();
     void SetStyle();
+    QString m_BtnStyle1;
+    void SetWarningBox(QString Text);
 };
 
 #endif // PUBLISHNEW_H

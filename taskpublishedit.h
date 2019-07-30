@@ -28,6 +28,8 @@ private slots:
 private:
     Ui::taskPublishEdit *ui;
     taskPublisher myTask;
+    QString m_BtnStyle1;
+    void SetWarningBox(QString text);
 
     bool IsEmpty();
     void SetStyle();

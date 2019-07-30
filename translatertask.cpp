@@ -233,9 +233,7 @@ void translaterTask::on_Main_clicked()
 【更改记录】
 *************************************************************************/
 void translaterTask::OnClicked_301save(int i){
-    QMessageBox::information(this, tr("提示"),
-                       tr("翻译暂存成功！")
-                      ,tr("确定"));
+    SetInformBox("翻译暂存成功！");
 
     QString myResult=(m_result+i)->toPlainText();
     m_taskList[i].EditResultEditting(myResult);
@@ -256,9 +254,7 @@ void translaterTask::OnClicked_301save(int i){
 *************************************************************************/
 void translaterTask::OnClicked_301confrm(int i){
     if(!(m_result+i)->toPlainText().isEmpty()){
-        QMessageBox::information(this, tr("提示"),
-                           tr("翻译提交成功！")
-                          ,tr("确定"));
+        SetInformBox("翻译提交成功！");
         QString myResult=(m_result+i)->toPlainText();
 
         g_backUp.SubmitResultDone(m_taskList[i],myResult);
@@ -268,9 +264,7 @@ void translaterTask::OnClicked_301confrm(int i){
         r.exec();
     }
     else{
-        QMessageBox::warning(this, tr("警告"),
-                           tr("提交译文不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("提交译文不能为空！");
     }
 }
 
@@ -362,3 +356,28 @@ void translaterTask::SetListStyle(QListWidget* list){
                         "QListWidget::item:selected{background:#03A9F4; color:white; }");
 }
 
+void translaterTask::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}
+
+void translaterTask::SetInformBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/information.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("提示");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}

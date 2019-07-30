@@ -30,6 +30,10 @@ private slots:
 
 private:
     Ui::userInfoEdit *ui;
+    void SetStyle();
+    void SetWarningBox(QString Text);
+    void SetInformBox(QString Text);
+    QString m_BtnStyle1;
 
 };
 

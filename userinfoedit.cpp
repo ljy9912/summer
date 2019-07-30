@@ -15,20 +15,7 @@ userInfoEdit::userInfoEdit(QWidget *parent) :
     ui(new Ui::userInfoEdit)
 {
     ui->setupUi(this);
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
-          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
-          "QPushButton:pressed{background-color:white;color:#303F9F;}";
-    ui->confrmBtn->setStyleSheet(BtnStyle1);
-    ui->canclBtn->setStyleSheet(BtnStyle1);
-    ui->pushButton_3->setStyleSheet(BtnStyle2);
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground,true);
+    SetStyle();
 }
 
 userInfoEdit::~userInfoEdit()
@@ -83,7 +70,12 @@ void userInfoEdit::on_canclBtn_clicked()
     msgbx->setText("你确定要退出吗？这会使编辑的文本清空。");
     msgbx->setWindowTitle("警告");
     QPushButton *ysBtn=new QPushButton(tr("确定"));
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
     QPushButton *moreBtn=new QPushButton(tr("取消"));
+    moreBtn->setStyleSheet(m_BtnStyle1);
+    moreBtn->setFixedSize(171,51);
+    msgbx->setStyleSheet("background:white;font:12pt,\"等线\";");
     msgbx->addButton(ysBtn,QMessageBox::AcceptRole);
     msgbx->addButton(moreBtn,QMessageBox::ActionRole);
     QObject::connect(ysBtn,SIGNAL(clicked()),ui->phoneEdit,SLOT(setText(tr("手机号：%1").arg(g_backUp.m_User.GetPhoneNum()))));
@@ -105,9 +97,7 @@ void userInfoEdit::on_confrmBtn_clicked()
 {
     if(!IsEmpty()){
         g_backUp.UserInfoEdit(ui->ID->text(),ui->phoneEdit->text(),ui->EnglishEdit->text());
-        QMessageBox::information(this, tr("提示"),
-                           tr("信息修改成功！")
-                          ,tr("确定"));
+        SetInformBox("信息修改成功！");
         close();
         userInfo r;
         r.showValue();
@@ -118,10 +108,51 @@ void userInfoEdit::on_confrmBtn_clicked()
 
 bool userInfoEdit::IsEmpty(){
     if(ui->EnglishEdit->text().isEmpty()){
-        QMessageBox::warning(this, tr("警告"),
-                           tr("英语资历不能为空！")
-                          ,tr("确定"));
+        SetWarningBox("英语资历不能为空！");
         return true;
     }
     return false;
+}
+
+void userInfoEdit::SetStyle(){
+    m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->confrmBtn->setStyleSheet(m_BtnStyle1);
+    ui->canclBtn->setStyleSheet(m_BtnStyle1);
+    ui->pushButton_3->setStyleSheet(BtnStyle2);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
+}
+
+void userInfoEdit::SetWarningBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
+}
+
+void userInfoEdit::SetInformBox(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/information.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("提示");
+    QPushButton* ysBtn=new QPushButton("确定");
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.exec();
 }

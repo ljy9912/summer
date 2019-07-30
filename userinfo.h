@@ -26,6 +26,9 @@ private slots:
 private:
     Ui::userInfo *ui;
     QList<Message> m_messageList;
+    void SetStyle();
+    void SetWarningBox(QString text);
+    QString m_BtnStyle1;
 
 signals:
     void dlgreturn(int);

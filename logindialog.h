@@ -18,6 +18,7 @@ class LoginDialog : public QDialog
 private:
     Ui::LoginDialog *ui;
     QString m_id;
+    QString m_BtnStyle1;
 
 
 public:
@@ -30,6 +31,11 @@ private slots:
 
     void on_RegisterBtn_clicked();
     void on_exitBtn_clicked();
+
+    void SetStyle();
+    void SetWarningBox(QString text);
+    void SetCanclBox();
+    bool IsEmpty();
 };
 
 #endif // LOGINDIALOG_H

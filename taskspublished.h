@@ -48,6 +48,8 @@ private:
     void SetTableStyle(QTableWidget* table);
     void SetListStyle(QListWidget* list);
     void SetTabStyle(QTabWidget* tab);
+    void SetWarningBox(QString Text);
+    void SetInformBox(QString Text);
 
     void SetStyle();
     QString m_BtnStyle1;
