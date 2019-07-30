@@ -6,45 +6,72 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>862</width>
-    <height>601</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QListWidget" name="listWidget">
+  <property name="styleSheet">
+   <string notr="true">#frame{border-image: url(:/background/leadertask.png);
+border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;}</string>
+  </property>
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>251</width>
-     <height>571</height>
+     <x>0</x>
+     <y>0</y>
+     <width>1921</width>
+     <height>1081</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QStackedWidget" name="stackedWidget">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>10</y>
-     <width>501</width>
-     <height>471</height>
-    </rect>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-  </widget>
-  <widget class="QPushButton" name="main">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>530</y>
-     <width>131</width>
-     <height>41</height>
-    </rect>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="text">
-    <string>返回主页面</string>
-   </property>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>50</y>
+      <width>911</width>
+      <height>901</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Main">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>1000</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>返回主页面</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>40</y>
+      <width>431</width>
+      <height>981</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

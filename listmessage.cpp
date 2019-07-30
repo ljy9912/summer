@@ -49,3 +49,12 @@ int listMessage::GetID(){
         return m_List.last().GetID()+1;
     }
 }
+
+void listMessage::Update(Message myMessage){
+    for(int i=0;i<m_List.size();i++){
+        if(myMessage.GetID()==m_List[i].GetID()){
+            m_List[i]=myMessage;
+            break;
+        }
+    }
+}

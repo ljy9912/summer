@@ -155,6 +155,12 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>编辑</string>
     </property>
@@ -167,6 +173,12 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
       <width>171</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>发布</string>
@@ -200,6 +212,12 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
       <height>291</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
    </widget>
    <widget class="QTextBrowser" name="introBrowser">
     <property name="geometry">
@@ -209,6 +227,12 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
       <width>491</width>
       <height>201</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
     </property>
    </widget>
   </widget>

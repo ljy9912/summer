@@ -136,7 +136,7 @@ const QList<taskPublisher> SqlQuery::GetTasks(){
         myTask.attachIDToTask(id);
         //myTask.EditFlag(203);
         //listTask.append(myTask);
-        myTask.EditFlag(401);
+        //myTask.EditFlag(101);
         //myTask.EditLeaderDay(25);
         listTask.append(myTask);
     }
@@ -158,6 +158,7 @@ const QList<signUpForLeader> SqlQuery::GetSignUpForLeader(){
         signUpForLeader myLeader;
         myLeader.attachIDToUser(id);
         //myLeader.EditFlag(1);
+        //myLeader.EditIDTask(4);
         listLeader.append(myLeader);
         //listLeader.append(myLeader);
     }
@@ -195,7 +196,7 @@ const QList<taskLeader> SqlQuery::GetTaskLeader(){
         int id=query.value(0).toInt();
         taskLeader myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlag(301);
+        //myTask.EditFlag(203);
         //myTask.EditTranslaterDay(25);
         listTask.append(myTask);
     }
@@ -411,17 +412,19 @@ void SqlQuery::saveTaskTranslater(QList<taskTranslater> listTask){
 void SqlQuery::saveMessage(QList<Message> messageList){
     query.exec("delete from message");
     for(int i=0;i<messageList.size();i++){
-        query.prepare("insert into message (id,title,content,iduser,flag) values(?,?,?,?,?)");
-        query.addBindValue(messageList[i].GetID());
-        query.addBindValue(messageList[i].GetTitle());
-        query.addBindValue(messageList[i].GetContent());
-        query.addBindValue(messageList[i].GetUser());
-        query.addBindValue(messageList[i].GetFlag());
-        if(!query.exec()){
-            qDebug()<<query.lastError();
-        }
-        else{
-            qDebug()<<"message save";
+        if(messageList[i].GetFlag()==0){
+            query.prepare("insert into message (id,title,content,iduser,flag) values(?,?,?,?,?)");
+            query.addBindValue(messageList[i].GetID());
+            query.addBindValue(messageList[i].GetTitle());
+            query.addBindValue(messageList[i].GetContent());
+            query.addBindValue(messageList[i].GetUser());
+            query.addBindValue(messageList[i].GetFlag());
+            if(!query.exec()){
+                qDebug()<<query.lastError();
+            }
+            else{
+                qDebug()<<"message save";
+            }
         }
     }
 }

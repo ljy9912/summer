@@ -14,6 +14,7 @@
 #include "sqlquery.h"
 #include <QDate>
 #include <QInputDialog>
+#include <QScrollBar>
 
 
 leaderTask::leaderTask(QWidget *parent) :
@@ -21,7 +22,7 @@ leaderTask::leaderTask(QWidget *parent) :
     ui(new Ui::leaderTask)
 {
     ui->setupUi(this);
-
+    SetStyle();
 }
 
 leaderTask::~leaderTask()
@@ -66,6 +67,10 @@ leaderTask::~leaderTask()
     m_NewComment=NULL;
     delete[] m_myResult;
     m_myResult=NULL;
+    delete[]m_translaterTaskList;
+    m_translaterTaskList=NULL;
+    delete[]m_translaterList;
+    m_translaterList=NULL;
 }
 
 
@@ -90,6 +95,8 @@ void leaderTask::ShowValue(){
     m_endBtn=new QPushButton*[m_taskList.size()];
     m_myResult=new QTextEdit[m_taskList.size()];
     m_prolongBtn=new QPushButton[m_taskList.size()];
+    m_translaterTaskList=new QList<taskTranslater>[m_taskList.size()];
+    m_translaterList=new QList<signUpForTranslater>[m_taskList.size()];
     //分任务状态显示不同页面的详细信息
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
@@ -125,11 +132,14 @@ void leaderTask::Show201(int i){
     m_iPage=i;
     m_confrmBtn[i]=new QPushButton(tr("确定"));
     //在页面左边的listWidget中添加新的item
-    ui->listWidget->insertItem(i,tr("<设定译者招募结束日期>%1").arg(m_taskList[i].GetTitle()));
+    QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/time.svg"),tr("<设定译者招募结束日期>%1").arg(m_taskList[i].GetTitle()));
+    ui->listWidget->insertItem(i,item);
     //声明需要的页面的控件
     QWidget *window=new QWidget();
     QLabel *inform1=new QLabel(tr("恭喜成为负责人！请设定译者招募结束日期"));
+    inform1->setStyleSheet(m_LabelStyle);
     QLabel *inform2=new QLabel(tr("翻译任务详情如下："));
+    inform1->setStyleSheet(m_LabelStyle);
     QLabel *taskClass;
     if(m_taskList[i].GetTaskClass()==0){
         taskClass=new QLabel(tr("翻译性质：中译英"));
@@ -137,17 +147,38 @@ void leaderTask::Show201(int i){
     else{
         taskClass=new QLabel(tr("翻译性质：英译中"));
     }
+    taskClass->setStyleSheet(m_LabelStyle);
     QLabel* title=new QLabel(tr("翻译标题：%1").arg(m_taskList[i].GetTitle()));
+    title->setStyleSheet(m_LabelStyle);
     QLabel *intro=new QLabel(tr("任务简介：%1").arg(m_taskList[i].GetIntroduction()));
+    intro->setStyleSheet(m_LabelStyle);
     QLabel *tasks=new QLabel(tr("翻译内容：%1").arg(m_taskList[i].GetTask()));
+    tasks->setStyleSheet(m_LabelStyle);
     QLabel *time=new QLabel(tr("任务周期：%1天").arg(m_taskList[i].GetTime()));
-    QLabel *date1=new QLabel(tr("任务开始日期：%1年%2月%3日").arg(m_taskList[i].GetStartYear()).arg(m_taskList[i].GetStartMonth()).arg(m_taskList[i].GetStartDay()));
+    time->setStyleSheet(m_LabelStyle);
+    QLabel *date1=new QLabel(tr("任务开始日期：%1年%2月%3日").arg(m_taskList[i].GetStartYear())
+                             .arg(m_taskList[i].GetStartMonth())
+                             .arg(m_taskList[i].GetStartDay()));
+    date1->setStyleSheet(m_LabelStyle);
     QLabel *money=new QLabel(tr("任务总金额：%1元").arg(m_taskList[i].GetMoney()));
+    money->setStyleSheet(m_LabelStyle);
     QLabel *date2=new QLabel(tr("译者招募结束日期："));
+    date2->setStyleSheet(m_LabelStyle);
     QLabel *year=new QLabel(tr("年"));
+    year->setStyleSheet(m_LabelStyle);
     QLabel *month=new QLabel(tr("月"));
+    month->setStyleSheet(m_LabelStyle);
     QLabel *day=new QLabel(tr("日"));
+    day->setStyleSheet(m_LabelStyle);
+    (m_yearEdit+i)->setFixedHeight(51);
+    (m_monthEdit+i)->setFixedHeight(51);
+    (m_dayEdit+i)->setFixedHeight(51);
+    (m_yearEdit+i)->setStyleSheet(m_LineEditStyle);
+    (m_monthEdit+i)->setStyleSheet(m_LineEditStyle);
+    (m_dayEdit+i)->setStyleSheet(m_LineEditStyle);
     m_confrmBtn[i]->setText(tr("确定"));
+    m_confrmBtn[i]->setStyleSheet(m_BtnStyle1);
+    m_confrmBtn[i]->setFixedSize(171,51);
     //在水平布局当中加入控件，为显示日期布局
     QHBoxLayout *date=new QHBoxLayout;
     date->addWidget(date2);
@@ -169,9 +200,11 @@ void leaderTask::Show201(int i){
     layout->addWidget(date1);
     layout->addWidget(money);
     layout->addLayout(date);
-    layout->addWidget(m_confrmBtn[i]);
+    layout->addSpacing(30);
+    layout->addWidget(m_confrmBtn[i],0,Qt::AlignCenter);
     //设定窗口为垂直布局，内嵌水平布局
     window->setLayout(layout);
+    window->setStyleSheet("background-color:white;");
     //将窗口添加到stackedWidget中
     ui->stackedWidget->addWidget(window);
     //连接确定按钮和getPage201函数
@@ -188,8 +221,10 @@ void leaderTask::Show201(int i){
 *************************************************************************/
 void leaderTask::GetPage201(){
     for(int i=0;i<m_taskList.size();i++){
-        if(m_confrmBtn[i]->isDown()){
-            OnClicked_201(i);
+        if(m_taskList[i].GetFlag()==201){
+            if(m_confrmBtn[i]->isDown()){
+                OnClicked_201(i);
+            }
         }
     }
 }
@@ -223,8 +258,7 @@ void leaderTask::OnClicked_201(int i){
             QMessageBox::information(this, tr("提示"),
                                tr("译者报名截止时间设置成功！")
                               ,tr("确定"));
-            int iNum=ui->listWidget->currentRow();
-            g_backUp.SetTranslaterDone(m_taskList[iNum],iTranslaterYear,iTranslaterMonth,iTranslaterDay);
+            g_backUp.SetTranslaterDone(m_taskList[i],iTranslaterYear,iTranslaterMonth,iTranslaterDay);
             close();
             leaderTask r;
             r.ShowValue();
@@ -253,13 +287,17 @@ void leaderTask::OnClicked_201(int i){
 *************************************************************************/
 void leaderTask::Show202(int i){
     //向listWidget中插入新的item
-    ui->listWidget->insertItem(i,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetTitle()));
+    QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/baomingblue.svg")
+                                              ,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetTitle()));
+    ui->listWidget->insertItem(i,item);
     //开辟需要的控件的空间
-    m_translaterList=g_backUp.m_listSignUpForTranslater.SearchTranslaterForTask(m_taskList[i]);
-    m_table[i]=new QTableWidget(m_translaterList.size(),3);
+    m_translaterList[i]=g_backUp.m_listSignUpForTranslater.SearchTranslaterForTask(m_taskList[i]);
+    m_table[i]=new QTableWidget(m_translaterList[i].size(),3);
+    SetTableStyle(m_table[i]);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label=new QLabel(tr("已报名译者："));
+    label->setStyleSheet(m_LabelStyle);
     //设置表格的性质为不可编辑
     m_table[i]->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //设置表格标题
@@ -269,10 +307,10 @@ void leaderTask::Show202(int i){
     header<<"用户名"<<"英语资历"<<"积分";
     m_table[i]->setHorizontalHeaderLabels(header);
     //设置表格内容
-    for(int j=0;j<m_translaterList.size();j++){
-        m_table[i]->setItem(j,0,new QTableWidgetItem(m_translaterList[j].GetID()));
-        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
-        m_table[i]->setItem(j,2,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
+    for(int j=0;j<m_translaterList[i].size();j++){
+        m_table[i]->setItem(j,0,new QTableWidgetItem(m_translaterList[i][j].GetID()));
+        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterList[i][j].GetEnglish()));
+        m_table[i]->setItem(j,2,new QTableWidgetItem(QString::number(m_translaterList[i][j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(m_table[i]);
@@ -291,28 +329,39 @@ void leaderTask::Show202(int i){
 void leaderTask::Show203(int i){
     m_iPage=i;
     //向Listwidget中添加新的item
-    ui->listWidget->insertItem(i,tr("<译者报名完毕，请分配任务！>%1").arg(m_taskList[i].GetTitle()));
+    QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/choose1.svg")
+                                              ,tr("<译者报名完毕，请分配任务！>%1")
+                                              .arg(m_taskList[i].GetTitle()));
+    ui->listWidget->insertItem(i,item);
     //声明要用到的控件
-    m_translaterList=g_backUp.m_listSignUpForTranslater.SearchTranslaterForTask(m_taskList[i]);
-    m_table[i]=new QTableWidget(m_translaterList.size(),5);
+    m_translaterList[i]=g_backUp.m_listSignUpForTranslater.SearchTranslaterForTask(m_taskList[i]);
+    m_table[i]=new QTableWidget(m_translaterList[i].size(),5);
+    SetTableStyle(m_table[i]);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label1=new QLabel(tr("翻译原文"));
+    label1->setStyleSheet(m_LabelStyle);
     QLabel *time=new QLabel(tr("任务周期：%1天").arg(m_taskList[i].GetTime()));
-    QLabel *date1=new QLabel(tr("任务开始日期：%1年%2月%3日").arg(m_taskList[i].GetStartYear()).arg(m_taskList[i].GetStartMonth()).arg(m_taskList[i].GetStartDay()));
+    time->setStyleSheet(m_LabelStyle);
+    QLabel *date1=new QLabel(tr("任务开始日期：%1年%2月%3日").arg(m_taskList[i].GetStartYear())
+                             .arg(m_taskList[i].GetStartMonth())
+                             .arg(m_taskList[i].GetStartDay()));
+    date1->setStyleSheet(m_LabelStyle);
     QLabel *label2=new QLabel(tr("已报名译者："));
+    label2->setStyleSheet(m_LabelStyle);
     QTextBrowser *Task=new QTextBrowser;
     Task->setText(m_taskList[i].GetTask());
+    Task->setStyleSheet(m_BrowserStyle);
     (m_table[i])->setWindowTitle("分配任务");
     //设置表头
     QStringList header;
     header<<"用户名"<<"英语资历"<<"积分"<<"任务"<<"任务截止日期（年-月-日）";
     (m_table[i])->setHorizontalHeaderLabels(header);
     //在表格中添加内容
-    for(int j=0;j<m_translaterList.size();j++){
-        (m_table[i])->setItem(j,0,new QTableWidgetItem(m_translaterList[j].GetID()));
-        (m_table[i])->setItem(j,1,new QTableWidgetItem(m_translaterList[j].GetEnglish()));
-        (m_table[i])->setItem(j,2,new QTableWidgetItem(QString::number(m_translaterList[j].GetRewrdPoint())));
+    for(int j=0;j<m_translaterList[i].size();j++){
+        (m_table[i])->setItem(j,0,new QTableWidgetItem(m_translaterList[i][j].GetID()));
+        (m_table[i])->setItem(j,1,new QTableWidgetItem(m_translaterList[i][j].GetEnglish()));
+        (m_table[i])->setItem(j,2,new QTableWidgetItem(QString::number(m_translaterList[i][j].GetRewrdPoint())));
     }
     //在布局中添加控件
     layout->addWidget(label1);
@@ -322,12 +371,19 @@ void leaderTask::Show203(int i){
     layout->addWidget(label2);
     layout->addWidget(m_table[i]);
     m_confrmBtn[i]=new QPushButton(tr("确定"));
+    m_confrmBtn[i]->setStyleSheet(m_BtnStyle1);
+    m_confrmBtn[i]->setFixedSize(171,51);
     m_prolongBtn[i].setText("延期");
+    m_prolongBtn[i].setStyleSheet(m_BtnStyle1);
+    m_prolongBtn[i].setFixedSize(171,51);
     QHBoxLayout* Btn=new QHBoxLayout;
+    Btn->addSpacing(300);
     Btn->addWidget(m_confrmBtn[i]);
     Btn->addWidget(m_prolongBtn+i);
+    Btn->addSpacing(300);
     layout->addLayout(Btn);
     window->setLayout(layout);
+    window->setStyleSheet("background-color:white;");
     ui->stackedWidget->addWidget(window);
     //如果负责人分配任务完成，确认按钮被点击，将表格中的内容存储
     //连接按钮和GetPage203函数
@@ -345,16 +401,20 @@ void leaderTask::Show203(int i){
 *************************************************************************/
 void leaderTask::GetPage203confrm(){
     for(int i=0;i<m_taskList.size();i++){
-        if(m_confrmBtn[i]->isDown()){
-            OnClicked_203confrm(i);
+        if(m_taskList[i].GetFlag()==203){
+            if(m_confrmBtn[i]->isDown()){
+                OnClicked_203confrm(i);
+            }
         }
     }
 }
 
 void leaderTask::GetPage203prolong(){
     for(int i=0;i<m_taskList.size();i++){
-        if((m_prolongBtn+i)->isDown()){
-            OnClicked_203prolong(i);
+        if(m_taskList[i].GetFlag()==203){
+            if((m_prolongBtn+i)->isDown()){
+                OnClicked_203prolong(i);
+            }
         }
     }
 }
@@ -370,8 +430,7 @@ void leaderTask::GetPage203prolong(){
 *************************************************************************/
 void leaderTask::OnClicked_203confrm(int i){
     int iFlag=0;
-    int iNum=ui->listWidget->currentRow();
-    for(int j=0;j<m_translaterList.size();j++){
+    for(int j=0;j<m_translaterList[i].size();j++){
         //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
         int iEndYear;
         int iEndMonth;
@@ -425,7 +484,7 @@ void leaderTask::OnClicked_203confrm(int i){
             //从表格中用户填写的截至日期当中提取截至的年月日
             QString newTask=m_table[i]->item(j,3)->text();
 
-            g_backUp.SelectTranslaterDone_Translater(m_taskList[iNum],m_translaterList[j],iEndYear,
+            g_backUp.SelectTranslaterDone_Translater(m_taskList[i],m_translaterList[i][j],iEndYear,
                                                      iEndMonth,iEndDay,newTask);
         }
     }
@@ -434,7 +493,7 @@ void leaderTask::OnClicked_203confrm(int i){
                            tr("分配任务成功！")
                           ,tr("确定"));
 
-        g_backUp.SelectTranslaterDone_Leader(m_taskList[iNum]);
+        g_backUp.SelectTranslaterDone_Leader(m_taskList[i]);
         //改变任务状态为译者开始翻译状态
 
         close();
@@ -473,48 +532,68 @@ void leaderTask::Show301(int i){
     for(int j=0;j<g_backUp.m_listTaskTranslater.m_List.size();j++){
         if(g_backUp.m_listTaskTranslater.m_List[j].GetIDTask()==m_taskList[i].GetID()
                 &&(g_backUp.m_listTaskTranslater.m_List[j].GetFlagToLeader()==1||
-                   (g_backUp.m_listTaskTranslater.m_List[j].GetFlagToLeader())==3)){
-            m_translaterTaskList.append(g_backUp.m_listTaskTranslater.m_List[j]);
+                   g_backUp.m_listTaskTranslater.m_List[j].GetFlagToLeader()==3)){
+            m_translaterTaskList[i].append(g_backUp.m_listTaskTranslater.m_List[j]);
         }
     }
-    if(!m_translaterTaskList.isEmpty()){
-        ui->listWidget->insertItem(i,tr("<译者的翻译出炉！请点评！>%1")
-                                   .arg(m_taskList[i].GetTitle()));
+    if(!m_translaterTaskList[i].isEmpty()){
+        QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/comment.svg"),
+                                                  tr("<译者的翻译出炉！请点评！>%1")
+                                                  .arg(m_taskList[i].GetTitle()));
+        ui->listWidget->insertItem(i,item);
     }
     //对每一个译者构建一个tabWidget来显示对应的译文并让负责人进行评价
     QTabWidget *Tab=new QTabWidget;
-    m_NewComment[i]=new QTextEdit[m_translaterTaskList.size()];
-    m_saveBtn[i]=new QPushButton[m_translaterTaskList.size()];
-    m_confrmBtn[i]=new QPushButton[m_translaterTaskList.size()];
-    m_endBtn[i]=new QPushButton[m_translaterTaskList.size()];
+    SetTabStyle(Tab);
+    m_NewComment[i]=new QTextEdit[m_translaterTaskList[i].size()];
+    m_saveBtn[i]=new QPushButton[m_translaterTaskList[i].size()];
+    m_confrmBtn[i]=new QPushButton[m_translaterTaskList[i].size()];
+    m_endBtn[i]=new QPushButton[m_translaterTaskList[i].size()];
     int iFlag=0;
-    for(int j=0;j<m_translaterTaskList.size();j++){
+    for(int j=0;j<m_translaterTaskList[i].size();j++){
         m_iTab=j;
         //如果flag是1或3，表明译者完成翻译或者完成修改
-       if(m_translaterTaskList[j].GetFlagToLeader()==1||
-                m_translaterTaskList[j].GetFlagToLeader()==3){
+       if(m_translaterTaskList[i][j].GetFlagToLeader()==1||
+                m_translaterTaskList[i][j].GetFlagToLeader()==3){
            iFlag=1;
-            QString idUser=m_translaterTaskList[j].GetTranslater();
+            QString idUser=m_translaterTaskList[i][j].GetTranslater();
             QWidget *window=new QWidget;
             QLabel *title=new QLabel(tr("译者%1的翻译如下，请点评！").arg(idUser));
-            QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_translaterTaskList[j]
+            title->setStyleSheet(m_LabelStyle);
+            QLabel *date=new QLabel(tr("翻译截止日期：%1年%2月%3日").arg(m_translaterTaskList[i][j]
                                                                .GetEndYear())
-                                    .arg(m_translaterTaskList[j].GetEndMonth())
-                                    .arg(m_translaterTaskList[j].GetEndDay()));
+                                    .arg(m_translaterTaskList[i][j].GetEndMonth())
+                                    .arg(m_translaterTaskList[i][j].GetEndDay()));
+            date->setStyleSheet(m_LabelStyle);
             QLabel *inform1=new QLabel(tr("翻译原文："));
+            inform1->setStyleSheet(m_LabelStyle);
             QLabel *inform2=new QLabel(tr("译者翻译结果"));
+            inform2->setStyleSheet(m_LabelStyle);
             QLabel *inform3=new QLabel(tr("历史评价："));
+            inform3->setStyleSheet(m_LabelStyle);
             QLabel *inform4=new QLabel(tr("我的评价："));
+            inform4->setStyleSheet(m_LabelStyle);
             QTextBrowser *Task=new QTextBrowser;
-            Task->setText(m_translaterTaskList[j].GetTask());
+            Task->setStyleSheet(m_BrowserStyle);
+            Task->setText(m_translaterTaskList[i][j].GetTask());
             QTextBrowser *Result=new QTextBrowser;
-            Result->setText(m_translaterTaskList[j].GetResult());
+            Result->setStyleSheet(m_BrowserStyle);
+            Result->setText(m_translaterTaskList[i][j].GetResult());
             QTextBrowser *comment=new QTextBrowser;
-            comment->setText(m_translaterTaskList[j].GetComment());
-            (m_NewComment[i]+j)->setText(m_translaterTaskList[j].GetCommentEditting());
+            comment->setStyleSheet(m_BrowserStyle);
+            comment->setText(m_translaterTaskList[i][j].GetComment());
+            (m_NewComment[i]+j)->setText(m_translaterTaskList[i][j]
+                                         .GetCommentEditting());
+            (m_NewComment[i]+j)->setStyleSheet(m_TextEditStyle);
             (m_saveBtn[i]+j)->setText(tr("暂存"));
+            (m_saveBtn[i]+j)->setStyleSheet(m_BtnStyle1);
+            (m_saveBtn[i]+j)->setFixedSize(171,51);
             (m_confrmBtn[i]+j)->setText(tr("确定"));
+            (m_confrmBtn[i]+j)->setStyleSheet(m_BtnStyle1);
+            (m_confrmBtn[i]+j)->setFixedSize(171,51);
             (m_endBtn[i]+j)->setText(tr("收稿"));
+            (m_endBtn[i]+j)->setStyleSheet(m_BtnStyle1);
+            (m_endBtn[i]+j)->setFixedSize(171,51);
             //在布局中添加控件
             QVBoxLayout *layout=new QVBoxLayout;
             layout->addWidget(title);
@@ -531,8 +610,10 @@ void leaderTask::Show301(int i){
             Btn->addWidget(m_saveBtn[i]+j);
             Btn->addWidget(m_confrmBtn[i]+j);
             Btn->addWidget(m_endBtn[i]+j);
+            layout->addSpacing(30);
             layout->addLayout(Btn);
             window->setLayout(layout);
+            window->setStyleSheet("background-color:white;");
             Tab->addTab(window,idUser);
             //如果点击提交，改变flag使得译者可见，负责人页面不必显示
             //修改list当中译者的历史评价的内容
@@ -631,9 +712,9 @@ void leaderTask::OnClicked_301save(int i,int j){
                        tr("评价暂存成功！")
                       ,tr("确定"));
     //存储译者暂存的评价
-    m_translaterTaskList[j].EditCommentEditting((m_NewComment[i]+j)->toPlainText());
+    m_translaterTaskList[i][j].EditCommentEditting((m_NewComment[i]+j)->toPlainText());
     //将新保存的信息存入内存
-    g_backUp.m_listTaskTranslater.Update(m_translaterTaskList[j]);
+    g_backUp.m_listTaskTranslater.Update(m_translaterTaskList[i][j]);
     close();
     leaderTask r;
     r.ShowValue();
@@ -657,7 +738,7 @@ void leaderTask::OnClicked_301confrm(int i,int j){
         QString newComment=(m_NewComment[i]+j)->toPlainText();
 
         //向译者和负责人发送信息提醒
-        g_backUp.SubmitCommentDone(m_translaterTaskList[j],newComment);
+        g_backUp.SubmitCommentDone(m_translaterTaskList[i][j],newComment);
         //切换页面
         close();
         leaderTask r;
@@ -686,7 +767,7 @@ void leaderTask::OnClicked_301end(int i,int j){
                       ,tr("确定"));
     //更改任务状态
 
-    g_backUp.EndTranslateDone_Translater(m_taskList[i],m_translaterTaskList[j]);
+    g_backUp.EndTranslateDone_Translater(m_taskList[i],m_translaterTaskList[i][j]);
     //切换页面
     close();
     leaderTask r;
@@ -705,22 +786,36 @@ void leaderTask::OnClicked_301end(int i,int j){
 *************************************************************************/
 void leaderTask::Show302(int i){
     //向listWidget中添加新的item
-    ui->listWidget->insertItem(i,tr("<所有译者的翻译均已通过，请整合译文！>%1").arg(m_taskList[i].GetTitle()));
+    QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/iconsz1.svg"),
+                                              tr("<所有译者的翻译均已通过，请整合译文！>%1")
+                                              .arg(m_taskList[i].GetTitle()));
+    ui->listWidget->insertItem(i,item);
     //寻找所有i任务的子任务
-    m_translaterTaskList=g_backUp.m_listTaskTranslater.SearchTaskForTranslater(m_taskList[i].GetID());
+    m_translaterTaskList[i]=g_backUp.m_listTaskTranslater.SearchTaskForTranslater(m_taskList[i].GetID());
     //定义页面所需的控件
     QLabel *inform1=new QLabel(tr("所有译者的翻译均已通过，请整合译文！"));
+    inform1->setStyleSheet(m_LabelStyle);
     QLabel *inform2=new QLabel(tr("译文："));
+    inform2->setStyleSheet(m_LabelStyle);
     QLabel *inform3=new QLabel(tr("所有译文："));
+    inform3->setStyleSheet(m_LabelStyle);
     QHBoxLayout* Btn=new QHBoxLayout;
     m_confrmBtn[i]=new QPushButton(tr("确定"));
+    m_confrmBtn[i]->setStyleSheet(m_BtnStyle1);
+    m_confrmBtn[i]->setFixedSize(171,51);
     m_saveBtn[i]=new QPushButton(tr("暂存"));
+    m_saveBtn[i]->setStyleSheet(m_BtnStyle1);
+    m_saveBtn[i]->setFixedSize(171,51);
     (m_myResult+i)->setText(m_taskList[i].GetResultEditting());
-    Btn->addWidget(m_confrmBtn[i]);
+    (m_myResult+i)->setStyleSheet(m_TextEditStyle);
+    Btn->addSpacing(300);
     Btn->addWidget(m_saveBtn[i]);
+    Btn->addWidget(m_confrmBtn[i]);
+    Btn->addSpacing(300);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
-    m_table[i]=new QTableWidget(m_translaterTaskList.size(),3);
+    m_table[i]=new QTableWidget(m_translaterTaskList[i].size(),3);
+    SetTableStyle(m_table[i]);
     m_table[i]->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_table[i]->setWindowTitle("翻译原文及译文");
     //设定表格文件头
@@ -729,10 +824,10 @@ void leaderTask::Show302(int i){
     //设定水平排布表格头
     m_table[i]->setHorizontalHeaderLabels(header);
     //设定表格内容
-    for(int j=0;j<m_translaterTaskList.size();j++){
-        m_table[i]->setItem(j,0,new QTableWidgetItem(m_translaterTaskList[j].GetTranslater()));
-        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterTaskList[j].GetTask()));
-        m_table[i]->setItem(j,2,new QTableWidgetItem(m_translaterTaskList[j].GetResult()));
+    for(int j=0;j<m_translaterTaskList[i].size();j++){
+        m_table[i]->setItem(j,0,new QTableWidgetItem(m_translaterTaskList[i][j].GetTranslater()));
+        m_table[i]->setItem(j,1,new QTableWidgetItem(m_translaterTaskList[i][j].GetTask()));
+        m_table[i]->setItem(j,2,new QTableWidgetItem(m_translaterTaskList[i][j].GetResult()));
     }
     //向布局中添加控件
     layout->addWidget(inform1);
@@ -742,6 +837,7 @@ void leaderTask::Show302(int i){
     layout->addWidget(m_myResult+i);
     layout->addLayout(Btn);
     window->setLayout(layout);
+    window->setStyleSheet("background-color:white;");
     ui->stackedWidget->addWidget(window);
     //如果负责人点击暂存，暂存负责人整合的任务
     connect(m_saveBtn[i],SIGNAL(pressed()),this,SLOT(GetPage302save()));
@@ -760,8 +856,10 @@ void leaderTask::Show302(int i){
 *************************************************************************/
 void leaderTask::GetPage302save(){
     for(int i=0;i<m_taskList.size();i++){
-        if(m_saveBtn[i]->isDown()){
-            OnClicked_302save(i);
+        if(m_taskList[i].GetFlag()==302){
+            if(m_saveBtn[i]->isDown()){
+                OnClicked_302save(i);
+            }
         }
     }
 }
@@ -796,8 +894,10 @@ void leaderTask::OnClicked_302save(int i){
 *************************************************************************/
 void leaderTask::GetPage302confrm(){
     for(int i=0;i<m_taskList.size();i++){
-        if(m_confrmBtn[i]->isDown()){
-            OnClicked_302confrm(i);
+        if(m_taskList[i].GetFlag()==302){
+            if(m_confrmBtn[i]->isDown()){
+                OnClicked_302confrm(i);
+            }
         }
     }
 }
@@ -839,9 +939,79 @@ void leaderTask::OnClicked_302confrm(int i){
 【开发者及日期】李佳芸 2019.7.20
 【更改记录】
 *************************************************************************/
-void leaderTask::on_main_clicked()
+void leaderTask::on_Main_clicked()
 {
     close();
     MainWindow r;
     r.exec();
+}
+
+void leaderTask::SetStyle(){
+    m_BtnStyle1="QPushButton{"
+                "background-color:rgb(0, 188, 212);\
+                 color: white;   "
+                "border-radius: 10px; \
+                 border-style: outset;font:12pt,\"等线\";}"
+                 "QPushButton:hover{background-color:#198fb6; color: white;}"
+                 "QPushButton:pressed{background-color:#3F51B5;\
+                  border-style: inset; }";
+    m_LabelStyle="QLabel{font:12pt,\"等线\";}";
+    m_LineEditStyle="QLineEdit{font:12pt,\"等线\";}";
+    m_TextEditStyle="QTextEdit{font:12pt,\"等线\";}";
+    m_BrowserStyle="QTextBrowser{font:12pt,\"等线\";}";
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
+    SetListStyle(ui->listWidget);
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->Main->setStyleSheet(BtnStyle2);
+}
+
+void leaderTask::SetTableStyle(QTableWidget *table){
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    table->horizontalHeader()->setStretchLastSection(true);
+    table->verticalHeader()->setDefaultSectionSize(200); //设置行高
+    table->setFrameShape(QFrame::NoFrame); //设置无边框
+    //table->setShowGrid(false); //设置不显示格子线
+    table->horizontalHeader()->setFixedHeight(70); //设置表头的高度
+    table->setStyleSheet("selection-background-color:#03A9F4;font:12pt,\"等线\";"); //设置选中背景色
+    table->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#B2EBF2;border:0px;font:12pt,\"等线\";}");
+    table->horizontalScrollBar()->setStyleSheet("QScrollBar{background:transparent; height:10px;}"
+      "QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
+      "QScrollBar::handle:hover{background:gray;}"
+      "QScrollBar::sub-line{background:transparent;}"
+      "QScrollBar::add-line{background:transparent;}");
+    table->verticalScrollBar()->setStyleSheet("QScrollBar{background:transparent; width: 10px;}"
+      "QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
+      "QScrollBar::handle:hover{background:gray;}"
+      "QScrollBar::sub-line{background:transparent;}"
+      "QScrollBar::add-line{background:transparent;}");
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+          "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+          "QPushButton:pressed{background-color:white;color:#303F9F;}";
+    ui->Main->setStyleSheet(BtnStyle2);
+
+}
+
+void leaderTask::SetListStyle(QListWidget* list){
+    list->setIconSize(QSize(50,30));
+    list->setStyleSheet("QListWidget{color:black; }"
+                        "QListWidget::Item{padding-top:4px; padding-bottom:4px; font:12pt,\"等线\";}"
+                        "QListWidget::Item:hover{background:#B2EBF2; }"
+                        "QListWidget::item:selected{background:#03A9F4; color:white; }");
+}
+
+void leaderTask::SetTabStyle(QTabWidget* tab){
+    tab->setIconSize(QSize(50,30));
+    tab->setStyleSheet("QTabWidget::pane{top:60px;border:none;}"
+                       "QTabWidget::tab-bar{alignment:left;top:10px;left:30px;}");
+    tab->tabBar()->setStyleSheet("QTabBar::tab{color:black;background:transparent;font:12pt,\"等线\";"
+                                 "padding-right:30px;padding-left:30px;"
+                                 "margin-right:0px;margin-left:0px;min-width:75px;min-height:30px;"
+                                 "max-width:75px;max-height:30px;}"
+                                 "QTabBar::tab:selected{color:#00BCD4;background:transparent;"
+                                 "font:12pt,\"等线\";border-bottom:2px solid rgb(0, 188, 212);}"
+                                 "QTabBar::hover:{color:rgb(0, 188, 212);background:transparent;"
+                                 "font:12pt,\"等线\";}");
 }

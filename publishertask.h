@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QLineEdit>
+#include <QListWidget>
 
 namespace Ui {
 class publisherTask;
@@ -27,7 +28,6 @@ public:
     void ShowDefault(int i);
 
 private slots:
-    void on_main_clicked();
     void OnClicked102confrm(int i);
     void OnClicked102prolong(int i);
     void OnClicked401(int i);
@@ -35,6 +35,8 @@ private slots:
     void GetPage102confrm();
     void GetPage102prolong();
     void GetPage401();
+
+    void on_Main_clicked();
 
 private:
     Ui::publisherTask *ui;
@@ -46,9 +48,22 @@ private:
     QLineEdit *m_nameedit;
     QPushButton *m_confrmBtn;
     QPushButton* m_prolongBtn;
-    QList<taskTranslater> m_TaskTranslaterList;
+    QList<taskTranslater>* m_TaskTranslaterList;
     QTableWidget* m_table;
     QLineEdit* m_leaderMoney;
+
+    QString m_BtnStyle1;
+    QString m_LabelStyle;
+    QString m_LineEditStyle;
+    QString m_TextEditStyle;
+    QString m_TableWidgetStyle;
+    QString m_BrowserStyle;
+
+    void SetTableStyle(QTableWidget* table);
+    void SetListStyle(QListWidget* list);
+    void SetTabStyle(QTabWidget* tab);
+
+    void SetStyle();
 };
 
 #endif // PUBLISHERTASK_H

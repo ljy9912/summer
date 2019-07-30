@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "backup.h"
+#include <QToolBox>
 
 namespace Ui {
 class MessageBox;
@@ -18,12 +19,14 @@ public:
     void ShowMessage();
 
 private slots:
-    void on_main_clicked();
     void OnClicked(int i);
+
+    void on_Main_clicked();
 
 private:
     Ui::MessageBox *ui;
-
+    void SetStyle();
+    void SetBoxStyle(QToolBox* box);
     QList<Message> m_messageList;
 };
 

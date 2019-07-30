@@ -7,6 +7,8 @@
 #include <QTableWidget>
 #include <QTextEdit>
 #include "backup.h"
+#include <QTabWidget>
+#include <QListWidget>
 
 namespace Ui {
 class leaderTask;
@@ -31,7 +33,6 @@ signals:
     void SendPage301(int i,int j);
 
 private slots:
-    void on_main_clicked();
     void GetPage201();
     void GetPage203confrm();
     void GetPage203prolong();
@@ -40,6 +41,8 @@ private slots:
     void GetPage301end();
     void GetPage302save();
     void GetPage302confrm();
+    void on_Main_clicked();
+
 public:
     void OnClicked_201(int i);
     void OnClicked_203confrm(int i);
@@ -54,8 +57,8 @@ private:
     Ui::leaderTask *ui;
 
     QList<taskLeader> m_taskList;
-    QList<signUpForTranslater> m_translaterList;
-    QList<taskTranslater> m_translaterTaskList;
+    QList<signUpForTranslater>* m_translaterList;
+    QList<taskTranslater>* m_translaterTaskList;
     int m_iPage;
     int m_iTab;
     QLineEdit *m_yearEdit;
@@ -68,6 +71,19 @@ private:
     QTableWidget **m_table;
     QTextEdit** m_NewComment;
     QTextEdit* m_myResult;
+
+    QString m_BtnStyle1;
+    QString m_LabelStyle;
+    QString m_LineEditStyle;
+    QString m_TextEditStyle;
+    QString m_TableWidgetStyle;
+    QString m_BrowserStyle;
+
+    void SetTableStyle(QTableWidget* table);
+    void SetListStyle(QListWidget* list);
+
+    void SetStyle();
+    void SetTabStyle(QTabWidget* tab);
 };
 
 #endif // LEADERTASK_H

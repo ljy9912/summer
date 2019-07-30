@@ -5,6 +5,9 @@
 #include "backup.h"
 #include <QTextEdit>
 #include <QPushButton>
+#include <QTableWidget>
+#include <QListWidget>
+
 
 namespace Ui {
 class translaterTask;
@@ -24,11 +27,12 @@ signals:
     void SendPage(int i);
 
 private slots:
-    void on_main_clicked();
     void OnClicked_301save(int i);
     void OnClicked_301confrm(int i);
     void GetPage301save();
     void GetPage301confrm();
+
+    void on_Main_clicked();
 
 private:
     Ui::translaterTask *ui;
@@ -39,6 +43,18 @@ private:
     QTextEdit *m_result;
     QPushButton *m_saveBtn;
     QPushButton *m_confrmBtn;
+
+    QString m_BtnStyle1;
+    QString m_LabelStyle;
+    QString m_LineEditStyle;
+    QString m_TextEditStyle;
+    QString m_TableWidgetStyle;
+    QString m_BrowserStyle;
+
+    void SetTableStyle(QTableWidget* table);
+    void SetListStyle(QListWidget* list);
+
+    void SetStyle();
 };
 
 #endif // TRANSLATERTASK_H

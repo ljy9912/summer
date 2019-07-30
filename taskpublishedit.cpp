@@ -183,4 +183,17 @@ void taskPublishEdit::SetStyle(){
                            border-style: inset; }";
     ui->canclBtn->setStyleSheet(BtnStyle1);
     ui->confrmBtn->setStyleSheet(BtnStyle1);
+    QString ComboBox="QComboBox{background-color:#B2EBF2;"
+            "color: black;   border-radius: 10px;}"
+             "QComboBox::drop-down {     subcontrol-origin:paddind;       subcontrol-position: top right;     width: 15px;"
+             "border-left-width: 1px;     border-left-color: darkgray; "
+            " border-left-style: solid;"
+            "border-top-right-radius: 10px;"
+              "border-bottom-right-radius: 10px;background-color:#B2EBF2; }"
+             "QComboBox::down-arrow{border-image: url(:/images/arrowdown.png);border:white;}"
+              "QComboBox QAbstractItemView {border: 2px solid darkgray;selection-background-color:##03A9F4;"
+                     "selection-color:white;}";
+    ui->comboBox->setStyleSheet(ComboBox);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }

@@ -15,20 +15,7 @@ taskNew::taskNew(QWidget *parent) :
     ui(new Ui::taskNew)
 {
     ui->setupUi(this);
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
-            "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
-            "QPushButton:pressed{background-color:white;color:#303F9F;}";
-   ui->canclBtn->setStyleSheet(BtnStyle1);
-   ui->confrmBtn->setStyleSheet(BtnStyle1);
-   ui->qMain->setStyleSheet(BtnStyle2);
-   setWindowFlags(Qt::FramelessWindowHint);
-   setAttribute(Qt::WA_TranslucentBackground,true);
+    SetStyle();
 }
 
 taskNew::~taskNew()
@@ -135,12 +122,6 @@ void taskNew::showValue(){
 }
 
 
-void taskNew::on_main_clicked()
-{
-    close();
-    MainWindow r;
-    r.exec();
-}
 
 bool taskNew::IsEmpty(){
     if(ui->title->text().isEmpty()){
@@ -197,4 +178,42 @@ bool taskNew::IsEmpty(){
         return true;
     }
     return false;
+}
+
+void taskNew::on_Main_clicked()
+{
+    close();
+    MainWindow r;
+    r.exec();
+}
+
+void taskNew::SetStyle(){
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{border:white;background-color:white; color:black;}"
+            "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
+            "QPushButton:pressed{background-color:white;color:#303F9F;}";
+
+   ui->canclBtn->setStyleSheet(BtnStyle1);
+   ui->confrmBtn->setStyleSheet(BtnStyle1);
+   ui->Main->setStyleSheet(BtnStyle2);
+   QString ComboBox="QComboBox{background-color:#B2EBF2;"
+           "color: black;   border-radius: 10px;}"
+            "QComboBox::drop-down {     subcontrol-origin:paddind;       subcontrol-position: top right;     width: 15px;"
+            "border-left-width: 1px;     border-left-color: darkgray; "
+           " border-left-style: solid;"
+           "border-top-right-radius: 10px;"
+             "border-bottom-right-radius: 10px;background-color:#B2EBF2; }"
+            "QComboBox::down-arrow{border-image: url(:/images/arrowdown.png);border:white;}"
+             "QComboBox QAbstractItemView {border: 2px solid darkgray;selection-background-color:#03A9F4;"
+                    "selection-color:white;}";
+
+   ui->comboBox->setStyleSheet(ComboBox);
+   setWindowFlags(Qt::FramelessWindowHint);
+   setAttribute(Qt::WA_TranslucentBackground,true);
+
 }

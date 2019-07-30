@@ -69,7 +69,7 @@ void LoginDialog::on_loginBtn_clicked()
     }
     if(flag==0){
           QMessageBox::warning(this, tr("警告"),
-                               tr("账号或密码错误！"),
+                               tr("用户名或密码错误！"),
                                 QMessageBox::tr("确定"));
           ui->usrLineEdit->clear();
           ui->pswLineEdit->clear();

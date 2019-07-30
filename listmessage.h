@@ -14,6 +14,7 @@ public:
     QList <Message> SearchMessageforUser(QString idUser);
     void Delete(int iID);
     int GetID();
+    void Update(Message myMessage);
 
     QList<Message> m_List;
 };

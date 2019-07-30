@@ -6,35 +6,61 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>600</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="main">
+  <property name="styleSheet">
+   <string notr="true">#frame{border-image: url(:/background/messagebox.png);
+border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;}</string>
+  </property>
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>270</y>
-     <width>80</width>
-     <height>15</height>
+     <x>0</x>
+     <y>-1</y>
+     <width>601</width>
+     <height>801</height>
     </rect>
    </property>
-   <property name="text">
-    <string>返回主页面</string>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-  </widget>
-  <widget class="QStackedWidget" name="stackedWidget">
-   <property name="geometry">
-    <rect>
-     <x>39</x>
-     <y>30</y>
-     <width>311</width>
-     <height>211</height>
-    </rect>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>200</y>
+      <width>461</width>
+      <height>501</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Main">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>730</y>
+      <width>80</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>返回主页面</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

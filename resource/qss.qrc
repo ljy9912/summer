@@ -32,5 +32,23 @@
         <file>background/userinfoedit.png</file>
         <file>background/taskconfrm.png</file>
         <file>background/taskpublishedit.png</file>
+        <file>background/publishertask.png</file>
+        <file>images/baomingblue.svg</file>
+        <file>images/baomingwhite.svg</file>
+        <file>images/choose.svg</file>
+        <file>images/choose1.svg</file>
+        <file>background/taskspublished.png</file>
+        <file>images/plan.svg</file>
+        <file>images/jinhangzhong.svg</file>
+        <file>images/confirm.svg</file>
+        <file>images/Done.svg</file>
+        <file>background/leadertask.png</file>
+        <file>images/time.svg</file>
+        <file>images/iconsz1.svg</file>
+        <file>background/translatertask.png</file>
+        <file>images/task.svg</file>
+        <file>images/edit.svg</file>
+        <file>images/comment.svg</file>
+        <file>background/messagebox.png</file>
     </qresource>
 </RCC>

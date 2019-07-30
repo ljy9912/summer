@@ -6,6 +6,8 @@
 #include <QStackedWidget>
 #include "backup.h"
 #include <QPushButton>
+#include <QTabWidget>
+#include <QTableWidget>
 
 namespace Ui {
 class tasksPublished;
@@ -32,16 +34,28 @@ public:
 
 private slots:
 
-    void on_main_clicked();
 
     void GetPage101();
 
     void GetPage202();
 
+    void on_Main_clicked();
+
 private:
     Ui::tasksPublished *ui;
 
     QPushButton* m_applyBtn;
+    void SetTableStyle(QTableWidget* table);
+    void SetListStyle(QListWidget* list);
+    void SetTabStyle(QTabWidget* tab);
+
+    void SetStyle();
+    QString m_BtnStyle1;
+    QString m_LabelStyle;
+    QString m_LineEditStyle;
+    QString m_TextEditStyle;
+    QString m_TableWidgetStyle;
+    QString m_BrowserStyle;
 
 signals:
     void SignUpForLeader(int iID,QList<Message>& myMessage);

@@ -15,7 +15,7 @@ taskPublish::taskPublish(QWidget *parent) :
     ui(new Ui::taskPublish)
 {
     ui->setupUi(this);
-
+    SetStyle();
 }
 
 taskPublish::~taskPublish()

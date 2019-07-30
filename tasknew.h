@@ -25,15 +25,16 @@ private slots:
     void on_canclBtn_clicked();
 
     void on_confrmBtn_clicked();
-
-    void on_main_clicked();
     
+    void on_Main_clicked();
+
 private:
     Ui::taskNew *ui;
 
     taskPublisher myTask;
 
     bool IsEmpty();
+    void SetStyle();
 };
 
 #endif // PUBLISHNEW_H
