@@ -105,6 +105,7 @@ void LoginDialog::SetStyle(){
     "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
                       "QPushButton:pressed{background-color:white;color:#303F9F;}";
     ui->RegisterBtn->setStyleSheet(BtnStyle2);
+    ui->exitBtn_2->setStyleSheet(BtnStyle2);
     setMaximumSize(600,800);
     setMinimumSize(600,800);
     setWindowFlags(Qt::FramelessWindowHint);
@@ -151,4 +152,20 @@ bool LoginDialog::IsEmpty(){
     else if(ui->pswLineEdit->text().isEmpty()){
         SetWarningBox("密码不能为空！!");
     }
+}
+
+
+void LoginDialog::on_exitBtn_2_clicked()
+{
+    SqlQuery query;
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
+    close();
+    exit(0);
 }

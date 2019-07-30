@@ -72,6 +72,26 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="exitBtn">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>1004</y>
+      <width>80</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>退出</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

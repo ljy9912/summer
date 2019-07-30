@@ -61,6 +61,15 @@ QList<taskLeader> listTaskLeader::SearchTaskForLeader(user myUser){
     return leaderTask;
 }
 
+QList<taskLeader> listTaskLeader::SearchTaskForChecker(user myUser){
+    QList<taskLeader> leaderTask;
+    for(int i=0;i<m_List.size();i++){
+        if(m_List[i].GetChecker()==myUser.GetID()){
+            leaderTask.append(m_List[i]);
+        }
+    }
+    return leaderTask;
+}
 void listTaskLeader::TaskLeaderAppend(taskPublisher myLeader){
     taskLeader leader;
     leader.EditID(myLeader.GetID());
@@ -76,6 +85,7 @@ void listTaskLeader::TaskLeaderAppend(taskPublisher myLeader){
     leader.EditStartMonth(myLeader.GetStartMonth());
     leader.EditStartDay(myLeader.GetStartDay());
     leader.EditTitle(myLeader.GetTitle());
+    leader.EditChecker(myLeader.GetTaskChecker());
     m_List.append(leader);
 }
 

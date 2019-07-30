@@ -15,6 +15,7 @@ public:
     int GetLeaderDay();
     QString GetResult();
     QString GetResultEditting();
+    QString GetTaskChecker();
 
 
     void EditLeaderYear(int yyear);
@@ -22,6 +23,7 @@ public:
     void EditLeaderDay(int dday);
     void EditResult(QString newResult);
     void EditResultEditting(QString newResult);
+    void EditTaskChecker(QString newChecker);
 
 
     void attachIDToTask(int id,QList<taskPublisher> TaskList);
@@ -37,6 +39,7 @@ private:
     int leaderDay;
     QString m_result;
     QString m_resultEditting;
+    QString m_checker;
 };
 
 #endif // TASKPUBLISHER_H

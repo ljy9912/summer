@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     query.createTaskLeader();
     query.createTaskTranslater();
     query.createMessage();
+    query.createSignUpForChecker();
     g_backUp.m_listTaskPublisher=query.GetTasks();
     g_backUp.m_listUser=query.GetUser();
     g_backUp.m_listSignUpForLeader=query.GetSignUpForLeader();
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
     g_backUp.m_listTaskLeader=query.GetTaskLeader();
     g_backUp.m_listTaskTranslater=query.GetTaskTranslater();
     g_backUp.m_listMessage=query.GetMessage();
+    g_backUp.m_listSignUpForChecker=query.GetSignUpForChecker();
     g_backUp.CheckDateSnupfrLeader();
     g_backUp.CheckDateSnupfrTranslater();
 

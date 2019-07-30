@@ -33,7 +33,7 @@ void SqlQuery::createTasks(){
                "task varchar(1000),introduction varchar(1000),"
                "publisher varchar(20),time int,leaderyear int,"
                "leadermonth int,leaderday int,money double,flag int,leader varchar(20),"
-                  "startyear int,startmonth int,startday int,title varchar(20))");//flag=0为编辑状态，
+                  "startyear int,startmonth int,startday int,title varchar(20),checker varchar(20))");//flag=0为编辑状态，
     //101为发布状态，102为选择负责人状态，201为负责人定日期状态，202为负责人招募译者状态，203为负责人分配任务状态
     //301为译者翻译状态与负责人审查,译者修改译文，302为负责人修改并整合译文，401为发布人验收状态
     if(!query.exec())
@@ -64,13 +64,24 @@ void SqlQuery::createSignUpForTranslater(){
         qDebug() << "Table created!";
 }
 
+void SqlQuery::createSignUpForChecker(){
+    query.prepare("create table if not exists signupforchecker(id varchar(20),"
+                  "phoneNum varchar(20),IDnum varchar(20),"
+                 "password varchar(20),English varchar(50),rewrdPoint int,"
+                  "money double,idtask int,idthis int primary key)");
+    if(!query.exec())
+        qDebug() << query.lastError();
+      else
+        qDebug() << "Table created!";
+}
+
 void SqlQuery::createTaskLeader(){
     query.prepare("CREATE TABLE IF NOT EXISTS taskleader(id int primary key,taskclass int,"
                "task varchar(1000),introduction varchar(1000),"
                "publisher varhcar(20),time int,translateryear int,"
                "translatermonth int,translaterday int,money double,flag int,leader varchar(20),"
                   "startyear int,startmonth int,startday int,result varchar(1000),"
-                  "resulteditting varchar(1000),title varchar(20))");//flag=0为编辑状态，
+                  "resulteditting varchar(1000),title varchar(20),checker varchar(20))");//flag=0为编辑状态，
     //101为发布状态，102为选择负责人状态，201为负责人定日期状态，202为负责人招募译者状态，203为负责人分配任务状态
     //301为译者翻译状态与负责人审查,译者修改译文，302为负责人修改并整合译文，401为发布人验收状态
     if(!query.exec())
@@ -134,10 +145,10 @@ const QList<taskPublisher> SqlQuery::GetTasks(){
         int id=query.value(0).toInt();
         taskPublisher myTask;
         myTask.attachIDToTask(id);
-        //myTask.EditFlag(203);
-        //listTask.append(myTask);
         //myTask.EditFlag(101);
-        //myTask.EditLeaderDay(25);
+        //listTask.append(myTask);
+        myTask.EditFlag(402);
+        //myTask.EditLeaderDay(31);
         listTask.append(myTask);
     }
     return listTask;
@@ -183,6 +194,24 @@ const QList<signUpForTranslater> SqlQuery::GetSignUpForTranslater(){
     return listTranslater;
 }
 
+const QList<signUpForChecker> SqlQuery::GetSignUpForChecker(){
+    QList <signUpForChecker> listChecker;
+    query.exec("select * from signupforchecker");
+    query.first();
+
+    int id=query.value(8).toInt();
+    signUpForChecker myChecker;
+    myChecker.attachIDToUser(id);
+    listChecker.append(myChecker);
+    while(query.next()){
+        int id=query.value(8).toInt();
+        signUpForChecker myChecker;
+        myChecker.attachIDToUser(id);
+        listChecker.append(myChecker);
+    }
+    return listChecker;
+}
+
 const QList<taskLeader> SqlQuery::GetTaskLeader(){
     QList <taskLeader> listTask;
     query.exec("select * from taskleader");
@@ -196,7 +225,7 @@ const QList<taskLeader> SqlQuery::GetTaskLeader(){
         int id=query.value(0).toInt();
         taskLeader myTask;
         myTask.attachIDToTask(id);
-        myTask.EditFlag(302);
+        myTask.EditFlag(401);
         //myTask.EditTranslaterDay(25);
         listTask.append(myTask);
     }
@@ -265,8 +294,8 @@ void SqlQuery::saveTasks(QList<taskPublisher> listTask){
         query.prepare("insert into tasks(id,taskclass,task,"
                       "introduction,publisher,time,leaderyear,"
                       "leadermonth,leaderday,money,flag,leader,"
-                      "startyear,startmonth,startday,title)"
-                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                      "startyear,startmonth,startday,title,checker)"
+                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         query.addBindValue(listTask[i].GetID());
         query.addBindValue(listTask[i].GetTaskClass());
         query.addBindValue(listTask[i].GetTask());
@@ -283,6 +312,7 @@ void SqlQuery::saveTasks(QList<taskPublisher> listTask){
         query.addBindValue(listTask[i].GetStartMonth());
         query.addBindValue(listTask[i].GetStartDay());
         query.addBindValue(listTask[i].GetTitle());
+        query.addBindValue(listTask[i].GetTaskChecker());
         if(!query.exec())
             qDebug() << query.lastError();
           else
@@ -335,14 +365,38 @@ void SqlQuery::saveSignUpForTranslater(QList<signUpForTranslater> listSignUpForT
     }
 }
 
+void SqlQuery::saveSignUpForChecker(QList<signUpForChecker> listSignUpForChecker){
+    query.exec("delete from signupforchecker");
+    for(int i=0;i<listSignUpForChecker.size();i++){
+        query.prepare("insert into signupforchecker(id,phonenum,idnum,password,"
+                      "english,rewrdpoint,money,idtask,idthis)"
+                      "values(?,?,?,?,?,?,?,?,?)");
+        query.addBindValue(listSignUpForChecker[i].GetID());
+        query.addBindValue(listSignUpForChecker[i].GetPhoneNum());
+        query.addBindValue(listSignUpForChecker[i].GetIDNum());
+        query.addBindValue(listSignUpForChecker[i].GetPassWrd());
+        query.addBindValue(listSignUpForChecker[i].GetEnglish());
+        query.addBindValue(listSignUpForChecker[i].GetRewrdPoint());
+        query.addBindValue(listSignUpForChecker[i].GetMoney());
+        query.addBindValue(listSignUpForChecker[i].GetIDTask());
+        query.addBindValue(listSignUpForChecker[i].GetIDThis());
+
+        if(!query.exec())
+            qDebug() << query.lastError();
+          else
+            qDebug() << "signupforchecker save";
+    }
+}
+
 void SqlQuery::saveTaskLeader(QList<taskLeader> listTask){
     query.exec("delete from taskleader");
     for(int i=0;i<listTask.size();i++){
         query.prepare("insert into taskleader(id,taskclass,task,"
                       "introduction,publisher,time,translateryear,"
                       "translatermonth,translaterday,money,flag,leader,"
-                      "startyear,startmonth,startday,result,resulteditting,title)"
-                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                      "startyear,startmonth,startday,result,"
+                      "resulteditting,title,checker)"
+                      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         query.addBindValue(listTask[i].GetID());
         query.addBindValue(listTask[i].GetTaskClass());
         query.addBindValue(listTask[i].GetTask());
@@ -361,6 +415,7 @@ void SqlQuery::saveTaskLeader(QList<taskLeader> listTask){
         query.addBindValue(listTask[i].GetResult());
         query.addBindValue(listTask[i].GetResultEditting());
         query.addBindValue(listTask[i].GetTitle());
+        query.addBindValue(listTask[i].GetChecker());
         if(!query.exec())
             qDebug() << query.lastError();
           else

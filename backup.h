@@ -9,6 +9,7 @@
 #include "listtaskpublisher.h"
 #include "listtasktranslater.h"
 #include "listuser.h"
+#include "listsignupforchecker.h"
 
 class BackUp
 {
@@ -20,12 +21,13 @@ public:
 
 
     void SignUpForLeader(int i);
+    void SignUpForChecker(int i);
     void TaskPublish(taskPublisher myTask);
     void CheckDateForLeader();
     void CheckDateForTranslater();
     void CheckDateSnupfrLeader();
     void CheckDateSnupfrTranslater();
-    void SelectLeaderDone(taskPublisher myTask, QString iIdLeader);
+    void SelectLeaderDone(taskPublisher myTask, QString iIdLeader, QString iIDChecker);
     void SetTranslaterDone(taskLeader myLeader, int iTranslaterYear, int iTranslaterMonth, int iTranslaterDay);
     void SignUpForTranslaterDone(int i);
     void SelectTranslaterDone_Leader(taskLeader myTask);
@@ -41,6 +43,7 @@ public:
     void DistributeMoney_Publisher(taskPublisher myTask, double dMyMoney);
     void DistributeMoney_Translater(double dMoney, taskTranslater myTask);
     void DistributeMoney_Leader(double dMoney,taskPublisher myTask);
+    void DistributeMoney_Checker(double dMoney,taskPublisher myTask);
 
     void Register(QString passwordvalue, QString nameValue, QString phoneValue,
                   QString IDNum, QString English);
@@ -56,6 +59,7 @@ public:
     listTaskLeader m_listTaskLeader;
     listTaskTranslater m_listTaskTranslater;
     listUser m_listUser;
+    listSignUpForChecker m_listSignUpForChecker;
     user m_User;
 };
 extern BackUp g_backUp;

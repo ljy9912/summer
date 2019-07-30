@@ -15,6 +15,7 @@ taskPublisher::taskPublisher():task(){
     leaderDay=0;
     m_result="";
     m_resultEditting="";
+    m_checker="";
 }
 
 /*************************************************************************
@@ -32,6 +33,7 @@ taskPublisher::taskPublisher(const taskPublisher &myNewTask)
     leaderDay=myNewTask.leaderDay;
     m_result=myNewTask.m_result;
     m_resultEditting=myNewTask.m_resultEditting;
+    m_checker=myNewTask.m_checker;
 }
 
 /*************************************************************************
@@ -71,6 +73,7 @@ taskPublisher& taskPublisher::operator = (const taskPublisher& myNewTask){
     flag=myNewTask.flag;
     leader=myNewTask.leader;
     title=myNewTask.title;
+    m_checker=myNewTask.m_checker;
     return *this;
 }
 
@@ -93,6 +96,9 @@ int taskPublisher::GetLeaderMonth(){
 int taskPublisher::GetLeaderDay(){
     return leaderDay;
 }
+QString taskPublisher::GetTaskChecker(){
+    return m_checker;
+}
 
 /*************************************************************************
 【函数名称】Edit**
@@ -111,6 +117,9 @@ void taskPublisher::EditLeaderMonth(int mmonth){
 }
 void taskPublisher::EditLeaderDay(int dday){
     leaderDay=dday;
+}
+void taskPublisher::EditTaskChecker(QString newChecker){
+    m_checker=newChecker;
 }
 
 
@@ -144,6 +153,7 @@ void taskPublisher::attachIDToTask(int ID,QList<taskPublisher> TaskList){
     startMonth=TaskList[i].GetStartMonth();
     startDay=TaskList[i].GetStartDay();
     title=TaskList[i].GetTitle();
+    m_checker=TaskList[i].GetTaskChecker();
 }
 
 /*************************************************************************
@@ -176,6 +186,7 @@ void taskPublisher::attachIDToTask(int ID){
         startMonth=query.value(13).toInt();
         startDay=query.value(14).toInt();
         title=query.value(15).toString();
+        m_checker=query.value(16).toString();
     }
 }
 

@@ -16,7 +16,14 @@
 #include <QInputDialog>
 #include <QScrollBar>
 
-
+/*************************************************************************
+【函数名称】leaderTask
+【函数功能】leaderTask类的构造函数，设置样式表
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.20
+【更改记录】2019.7.29 增加设置样式表功能
+*************************************************************************/
 leaderTask::leaderTask(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::leaderTask)
@@ -25,6 +32,14 @@ leaderTask::leaderTask(QWidget *parent) :
     SetStyle();
 }
 
+/*************************************************************************
+【函数名称】~leaderTask
+【函数功能】leaderTask类析构函数
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.20
+【更改记录】
+*************************************************************************/
 leaderTask::~leaderTask()
 {
     delete ui;
@@ -170,6 +185,7 @@ void leaderTask::Show201(int i){
     month->setStyleSheet(m_LabelStyle);
     QLabel *day=new QLabel(tr("日"));
     day->setStyleSheet(m_LabelStyle);
+    //设置控件的样式
     (m_yearEdit+i)->setFixedHeight(51);
     (m_monthEdit+i)->setFixedHeight(51);
     (m_dayEdit+i)->setFixedHeight(51);
@@ -386,11 +402,11 @@ void leaderTask::Show203(int i){
 }
 
 /*************************************************************************
-【函数名称】GetPage203
-【函数功能】从leaderTask类中获得stackedwidget的i参数
+【函数名称】GetPage203confrm
+【函数功能】点击确认按钮之后从leaderTask类中获得stackedwidget的i参数
 【参数】无
 【返回值】 无
-【开发者及日期】李佳芸 2019.7.23
+【开发者及日期】李佳芸 2019.7.28
 【更改记录】
 *************************************************************************/
 void leaderTask::GetPage203confrm(){
@@ -403,6 +419,14 @@ void leaderTask::GetPage203confrm(){
     }
 }
 
+/*************************************************************************
+【函数名称】GetPage203prolong
+【函数功能】点击延长按钮之后从leaderTask类中获得stackedwidget的i参数
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.28
+【更改记录】
+*************************************************************************/
 void leaderTask::GetPage203prolong(){
     for(int i=0;i<m_taskList.size();i++){
         if(m_taskList[i].GetFlag()==203){
@@ -420,7 +444,7 @@ void leaderTask::GetPage203prolong(){
 【参数】int i
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.23
-【更改记录】
+【更改记录】2019.7.27 增加容错功能
 *************************************************************************/
 void leaderTask::OnClicked_203confrm(int i){
     int iFlag=0;
@@ -429,9 +453,11 @@ void leaderTask::OnClicked_203confrm(int i){
         int iEndYear;
         int iEndMonth;
         int iEndDay;
-        if(m_table[i]->item(j,3)!=NULL||(m_table[i]->item(j,3)&&m_table[i]->item(j,3)->text()!=tr(""))){
+        if(m_table[i]->item(j,3)!=NULL||(m_table[i]->item(j,3)
+                                         &&m_table[i]->item(j,3)->text()!=tr(""))){
             iFlag=2;
-            if(m_table[i]->item(j,4)!=NULL||(m_table[i]->item(j,4)&&m_table[i]->item(j,4)->text()!=tr(""))){
+            if(m_table[i]->item(j,4)!=NULL||(m_table[i]->item(j,4)
+                                             &&m_table[i]->item(j,4)->text()!=tr(""))){
                 //检验输入的日期是否合法
                 QString EndDate=m_table[i]->item(j,4)->text();
                 iEndYear=EndDate.mid(0,4).toInt();
@@ -439,18 +465,24 @@ void leaderTask::OnClicked_203confrm(int i){
                 iEndDay=EndDate.mid(8,2).toInt();
                 if(EndDate[4]=='-'&&EndDate[7]=='-'&&iEndYear!=NULL&&
                         iEndMonth!=NULL&&iEndDay!=NULL){
+                    //检验设定的日期是否在当前日期之后
                     QDate time;
                     time.setDate(iEndYear,iEndMonth,iEndDay);
                     if(time.isValid()){
-                        iFlag=1;;
+                        QDate currentTime=QDate::currentDate();
+                        if(time>=currentTime){
+                            iFlag=1;
+                        }
+                        else{
+                            SetWarningBox("输入日期不正确，请重新输入！");
+                            m_table[i]->item(j,4)->setText("");
+                            break;
+                        }
                     }
                     else{
                         SetWarningBox("输入日期不正确，请重新输入！");
                         m_table[i]->item(j,4)->setText("");
                         close();
-                        leaderTask r;
-                        r.ShowValue();
-                        r.exec();
                         break;
                     }
                 }
@@ -476,12 +508,13 @@ void leaderTask::OnClicked_203confrm(int i){
                                                      iEndMonth,iEndDay,newTask);
         }
     }
+    //如果以上检测全都通过
     if(iFlag==1){
         SetInformBox("分配任务成功！");
 
         g_backUp.SelectTranslaterDone_Leader(m_taskList[i]);
-        //改变任务状态为译者开始翻译状态
 
+        //刷新页面
         close();
         leaderTask r;
         r.ShowValue();
@@ -492,10 +525,20 @@ void leaderTask::OnClicked_203confrm(int i){
     }
 }
 
+/*************************************************************************
+【函数名称】OnClicked_203prolong
+【函数功能】在Show203中点击延时按钮之后并获得m_iPage的槽函数，提示用户输入延期天数，并
+判断输入是否合法，若合法，存储延期天数
+【参数】int i
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.28
+【更改记录】
+*************************************************************************/
 void leaderTask::OnClicked_203prolong(int i){
     int iAdd= QInputDialog::getInt(this, "延期","请输入延期天数");
     if(iAdd>=0){
         SetInformBox("延期成功！");
+        g_backUp.Prolong_203(iAdd,m_taskList[i]);
     }
     else{
         SetWarningBox("延期天数不能为负！");
@@ -710,7 +753,7 @@ j参数
 【参数】int i,int j
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.23
-【更改记录】
+【更改记录】2019.7.27 增加容错功能
 *************************************************************************/
 void leaderTask::OnClicked_301confrm(int i,int j){
     if(!(m_NewComment[i]+j)->toPlainText().isEmpty()){
@@ -882,7 +925,7 @@ void leaderTask::GetPage302confrm(){
 【参数】int i
 【返回值】 无
 【开发者及日期】李佳芸 2019.7.24
-【更改记录】
+【更改记录】2019.7.28 增加容错功能
 *************************************************************************/
 void leaderTask::OnClicked_302confrm(int i){
     if(!(m_myResult+i)->toPlainText().isEmpty()){
@@ -903,7 +946,7 @@ void leaderTask::OnClicked_302confrm(int i){
 }
 
 /*************************************************************************
-【函数名称】on_main_clicked
+【函数名称】on_Main_clicked
 【函数功能】如果main按钮被按下，显示mainwindow
 【参数】无
 【返回值】 无
@@ -917,6 +960,14 @@ void leaderTask::on_Main_clicked()
     r.exec();
 }
 
+/*************************************************************************
+【函数名称】SetStyle
+【函数功能】设置页面的样式表
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.29
+【更改记录】
+*************************************************************************/
 void leaderTask::SetStyle(){
     m_BtnStyle1="QPushButton{"
                 "background-color:rgb(0, 188, 212);\
@@ -939,6 +990,14 @@ void leaderTask::SetStyle(){
     ui->Main->setStyleSheet(BtnStyle2);
 }
 
+/*************************************************************************
+【函数名称】SetTableStyle
+【函数功能】设置表格的样式表
+【参数】QTableWidget *table
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.29
+【更改记录】
+*************************************************************************/
 void leaderTask::SetTableStyle(QTableWidget *table){
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     table->horizontalHeader()->setStretchLastSection(true);
@@ -962,9 +1021,17 @@ void leaderTask::SetTableStyle(QTableWidget *table){
           "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
           "QPushButton:pressed{background-color:white;color:#303F9F;}";
     ui->Main->setStyleSheet(BtnStyle2);
-
+    ui->exitBtn->setStyleSheet(BtnStyle2);
 }
 
+/*************************************************************************
+【函数名称】SetListStyle
+【函数功能】设置listwidget的样式
+【参数】QListWidget* list
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.29
+【更改记录】
+*************************************************************************/
 void leaderTask::SetListStyle(QListWidget* list){
     list->setIconSize(QSize(50,30));
     list->setStyleSheet("QListWidget{color:black; }"
@@ -973,6 +1040,14 @@ void leaderTask::SetListStyle(QListWidget* list){
                         "QListWidget::item:selected{background:#03A9F4; color:white; }");
 }
 
+/*************************************************************************
+【函数名称】SetTabStyle
+【函数功能】设置tabwidget的样式
+【参数】QTabWidget* tab
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.29
+【更改记录】
+*************************************************************************/
 void leaderTask::SetTabStyle(QTabWidget* tab){
     tab->setIconSize(QSize(50,30));
     tab->setStyleSheet("QTabWidget::pane{top:60px;border:none;}"
@@ -987,6 +1062,14 @@ void leaderTask::SetTabStyle(QTabWidget* tab){
                                  "font:12pt,\"等线\";}");
 }
 
+/*************************************************************************
+【函数名称】SetWarningBox
+【函数功能】显示警告的messagebox以及设置样式表
+【参数】QString Text
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.29
+【更改记录】
+*************************************************************************/
 void leaderTask::SetWarningBox(QString Text){
     QMessageBox message(this);
     message.setIconPixmap(QPixmap(":/images/warning.svg"));
@@ -1000,6 +1083,14 @@ void leaderTask::SetWarningBox(QString Text){
     message.exec();
 }
 
+/*************************************************************************
+【函数名称】SetInformBox
+【函数功能】显示information的Messagebox以及设置样式表
+【参数】QString Text
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.12
+【更改记录】
+*************************************************************************/
 void leaderTask::SetInformBox(QString Text){
     QMessageBox message(this);
     message.setIconPixmap(QPixmap(":/images/information.svg"));
@@ -1011,4 +1102,27 @@ void leaderTask::SetInformBox(QString Text){
     ysBtn->setFixedSize(171,51);
     message.addButton(ysBtn,QMessageBox::AcceptRole);
     message.exec();
+}
+
+/*************************************************************************
+【函数名称】on_exitBtn_clicked
+【函数功能】用户按下退出键后保存进度退出
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.30
+【更改记录】
+*************************************************************************/
+void leaderTask::on_exitBtn_clicked()
+{
+    SqlQuery query;
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
+    close();
+    exit(0);
 }

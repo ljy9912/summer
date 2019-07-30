@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tasksPublished</class>
- <widget class="QDialog" name="tasksPublished">
+ <class>CheckerTask</class>
+ <widget class="QDialog" name="CheckerTask">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,16 +14,16 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#frame{border-image: url(:/background/taskspublished.png);
+   <string notr="true">#frame{border-image: url(:/background/checkertask.png);
 border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;}</string>
   </property>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>-1</y>
-     <width>1921</width>
-     <height>1081</height>
+     <y>0</y>
+     <width>1920</width>
+     <height>1080</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -32,6 +32,26 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QPushButton" name="Main">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>1000</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>返回主页面</string>
+    </property>
+   </widget>
    <widget class="QListWidget" name="listWidget">
     <property name="geometry">
      <rect>
@@ -51,38 +71,13 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
       <height>901</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <underline>false</underline>
-     </font>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Main">
-    <property name="geometry">
-     <rect>
-      <x>980</x>
-      <y>1000</y>
-      <width>131</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>等线</family>
-      <pointsize>12</pointsize>
-      <underline>true</underline>
-     </font>
-    </property>
-    <property name="text">
-     <string>返回主界面</string>
-    </property>
    </widget>
    <widget class="QPushButton" name="exitBtn">
     <property name="geometry">
      <rect>
       <x>1170</x>
       <y>1000</y>
-      <width>111</width>
+      <width>131</width>
       <height>41</height>
      </rect>
     </property>

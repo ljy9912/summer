@@ -29,9 +29,6 @@ public:
     void Show301(int i);
     void Show302(int i);
 
-signals:
-    void SendPage(int i);
-    void SendPage301(int i,int j);
 
 private slots:
     void GetPage201();
@@ -43,6 +40,8 @@ private slots:
     void GetPage302save();
     void GetPage302confrm();
     void on_Main_clicked();
+
+    void on_exitBtn_clicked();
 
 public:
     void OnClicked_201(int i);

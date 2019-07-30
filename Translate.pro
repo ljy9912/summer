@@ -56,7 +56,10 @@ SOURCES += \
     listtasktranslater.cpp \
     listsignupforleader.cpp \
     listsignupfortranslater.cpp \
-    listmessage.cpp
+    listmessage.cpp \
+    signupforchecker.cpp \
+    listsignupforchecker.cpp \
+    checkertask.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -89,7 +92,10 @@ HEADERS += \
     listtasktranslater.h \
     listsignupforleader.h \
     listsignupfortranslater.h \
-    listmessage.h
+    listmessage.h \
+    signupforchecker.h \
+    listsignupforchecker.h \
+    checkertask.h
 
 FORMS += \
         mainwindow.ui \
@@ -105,7 +111,8 @@ FORMS += \
     publishertask.ui \
     leadertask.ui \
     translatertask.ui \
-    messagebox.ui
+    messagebox.ui \
+    checkertask.ui
 
 RESOURCES += \
     resource/qss.qrc \

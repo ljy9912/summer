@@ -4,7 +4,7 @@
 signUpForLeader::signUpForLeader():user()
 {
     m_iIdTask=0;
-    m_iIdTask=0;
+    m_iIDThis=0;
 }
 
 /*************************************************************************

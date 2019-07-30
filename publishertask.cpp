@@ -43,6 +43,14 @@ publisherTask::~publisherTask()
     m_prolongBtn=NULL;
     delete[] m_TaskTranslaterList;
     m_TaskTranslaterList=NULL;
+    delete[] m_CheckerMoney;
+    m_CheckerMoney=NULL;
+    delete[] m_CheckerEdit;
+    m_CheckerEdit=NULL;
+    delete[] m_leaderList;
+    m_leaderList=NULL;
+    delete[] m_CheckerList;
+    m_CheckerList=NULL;
 }
 
 /*************************************************************************
@@ -61,6 +69,10 @@ void publisherTask::ShowValue(){
     m_table=new QTableWidget[m_taskList.size()];
     m_leaderMoney=new QLineEdit[m_taskList.size()];
     m_TaskTranslaterList=new QList<taskTranslater>[m_taskList.size()];
+    m_CheckerEdit=new QLineEdit[m_taskList.size()];
+    m_leaderList=new QList<signUpForLeader>[m_taskList.size()];
+    m_CheckerList=new QList<signUpForChecker>[m_taskList.size()];
+    m_CheckerMoney=new QLineEdit[m_taskList.size()];
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
         switch(m_taskList[i].GetFlag()){
@@ -73,8 +85,13 @@ void publisherTask::ShowValue(){
         case 401:
             Show401(i);
             break;
-        default:
+        case 201:
+        case 202:
+        case 203:
+        case 301:
+        case 302:
             ShowDefault(i);
+            break;
         }
     }
 }
@@ -88,17 +105,20 @@ void publisherTask::ShowValue(){
 【更改记录】
 *************************************************************************/
 void publisherTask::Show101(int i){
+    QTabWidget* Tab=new QTabWidget;
+    SetTabStyle(Tab);
     QListWidgetItem* item=new QListWidgetItem;
-    item->setText(tr("<负责人正在火热报名中>%1").arg(m_taskList[i].GetTitle()));
+    item->setText(tr("<负责人和审核人正在火热报名中>%1").arg(m_taskList[i].GetTitle()));
     item->setIcon(QIcon(":/images/baomingblue.svg"));
     ui->listWidget->insertItem(i,item);
-    m_leaderList=g_backUp.m_listSignUpForLeader.SearchLeaderForTask(m_taskList[i].GetID());
-    QWidget *window=new QWidget;
+    m_leaderList[i]=g_backUp.m_listSignUpForLeader.SearchLeaderForTask(m_taskList[i].GetID());
+    QWidget *window1=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label=new QLabel(tr("已报名负责人："));
     label->setStyleSheet(m_LabelStyle);
-    QTableWidget *table=new QTableWidget(m_leaderList.size(),3);
+    QTableWidget *table=new QTableWidget(m_leaderList[i].size(),3);
     SetTableStyle(table);
+    table->verticalHeader()->setDefaultSectionSize(60);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setWindowTitle("已报名负责人");
     QStringList header;
@@ -107,15 +127,42 @@ void publisherTask::Show101(int i){
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     table->horizontalHeader()->setStretchLastSection(true);
 
-    for(int j=0;j<m_leaderList.size();j++){
-        table->setItem(j,0,new QTableWidgetItem(m_leaderList[j].GetID()));
-        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
-        table->setItem(j,2,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
+    for(int j=0;j<m_leaderList[i].size();j++){
+        table->setItem(j,0,new QTableWidgetItem(m_leaderList[i][j].GetID()));
+        table->setItem(j,1,new QTableWidgetItem(m_leaderList[i][j].GetEnglish()));
+        table->setItem(j,2,new QTableWidgetItem(QString::number(m_leaderList[i][j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(table);
-    window->setLayout(layout);
-    ui->stackedWidget->addWidget(window);
+    window1->setLayout(layout);
+    window1->setStyleSheet("background:white;");
+    Tab->addTab(window1,"负责人");
+    QWidget* window2=new QWidget;
+    QVBoxLayout* layout2=new QVBoxLayout;
+    m_CheckerList[i]=g_backUp.m_listSignUpForChecker.SearchCheckerForTask(m_taskList[i].GetID());
+    QLabel* label2=new QLabel("已报名审核人：");
+    label2->setStyleSheet(m_LabelStyle);
+    QTableWidget* table2=new QTableWidget(m_CheckerList[i].size(),3);
+    SetTableStyle(table2);
+    table2->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table2->setWindowTitle("已报名审核人");
+    table->verticalHeader()->setDefaultSectionSize(60);
+    QStringList header2;
+    header2<<"用户名"<<"英语资历"<<"积分";
+    table2->setHorizontalHeaderLabels(header2);
+    table2->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    table2->horizontalHeader()->setStretchLastSection(true);
+    for(int j=0;j<m_CheckerList[i].size();j++){
+        table2->setItem(j,0,new QTableWidgetItem(m_CheckerList[i][j].GetID()));
+        table2->setItem(j,1,new QTableWidgetItem(m_CheckerList[i][j].GetEnglish()));
+        table2->setItem(j,2,new QTableWidgetItem(QString::number(m_CheckerList[i][j].GetRewrdPoint())));
+    }
+    layout2->addWidget(label2);
+    layout2->addWidget(table2);
+    window2->setLayout(layout2);
+    window2->setStyleSheet("background:white;");
+    Tab->addTab(window2,"审核人");
+    ui->stackedWidget->addWidget(Tab);
 }
 
 /*************************************************************************
@@ -130,31 +177,33 @@ void publisherTask::Show102(int i){
     m_Page=i;
     QListWidgetItem* item=new QListWidgetItem;
     item->setIcon(QIcon(":/images/choose1.svg"));
-    item->setText(tr("<负责人报名完毕，请选择！>%1").arg(m_taskList[i].GetTitle()));
+    item->setText(tr("<负责人和审核人报名完毕，请选择！>%1").arg(m_taskList[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
-    m_leaderList=g_backUp.m_listSignUpForLeader.SearchLeaderForTask(m_taskList[i].GetID());
-    QWidget *window=new QWidget;
+
+    QTabWidget* Tab=new QTabWidget;
+    SetTabStyle(Tab);
+    m_leaderList[i]=g_backUp.m_listSignUpForLeader.SearchLeaderForTask(m_taskList[i].GetID());
+    QWidget *window1=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
     QLabel *label=new QLabel(tr("已报名负责人："));
     label->setStyleSheet(m_LabelStyle);
-    QTableWidget *table=new QTableWidget(m_leaderList.size(),3);
+    QTableWidget *table=new QTableWidget(m_leaderList[i].size(),3);
     SetTableStyle(table);
-    table->setStyleSheet(m_TableWidgetStyle);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setWindowTitle("已报名负责人");
     QStringList header;
     header<<"用户名"<<"英语资历"<<"积分";
     table->setHorizontalHeaderLabels(header);
     table->verticalHeader()->setDefaultSectionSize(60); //设置行高
-    for(int j=0;j<m_leaderList.size();j++){
-        table->setItem(j,0,new QTableWidgetItem(m_leaderList[j].GetID()));
-        table->setItem(j,1,new QTableWidgetItem(m_leaderList[j].GetEnglish()));
-        table->setItem(j,2,new QTableWidgetItem(QString::number(m_leaderList[j].GetRewrdPoint())));
+    for(int j=0;j<m_leaderList[i].size();j++){
+        table->setItem(j,0,new QTableWidgetItem(m_leaderList[i][j].GetID()));
+        table->setItem(j,1,new QTableWidgetItem(m_leaderList[i][j].GetEnglish()));
+        table->setItem(j,2,new QTableWidgetItem(QString::number(m_leaderList[i][j].GetRewrdPoint())));
     }
     layout->addWidget(label);
     layout->addWidget(table);
     QHBoxLayout *layoutName=new QHBoxLayout;
-    QLabel *labelName=new QLabel(tr("用户名："));
+    QLabel *labelName=new QLabel(tr("负责人："));
     labelName->setStyleSheet(m_LabelStyle);
     layoutName->addSpacing(300);
     layoutName->addWidget(labelName);
@@ -163,19 +212,56 @@ void publisherTask::Show102(int i){
     (m_nameedit+i)->setStyleSheet(m_LineEditStyle);
     (m_nameedit+i)->setFixedSize(240,51);
     layout->addLayout(layoutName);
+    window1->setLayout(layout);
+    Tab->addTab(window1,"负责人");
+
+    m_CheckerList[i]=g_backUp.m_listSignUpForChecker.SearchCheckerForTask(m_taskList[i].GetID());
+    QWidget *window2=new QWidget;
+    QVBoxLayout *layout2=new QVBoxLayout();
+    QLabel *label2=new QLabel(tr("已报名审核人："));
+    label2->setStyleSheet(m_LabelStyle);
+    QTableWidget *table2=new QTableWidget(m_CheckerList[i].size(),3);
+    SetTableStyle(table2);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->setWindowTitle("已报名审核人");
+    QStringList header2;
+    header2<<"用户名"<<"英语资历"<<"积分";
+    table2->setHorizontalHeaderLabels(header2);
+    table2->verticalHeader()->setDefaultSectionSize(60); //设置行高
+    for(int j=0;j<m_CheckerList[i].size();j++){
+        table2->setItem(j,0,new QTableWidgetItem(m_CheckerList[i][j].GetID()));
+        table2->setItem(j,1,new QTableWidgetItem(m_CheckerList[i][j].GetEnglish()));
+        table2->setItem(j,2,new QTableWidgetItem(QString::number(m_CheckerList[i][j].GetRewrdPoint())));
+    }
+    layout2->addWidget(label2);
+    layout2->addWidget(table2);
+
     m_confrmBtn[i].setText(tr("确定"));
     m_confrmBtn[i].setStyleSheet(m_BtnStyle1);
     m_confrmBtn[i].setFixedSize(171,51);
     m_prolongBtn[i].setText(tr("延期"));
     m_prolongBtn[i].setStyleSheet(m_BtnStyle1);
     m_prolongBtn[i].setFixedSize(171,51);
+    QHBoxLayout* check=new QHBoxLayout;
+    QLabel* labelName2=new QLabel(tr("审核人："));
+    labelName2->setStyleSheet(m_LabelStyle);
+    (m_CheckerEdit+i)->setStyleSheet(m_LineEditStyle);
+    (m_CheckerEdit+i)->setFixedSize(240,51);
+    check->addSpacing(300);
+    check->addWidget(labelName2);
+    check->addWidget(m_CheckerEdit+i);
+    check->addSpacing(300);
+    layout2->addLayout(check);
+
     QHBoxLayout* Btn=new QHBoxLayout;
     Btn->addWidget(m_confrmBtn+i);
     Btn->addWidget(m_prolongBtn+i);
-    layout->addSpacing(30);
-    layout->addLayout(Btn);
-    window->setLayout(layout);
-    ui->stackedWidget->addWidget(window);
+    layout2->addSpacing(30);
+    layout2->addLayout(Btn);
+    window2->setLayout(layout2);
+    Tab->addTab(window2,"审核人");
+
+    ui->stackedWidget->addWidget(Tab);
     connect((m_confrmBtn+i),SIGNAL(pressed()),this,SLOT(GetPage102confrm()));
     connect((m_prolongBtn+i),SIGNAL(pressed()),this,SLOT(GetPage102prolong()));
 }
@@ -195,8 +281,11 @@ void publisherTask::Show401(int i){
     ui->listWidget->insertItem(i,item);
     QTabWidget *Tab=new QTabWidget;
     SetTabStyle(Tab);
-    QLabel *intro=new QLabel(tr("%1").arg(m_taskList[i].GetTitle()));
+    QLabel *intro=new QLabel(tr("翻译标题：%1").arg(m_taskList[i].GetTitle()));
     intro->setStyleSheet(m_LabelStyle);
+    QLabel* inform=new QLabel("翻译原文：");
+    inform->setStyleSheet(m_LabelStyle);
+    QLabel* inform4=new QLabel("翻译结果");
     QTextBrowser *myTask=new QTextBrowser;
     myTask->setText(m_taskList[i].GetTask());
     myTask->setStyleSheet(m_BrowserStyle);
@@ -204,6 +293,8 @@ void publisherTask::Show401(int i){
     myResult->setStyleSheet(m_TextEditStyle);
     QLabel *inform1=new QLabel(tr("负责人酬金："));
     inform1->setStyleSheet(m_LabelStyle);
+    QLabel* inform2=new QLabel("审核人酬金：");
+    inform2->setStyleSheet(m_LabelStyle);
     int iIDTask=m_taskList[i].GetID();
     for(int j=0;j<g_backUp.m_listTaskLeader.m_List.size();j++){
         if(iIDTask==g_backUp.m_listTaskLeader.m_List[j].GetID()){
@@ -212,7 +303,9 @@ void publisherTask::Show401(int i){
     }
     QVBoxLayout *layout1=new QVBoxLayout;
     layout1->addWidget(intro);
+    layout1->addWidget(inform);
     layout1->addWidget(myTask);
+    layout1->addWidget(inform4);
     layout1->addWidget(myResult);
     QWidget* window1=new QWidget;
     window1->setLayout(layout1);
@@ -225,10 +318,17 @@ void publisherTask::Show401(int i){
     (m_leaderMoney+i)->setFixedSize(200,51);
     leader->addWidget(m_leaderMoney+i);
     leader->addSpacing(200);
+    QHBoxLayout* checker=new QHBoxLayout;
+    checker->addSpacing(200);
+    checker->addWidget(inform2);
+    (m_CheckerMoney+i)->setStyleSheet(m_LineEditStyle);
+    (m_CheckerMoney+i)->setFixedSize(200,51);
+    checker->addWidget(m_CheckerMoney+i);
+    checker->addSpacing(200);
     QWidget *window2=new QWidget;
     QVBoxLayout *layout2=new QVBoxLayout();
-    QLabel *inform2=new QLabel(tr("译者："));
-    inform2->setStyleSheet(m_LabelStyle);
+    QLabel *inform3=new QLabel(tr("译者："));
+    inform3->setStyleSheet(m_LabelStyle);
     m_TaskTranslaterList[i]=g_backUp.m_listTaskTranslater
             .SearchTaskForTranslater(m_taskList[i].GetID());
     SetTableStyle(m_table+i);
@@ -247,7 +347,8 @@ void publisherTask::Show401(int i){
         (m_table+i)->setItem(j,2,new QTableWidgetItem(m_TaskTranslaterList[i][j].GetResult()));
     }
     layout2->addLayout(leader);
-    layout2->addWidget(inform2);
+    layout2->addLayout(checker);
+    layout2->addWidget(inform3);
     layout2->addWidget((m_table+i));
     (m_confrmBtn+i)->setText(tr("确定"));
     (m_confrmBtn+i)->setStyleSheet(m_BtnStyle1);
@@ -313,14 +414,7 @@ void publisherTask::ShowDefault(int i){
     ui->stackedWidget->addWidget(window);
 }
 
-/*************************************************************************
-【函数名称】on_main_clicked
-【函数功能】点击main后，返回主页面
-【参数】无
-【返回值】 无
-【开发者及日期】李佳芸 2019.7.21
-【更改记录】
-*************************************************************************/
+
 
 
 /*************************************************************************
@@ -333,21 +427,30 @@ void publisherTask::ShowDefault(int i){
 *************************************************************************/
 void publisherTask::OnClicked102confrm(int i){
     QString iIdLeader=m_nameedit[i].text().trimmed();
-    int iNum=ui->listWidget->currentRow();
-    if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[iNum].GetID())){
+    QString iIDChecker=m_CheckerEdit[i].text().trimmed();
+    if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[i].GetID())&&
+            g_backUp.m_listSignUpForChecker.UserExists(iIDChecker,m_taskList[i].GetID())){
+        if(iIdLeader!=iIDChecker){
+            SetInformBox("选择负责人和审核人成功！");
+            g_backUp.SelectLeaderDone(m_taskList[i],iIdLeader,iIDChecker);
 
-        SetInformBox("选择负责人成功！");
-        g_backUp.SelectLeaderDone(m_taskList[iNum],iIdLeader);
-
-        close();
-        publisherTask r;
-        r.ShowValue();
-        r.exec();
+            close();
+            publisherTask r;
+            r.ShowValue();
+            r.exec();
+        }
+        else{
+            SetWarningBox("负责人和审核人不能相同！");
+            m_nameedit[i].clear();
+            m_nameedit[i].setFocus();
+            m_CheckerEdit[i].clear();
+        }
     }
     else{
         SetWarningBox("表中无此用户！");
         m_nameedit[i].clear();
         m_nameedit[i].setFocus();
+        m_CheckerEdit[i].clear();
     }
 }
 
@@ -399,47 +502,58 @@ void publisherTask::OnClicked401(int i){
     double moneySum=0;
     int iFlag=1;
     //译者分配钱数总和相加
-    if(!(m_leaderMoney+i)->text().isEmpty()){
-        moneySum+=((m_leaderMoney+i)->text().toDouble());
-        for(int j=0;j<m_TaskTranslaterList[i].size();j++){
-            if((m_table+i)->item(j,3)!=NULL&&(m_table+i)->item(j,3)->text()!=""){
-                 moneySum+=(m_table+i)->item(j,3)->text().toDouble();
-            }
-            else{
-                SetWarningBox("用户酬金不能为空！");
-                iFlag=0;
-            }
-        }
-        if(iFlag==1){
-            while(g_backUp.m_User.GetMoney()<moneySum){
-                double add= QInputDialog::getDouble(this, "充值",
-                                                                "余额不足，请充值！");
-                g_backUp.m_User.AddMoney(add);
-            }
-            SetInformBox("任务确认成功！");
-            g_backUp.m_User.LoseMoney(moneySum);
-            //将负责人的余额加入表中
-            double dMyMoney=(m_leaderMoney+i)->text().toDouble();
-
-            //发消息确认
-            g_backUp.DistributeMoney_Leader(dMyMoney,m_taskList[i]);
-            //负责人加10分
+    if(!((m_leaderMoney+i)->text().isEmpty())){
+        if(!(m_CheckerMoney+i)->text().isEmpty()){
+            moneySum+=((m_leaderMoney+i)->text().toDouble());
+            moneySum+=((m_CheckerMoney+i)->text().toDouble());
             for(int j=0;j<m_TaskTranslaterList[i].size();j++){
-
-                g_backUp.DistributeMoney_Translater((m_table+i)->item(j,3)->text().toDouble()
-                                                    ,m_TaskTranslaterList[i][j]);
+                if((m_table+i)->item(j,3)!=NULL&&(m_table+i)->item(j,3)->text()!=""){
+                     moneySum+=(m_table+i)->item(j,3)->text().toDouble();
+                }
+                else{
+                    SetWarningBox("用户酬金不能为空！");
+                    iFlag=0;
+                    break;
+                }
             }
-            g_backUp.DistributeMoney_Publisher(m_taskList[i],moneySum);
-
-
-            close();
-            publisherTask r;
-            r.ShowValue();
-            r.exec();
         }
         else{
-            SetWarningBox("负责人金额不能为空！");
+            SetWarningBox("审核人酬金不能为空！");
+            iFlag=0;
         }
+    }
+    else{
+        SetWarningBox("负责人酬金不能为空！");
+        iFlag=0;
+    }
+    if(iFlag==1){
+        while(g_backUp.m_User.GetMoney()<moneySum){
+            double add= QInputDialog::getDouble(this, "充值",
+                                                            "余额不足，请充值！");
+            g_backUp.m_User.AddMoney(add);
+        }
+        SetInformBox("任务确认成功！");
+        g_backUp.m_User.LoseMoney(moneySum);
+        //将负责人的余额加入表中
+        double dMyMoney=(m_leaderMoney+i)->text().toDouble();
+        double dMyMoney2=(m_CheckerMoney+i)->text().toDouble();
+
+        //发消息确认
+        g_backUp.DistributeMoney_Leader(dMyMoney,m_taskList[i]);
+        g_backUp.DistributeMoney_Checker(dMyMoney2,m_taskList[i]);
+        //负责人加10分
+        for(int j=0;j<m_TaskTranslaterList[i].size();j++){
+
+            g_backUp.DistributeMoney_Translater((m_table+i)->item(j,3)->text().toDouble()
+                                                ,m_TaskTranslaterList[i][j]);
+        }
+        g_backUp.DistributeMoney_Publisher(m_taskList[i],moneySum);
+
+
+        close();
+        publisherTask r;
+        r.ShowValue();
+        r.exec();
     }
 }
 
@@ -463,6 +577,7 @@ void publisherTask::SetStyle(){
           "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
           "QPushButton:pressed{background-color:white;color:#303F9F;}";
     ui->Main->setStyleSheet(BtnStyle2);
+    ui->exitBtn->setStyleSheet(BtnStyle2);
 }
 
 void publisherTask::SetTableStyle(QTableWidget *table){
@@ -512,6 +627,14 @@ void publisherTask::SetTabStyle(QTabWidget* tab){
                                  "font:12pt,\"等线\";}");
 }
 
+/*************************************************************************
+【函数名称】on_Main_clicked
+【函数功能】点击main后，返回主页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.21
+【更改记录】
+*************************************************************************/
 void publisherTask::on_Main_clicked()
 {
     close();
@@ -543,4 +666,19 @@ void publisherTask::SetInformBox(QString Text){
     ysBtn->setFixedSize(171,51);
     message.addButton(ysBtn,QMessageBox::AcceptRole);
     message.exec();
+}
+
+void publisherTask::on_exitBtn_clicked()
+{
+    SqlQuery query;
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
+    close();
+    exit(0);
 }

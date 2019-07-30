@@ -38,11 +38,14 @@ private slots:
 
     void on_Main_clicked();
 
+    void on_exitBtn_clicked();
+
 private:
     Ui::publisherTask *ui;
 
     QList<taskPublisher> m_taskList;
-    QList<signUpForLeader> m_leaderList;
+    QList<signUpForLeader>* m_leaderList;
+    QList<signUpForChecker>* m_CheckerList;
     int m_Page;
 
     QLineEdit *m_nameedit;
@@ -51,6 +54,8 @@ private:
     QList<taskTranslater>* m_TaskTranslaterList;
     QTableWidget* m_table;
     QLineEdit* m_leaderMoney;
+    QLineEdit* m_CheckerMoney;
+    QLineEdit* m_CheckerEdit;
 
     QString m_BtnStyle1;
     QString m_LabelStyle;

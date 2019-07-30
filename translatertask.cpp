@@ -55,13 +55,8 @@ void translaterTask::ShowValue(){
     m_taskList=g_backUp.m_listTaskTranslater.SearchTaskForTranslater(g_backUp.m_User);
     //定义界面要用到的控件
     m_result=new QTextEdit[m_taskList.size()];
-    m_result->setStyleSheet(m_TextEditStyle);
     m_saveBtn=new QPushButton[m_taskList.size()];
-    m_saveBtn->setStyleSheet(m_BtnStyle1);
-    m_saveBtn->setFixedSize(171,51);
     m_confrmBtn=new QPushButton[m_taskList.size()];
-    m_confrmBtn->setStyleSheet(m_BtnStyle1);
-    m_confrmBtn->setFixedSize(171,51);
     for(int i=0;i<m_taskList.size();i++){
         connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,
                 SLOT(setCurrentIndex(int)));
@@ -345,7 +340,7 @@ void translaterTask::SetTableStyle(QTableWidget *table){
           "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
           "QPushButton:pressed{background-color:white;color:#303F9F;}";
     ui->Main->setStyleSheet(BtnStyle2);
-
+    ui->pushButton->setStyleSheet(BtnStyle2);
 }
 
 void translaterTask::SetListStyle(QListWidget* list){
@@ -380,4 +375,19 @@ void translaterTask::SetInformBox(QString Text){
     ysBtn->setFixedSize(171,51);
     message.addButton(ysBtn,QMessageBox::AcceptRole);
     message.exec();
+}
+
+void translaterTask::on_pushButton_clicked()
+{
+    SqlQuery query;
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
+    close();
+    exit(0);
 }

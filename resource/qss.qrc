@@ -52,5 +52,6 @@
         <file>background/messagebox.png</file>
         <file>images/information.svg</file>
         <file>images/warning.svg</file>
+        <file>background/checkertask.png</file>
     </qresource>
 </RCC>

@@ -34,6 +34,8 @@ private slots:
 
     void on_Main_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::translaterTask *ui;
 

@@ -8,6 +8,7 @@ taskLeader::taskLeader():task()
     m_iTranslaterDay=0;
     m_Result="";
     m_ResultEditting="";
+    m_Checker="";
 }
 
 taskLeader::~taskLeader()
@@ -42,6 +43,7 @@ taskLeader::taskLeader(const taskLeader& newTaskLeader){
     m_Result=newTaskLeader.m_Result;
     m_ResultEditting=newTaskLeader.m_ResultEditting;
     title=newTaskLeader.title;
+    m_Checker=newTaskLeader.m_Checker;
 }
 
 /*************************************************************************
@@ -71,6 +73,7 @@ taskLeader& taskLeader::operator =(const taskLeader& newTaskLeader){
     m_Result=newTaskLeader.m_Result;
     m_ResultEditting=newTaskLeader.m_ResultEditting;
     title=newTaskLeader.title;
+    m_Checker=newTaskLeader.m_Checker;
     return *this;
 }
 
@@ -102,6 +105,9 @@ QString taskLeader::GetResultEditting(){
     return m_ResultEditting;
 }
 
+QString taskLeader::GetChecker(){
+    return m_Checker;
+}
 
 
 /*************************************************************************
@@ -132,7 +138,9 @@ void taskLeader::EditResultEditting(QString newResult){
     m_ResultEditting=newResult;
 }
 
-
+void taskLeader::EditChecker(QString newChecker){
+    m_Checker=newChecker;
+}
 
 /*************************************************************************
 【函数名称】attachIDToTask
@@ -166,6 +174,7 @@ void taskLeader::attachIDToTask(int ID,QList<taskLeader> TaskList){
     m_Result=TaskList[i].GetResult();
     m_ResultEditting=TaskList[i].GetResultEditting();
     title=TaskList[i].GetTitle();
+    m_Checker=TaskList[i].GetChecker();
 }
 
 /*************************************************************************
@@ -200,5 +209,6 @@ void taskLeader::attachIDToTask(int ID){
         m_Result=query.value(15).toString();
         m_ResultEditting=query.value(16).toString();
         title=query.value(17).toString();
+        m_Checker=query.value(18).toString();
     }
 }

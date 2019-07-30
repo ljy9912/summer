@@ -79,7 +79,7 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>440</y>
+      <y>410</y>
       <width>251</width>
       <height>91</height>
      </rect>
@@ -106,6 +106,7 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
     <property name="font">
      <font>
       <family>等线</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -132,6 +133,7 @@ border-style: inset;}</string>
     <property name="font">
      <font>
       <family>等线</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -158,6 +160,7 @@ border-style: inset;}</string>
     <property name="font">
      <font>
       <family>等线</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -176,7 +179,7 @@ border-style: inset;}</string>
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>920</y>
+      <y>930</y>
       <width>251</width>
       <height>91</height>
      </rect>
@@ -195,7 +198,7 @@ border-style: inset;}</string>
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>600</y>
+      <y>540</y>
       <width>251</width>
       <height>91</height>
      </rect>
@@ -214,7 +217,7 @@ border-style: inset;}</string>
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>760</y>
+      <y>670</y>
       <width>251</width>
       <height>91</height>
      </rect>
@@ -227,6 +230,25 @@ border-style: inset;}</string>
     </property>
     <property name="text">
      <string>我是负责人</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Checker">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>800</y>
+      <width>251</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等线</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>我是审核人</string>
     </property>
    </widget>
   </widget>

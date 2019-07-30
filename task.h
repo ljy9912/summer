@@ -65,7 +65,7 @@ public:
     void EditFlag(int fflag);
     void EditLeader(QString iLeader);
 
-    void attachIDToTask(int id,QList<task> TaskList);
+    void attachIDToTask(int id);
 
 
 };

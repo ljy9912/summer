@@ -28,23 +28,28 @@ public:
     void ShowValue202(int i);
     void ShowValue203(int i);
 
-    void OnClicked101(int i);
+    void OnClicked101apply(int i);
+    void OnClicked101check(int i);
     void OnClicked202(int i);
 
 
 private slots:
 
 
-    void GetPage101();
+    void GetPage101apply();
+    void GetPage101check();
 
     void GetPage202();
 
     void on_Main_clicked();
 
+    void on_exitBtn_clicked();
+
 private:
     Ui::tasksPublished *ui;
 
     QPushButton* m_applyBtn;
+    QPushButton* m_CheckerBtn;
     void SetTableStyle(QTableWidget* table);
     void SetListStyle(QListWidget* list);
     void SetTabStyle(QTabWidget* tab);

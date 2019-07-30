@@ -61,6 +61,7 @@ void tasksPublished::on_Main_clicked()
 *************************************************************************/
 void tasksPublished::ShowValue(){
     m_applyBtn=new QPushButton[g_backUp.m_listTaskPublisher.m_List.size()];
+    m_CheckerBtn=new QPushButton[g_backUp.m_listTaskPublisher.m_List.size()];
     //对任务列表中的每一项做讨论，根据不同的状态显示不同的形式
     for(int i=0;i<g_backUp.m_listTaskPublisher.m_List.size();i++){
         QListWidgetItem* item=new QListWidgetItem[g_backUp.m_listTaskPublisher
@@ -107,7 +108,7 @@ void tasksPublished::ShowValue101(int i){
     //在页面左侧的listWidget中添加新的item
     QListWidgetItem* item=new QListWidgetItem;
     item->setIcon(QIcon(":/images/baomingblue.svg"));
-    item->setText(tr("<负责人火热报名中！>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+    item->setText(tr("<负责人和审核人火热报名中！>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
     //声明页面中需要的widget
@@ -147,6 +148,9 @@ void tasksPublished::ShowValue101(int i){
     m_applyBtn[i].setText("申请负责人");
     m_applyBtn[i].setStyleSheet(m_BtnStyle1);
     m_applyBtn[i].setFixedSize(171,51);
+    m_CheckerBtn[i].setText("申请审核人");
+    m_CheckerBtn[i].setFixedSize(171,51);
+    m_CheckerBtn[i].setStyleSheet(m_BtnStyle1);
     //在垂直布局中添加widget
     QVBoxLayout *layout=new QVBoxLayout();
     layout->addWidget(title);
@@ -160,7 +164,12 @@ void tasksPublished::ShowValue101(int i){
     layout->addWidget(tasks);
     layout->addWidget(Task);
     layout->addSpacing(30);
-    layout->addWidget((m_applyBtn+i),0,Qt::AlignCenter);
+    QHBoxLayout* Btn=new QHBoxLayout;
+    Btn->addSpacing(300);
+    Btn->addWidget(m_applyBtn+i);
+    Btn->addWidget(m_CheckerBtn+i);
+    Btn->addSpacing(300);
+    layout->addLayout(Btn);
     //为窗口设置垂直布局
     window->setLayout(layout);
     //将窗口添加到stackedWidget中
@@ -168,14 +177,15 @@ void tasksPublished::ShowValue101(int i){
     //将listWidget和stackedWidget连接
     connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
     //将申请的button和getPage101连接
-    connect((m_applyBtn+i),SIGNAL(pressed()),this,SLOT(GetPage101()));
+    connect((m_applyBtn+i),SIGNAL(pressed()),this,SLOT(GetPage101apply()));
+    connect((m_CheckerBtn+i),SIGNAL(pressed()),this,SLOT(GetPage101check()));
 }
 
 void tasksPublished::ShowValue102(int i){
     //在listWidget中添加新的item
     QListWidgetItem* item=new QListWidgetItem;
     item->setIcon(QIcon(":/images/choose1.svg"));
-    item->setText(tr("<发布者正在筛选负责人！>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+    item->setText(tr("<发布者正在筛选负责人和审核人！>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
     //声明页面布置需要的widget
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
@@ -269,6 +279,8 @@ void tasksPublished::ShowValue201(int i){
     time->setStyleSheet(m_LabelStyle);
     QLabel* leader=new QLabel(tr("负责人：%1").arg(myTask.GetLeader()));
     leader->setStyleSheet(m_LabelStyle);
+    QLabel* checker=new QLabel(tr("审核人：%1").arg(myTask.GetTaskChecker()));
+    checker->setStyleSheet(m_LabelStyle);
     QLabel *money=new QLabel(tr("任务总金额：%1元").arg(myTask.GetMoney()));
     money->setStyleSheet(m_LabelStyle);
     //在垂直布局中添加widget
@@ -280,6 +292,7 @@ void tasksPublished::ShowValue201(int i){
     layout->addWidget(Intro);
     layout->addWidget(publisher);
     layout->addWidget(leader);
+    layout->addWidget(checker);
     layout->addWidget(time);
     layout->addWidget(money);
     layout->addWidget(tasks);
@@ -333,6 +346,8 @@ void tasksPublished::ShowValue202(int i){
     time->setStyleSheet(m_LabelStyle);
     QLabel* leader=new QLabel(tr("负责人：%1").arg(myTask.GetLeader()));
     leader->setStyleSheet(m_LabelStyle);
+    QLabel* checker=new QLabel(tr("审核人：%1").arg(myTask.GetTaskChecker()));
+    checker->setStyleSheet(m_LabelStyle);
     QLabel *money=new QLabel(tr("任务总金额：%1元").arg(myTask.GetMoney()));
     money->setStyleSheet(m_LabelStyle);
     m_applyBtn[i].setText("申请译者");
@@ -346,6 +361,7 @@ void tasksPublished::ShowValue202(int i){
     layout->addWidget(Intro);
     layout->addWidget(publisher);
     layout->addWidget(leader);
+    layout->addWidget(checker);
     layout->addWidget(time);
     layout->addWidget(date);
     layout->addWidget(money);
@@ -442,7 +458,15 @@ void tasksPublished::ShowValue203(int i){
     table->setItem(0,2,new QTableWidgetItem(myLeader.GetPhoneNum()));
     table->setItem(0,3,new QTableWidgetItem(myLeader.GetEnglish()));
     table->setItem(0,4,new QTableWidgetItem(QString::number(myLeader.GetRewrdPoint())));
-    for(int j=1;j<(translaterList.size()+1);j++){
+    table->setItem(1,0,new QTableWidgetItem(myTask.GetPublisher()));;
+    table->setItem(1,1,new QTableWidgetItem("审核人"));
+    iNum=g_backUp.m_listUser.SearchInList(myTask.GetTaskChecker());
+    user myChecker=g_backUp.m_listUser.m_List[iNum];
+    table->setItem(1,2,new QTableWidgetItem(myChecker.GetPhoneNum());
+    table->setItem(1,3,new QTableWidgetItem(myChecker.GetEnglish()));
+    table->setItem(1,4,new QTableWidgetItem(QString::number(myChecker.GetRewrdPoint())));
+    table->setItem(1,5,new QTableWidgetItem(myTask.GetPublisher()));
+    for(int j=2;j<(translaterList.size()+2);j++){
         table->setItem(j,0,new QTableWidgetItem(translaterList[j-1].GetTranslater()));
         table->setItem(j,1,new QTableWidgetItem("译者"));
         iNum=g_backUp.m_listUser.SearchInList(myTask.GetLeader());
@@ -461,10 +485,18 @@ void tasksPublished::ShowValue203(int i){
     connect(ui->listWidget,SIGNAL(currentRowChanged(int)),ui->stackedWidget,SLOT(setCurrentIndex(int)));
 }
 
-void tasksPublished::GetPage101(){
+void tasksPublished::GetPage101apply(){
     for(int i=0;i<g_backUp.m_listTaskPublisher.m_List.size();i++){
         if((m_applyBtn+i)->isDown()){
-            OnClicked101(i);
+            OnClicked101apply(i);
+        }
+    }
+}
+
+void tasksPublished::GetPage101check(){
+    for(int i=0;i<g_backUp.m_listTaskPublisher.m_List.size();i++){
+        if((m_CheckerBtn+i)->isDown()){
+            OnClicked101check(i);
         }
     }
 }
@@ -477,12 +509,15 @@ void tasksPublished::GetPage202(){
     }
 }
 
-void tasksPublished::OnClicked101(int i){
+void tasksPublished::OnClicked101apply(int i){
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
     //判断用户是否已经报过名了
     if(!g_backUp.m_listSignUpForLeader.UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
         if(g_backUp.m_User.GetRewrdPoint()<100){
             SetWarningBox("积分不足，请努力完成更多翻译任务后再来申请吧！");
+        }
+        else if(g_backUp.m_User.GetID()==myTask.GetPublisher()){
+            SetWarningBox("您是发布者，不能报名负责人！");
         }
         else{
             SetInformBox("报名成功！");
@@ -499,11 +534,48 @@ void tasksPublished::OnClicked101(int i){
     }
 }
 
+void tasksPublished::OnClicked101check(int i){
+    taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
+    //判断用户是否已经报过名了
+    if(!g_backUp.m_listSignUpForChecker.UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
+        if(g_backUp.m_User.GetRewrdPoint()<110){
+            SetWarningBox("积分不足，请努力完成更多翻译任务后再来申请吧！");
+        }
+        else if(g_backUp.m_User.GetID()==myTask.GetPublisher()){
+            SetWarningBox("您是发布者，不能报名审核人！");
+        }
+        else{
+            SetInformBox("报名成功！");
+            //后台执行负责人报名操作
+            g_backUp.SignUpForChecker(i);
+            close();
+            tasksPublished r;
+            r.ShowValue();;
+            r.exec();
+        }
+    }
+    else{
+        SetWarningBox("您已经报过名了！");
+    }
+}
+
 void tasksPublished::OnClicked202(int i){
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
     //判断用户是否已经报过名了
-    if(!g_backUp.m_listSignUpForTranslater.UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
-
+    if(g_backUp.m_listSignUpForTranslater.
+            UserExists(g_backUp.m_User.GetID(),myTask.GetID())){
+        SetWarningBox("您已经报过名了！");
+    }
+    else if(g_backUp.m_User.GetID()==myTask.GetLeader()){
+        SetWarningBox("您是该任务负责人，不能报名译者！");
+    }
+    else if(g_backUp.m_User.GetID()==myTask.GetTaskChecker()){
+        SetWarningBox("您是该任务审核人，不能报名译者！");
+    }
+    else if(g_backUp.m_User.GetID()==myTask.GetPublisher()){
+        SetWarningBox("您是该任务发布者，不能报名译者！");
+    }
+    else{
         SetInformBox("报名成功！");
         //后台执行译者报名操作
         g_backUp.SignUpForTranslaterDone(i);
@@ -511,9 +583,6 @@ void tasksPublished::OnClicked202(int i){
         tasksPublished r;
         r.ShowValue();
         r.exec();
-    }
-    else{
-        SetWarningBox("您已经报过名了！");
     }
 }
 
@@ -537,6 +606,7 @@ void tasksPublished::SetStyle(){
           "QPushButton:hover{backgroud-color:white;color:#3F51B5;}"
           "QPushButton:pressed{background-color:white;color:#303F9F;}";
     ui->Main->setStyleSheet(BtnStyle2);
+    ui->exitBtn->setStyleSheet(BtnStyle2);
 }
 
 void tasksPublished::SetTableStyle(QTableWidget *table){
@@ -611,4 +681,19 @@ void tasksPublished::SetInformBox(QString Text){
     ysBtn->setFixedSize(171,51);
     message.addButton(ysBtn,QMessageBox::AcceptRole);
     message.exec();
+}
+
+void tasksPublished::on_exitBtn_clicked()
+{
+    SqlQuery query;
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
+    close();
+    exit(0);
 }

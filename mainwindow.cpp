@@ -14,6 +14,7 @@
 #include "messagebox.h"
 #include <QDesktopWidget>
 #include <QRect>
+#include "checkertask.h"
 
 
 
@@ -44,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->getTask->setStyleSheet(BtnStyle1);
     ui->Publish->setStyleSheet(BtnStyle1);
     ui->publisher->setStyleSheet(BtnStyle1);
+    ui->Checker->setStyleSheet(BtnStyle1);
     QDesktopWidget *deskdop = QApplication::desktop();
     move((deskdop->width() - this->width())/2, (deskdop->height() - this->height())/2);
     setWindowFlags(Qt::FramelessWindowHint);
@@ -157,6 +159,15 @@ void MainWindow::on_exitBtn_clicked()
     query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
     query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
     query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
     close();
     exit(0);
+}
+
+void MainWindow::on_Checker_clicked()
+{
+    close();
+    CheckerTask r;
+    r.ShowValue();
+    r.exec();
 }

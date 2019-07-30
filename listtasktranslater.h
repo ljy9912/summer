@@ -20,6 +20,7 @@ public:
     QList <taskTranslater> SearchTaskForTranslater(user myUser);
     QList <taskTranslater> SearchTaskForTranslater(int idTask);
     QList <taskTranslater> SearchTaskForTranslater_flag0(int idTask);
+    QList <taskTranslater> SearchTaskForTranslater_flag13(int iIDTask);
 
     int GetSize_301(int iID);
 

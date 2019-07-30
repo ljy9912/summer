@@ -36,6 +36,7 @@ private slots:
     void SetWarningBox(QString text);
     void SetCanclBox();
     bool IsEmpty();
+    void on_exitBtn_2_clicked();
 };
 
 #endif // LOGINDIALOG_H

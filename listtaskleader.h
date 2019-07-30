@@ -18,6 +18,7 @@ public:
     int SearchInList(int iID);
     void InsertIntoList(taskLeader myTask);
     QList <taskLeader> SearchTaskForLeader(user myUser);
+    QList <taskLeader> SearchTaskForChecker(user myUser);
     void TaskLeaderAppend(taskPublisher myLeader);
 
 

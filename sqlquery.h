@@ -9,6 +9,7 @@
 #include "signupfortranslater.h"
 #include "taskleader.h"
 #include "message.h"
+#include "signupforchecker.h"
 
 class SqlQuery
 {
@@ -22,6 +23,7 @@ public:
     void createTasks();
     void createSignUpForLeader();
     void createSignUpForTranslater();
+    void createSignUpForChecker();
     void createTaskLeader();
     void createTaskTranslater();
     void createMessage();
@@ -33,6 +35,7 @@ public:
     const QList<taskLeader> GetTaskLeader();
     const QList<taskTranslater> GetTaskTranslater();
     const QList<Message> GetMessage();
+    const QList<signUpForChecker> GetSignUpForChecker();
     
     void saveUser(QList<user> listUser);
     void saveTasks(QList<taskPublisher> listTask);
@@ -41,6 +44,7 @@ public:
     void saveTaskLeader(QList<taskLeader> listTask);
     void saveTaskTranslater(QList<taskTranslater> listTask);
     void saveMessage(QList<Message> messageList);
+    void saveSignUpForChecker(QList<signUpForChecker> listSignUpForChecker);
 };
 
 #endif // SQLQUERY_H

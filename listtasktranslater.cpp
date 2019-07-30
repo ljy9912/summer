@@ -129,3 +129,15 @@ int listTaskTranslater::GetID(){
     }
     return iID;
 }
+
+QList<taskTranslater> listTaskTranslater::SearchTaskForTranslater_flag13(int iIDTask){
+    QList<taskTranslater> translaterTaskList;
+    for(int j=0;j<m_List.size();j++){
+        if(m_List[j].GetIDTask()==iIDTask
+                &&(m_List[j].GetFlagToLeader()==1||
+                   m_List[j].GetFlagToLeader()==3)){
+            translaterTaskList.append(m_List[j]);
+        }
+    }
+    return translaterTaskList;
+}

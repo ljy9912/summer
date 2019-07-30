@@ -15,12 +15,14 @@ public:
     int GetTranslaterDay();
     QString GetResult();
     QString GetResultEditting();
+    QString GetChecker();
     
     void EditTranslaterYear(int newYear);
     void EditTranslaterMonth(int newMonth);
     void EditTranslaterDay(int newDay);
     void EditResult(QString newResult);
     void EditResultEditting(QString newResult);
+    void EditChecker(QString newChecker);
     
     void attachIDToTask(int id,QList<taskLeader> TaskList);
     void attachIDToTask(int id);
@@ -31,6 +33,7 @@ private:
     int m_iTranslaterDay;
     QString m_Result;
     QString m_ResultEditting;
+    QString m_Checker;
 };
 
 #endif // TASKLEADER_H
