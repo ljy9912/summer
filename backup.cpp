@@ -731,10 +731,13 @@ void BackUp::Register(QString passwordvalue,QString nameValue
 【开发者及日期】李佳芸 2019.7.27
 【更改记录】
 *************************************************************************/
-void BackUp::UserInfoEdit(QString IDValue,QString PhoneValue,QString EnglishValue){
+void BackUp::UserInfoEdit(QString IDValue,QString PhoneValue
+                          ,QString EnglishValue,QString PassWord,QString Name){
     m_User.EditIDNum(IDValue);
     m_User.EditPhoneNum(PhoneValue);
     m_User.EditEnglish(EnglishValue);
+    m_User.EditPassWrd(PassWord);
+    m_User.EditID(Name);
     m_listUser.Update(m_User);
 }
 

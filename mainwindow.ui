@@ -191,7 +191,7 @@ border-style: inset;}</string>
      </font>
     </property>
     <property name="text">
-     <string>我的翻译</string>
+     <string>我是译者</string>
     </property>
    </widget>
    <widget class="QPushButton" name="publisher">

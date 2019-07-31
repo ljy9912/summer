@@ -83,7 +83,7 @@ border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radi
      </font>
     </property>
     <property name="text">
-     <string>（这是身份唯一标识噢）</string>
+     <string>用户名必须唯一噢！</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="nameedit">

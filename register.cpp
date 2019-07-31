@@ -112,6 +112,14 @@ bool Register::IsEmpty(){
         SetWarningBox("确认密码不能为空！");
         return true;
     }
+    else if(!ui->ID->text().isEmpty()){
+        if(ui->ID->text().size()!=18){
+            SetWarningBox("身份证号不正确！");
+            ui->ID->clear();
+            ui->ID->setFocus();
+            return true;
+        }
+    }
     return false;
 }
 

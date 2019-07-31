@@ -462,7 +462,7 @@ void tasksPublished::ShowValue203(int i){
     table->setItem(1,1,new QTableWidgetItem("审核人"));
     iNum=g_backUp.m_listUser.SearchInList(myTask.GetTaskChecker());
     user myChecker=g_backUp.m_listUser.m_List[iNum];
-    table->setItem(1,2,new QTableWidgetItem(myChecker.GetPhoneNum());
+    table->setItem(1,2,new QTableWidgetItem(myChecker.GetPhoneNum()));
     table->setItem(1,3,new QTableWidgetItem(myChecker.GetEnglish()));
     table->setItem(1,4,new QTableWidgetItem(QString::number(myChecker.GetRewrdPoint())));
     table->setItem(1,5,new QTableWidgetItem(myTask.GetPublisher()));

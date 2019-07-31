@@ -33,12 +33,12 @@ userInfoEdit::~userInfoEdit()
 【更改记录】
 *************************************************************************/
 void userInfoEdit::showValue(){
-    ui->ID->setText(tr("账号：%1").arg(g_backUp.m_User.GetID()));
+    ui->usrName->setText(g_backUp.m_User.GetID());
     ui->phoneEdit->setText(g_backUp.m_User.GetPhoneNum());
     ui->IDNumEdit->setText(g_backUp.m_User.GetIDNum());
     ui->EnglishEdit->setText(g_backUp.m_User.GetEnglish());
-    ui->credit->setText(tr("积分：%1").arg(g_backUp.m_User.GetRewrdPoint()));
-    ui->money->setText(tr("余额：%1").arg(g_backUp.m_User.GetMoney()));
+    ui->paswrd->setText(g_backUp.m_User.GetPassWrd());
+    ui->confrmpaswrd->setText(g_backUp.m_User.GetPassWrd());
 }
 
 /*************************************************************************
@@ -96,12 +96,29 @@ void userInfoEdit::on_canclBtn_clicked()
 void userInfoEdit::on_confrmBtn_clicked()
 {
     if(!IsEmpty()){
-        g_backUp.UserInfoEdit(ui->ID->text(),ui->phoneEdit->text(),ui->EnglishEdit->text());
-        SetInformBox("信息修改成功！");
-        close();
-        userInfo r;
-        r.showValue();
-        r.exec();
+        if(ui->usrName->text().trimmed()!=g_backUp.m_User.GetID()){
+            if(g_backUp.m_listUser.NameExist(ui->usrName->text().trimmed())){
+                SetWarningBox("用户名已存在！");
+                ui->usrName->clear();
+                ui->usrName->setFocus();
+            }
+        }
+        else if(ui->confrmpaswrd->text()!=ui->paswrd->text()){
+            SetWarningBox("密码和确认密码不同！");
+            ui->paswrd->clear();
+            ui->confrmpaswrd->clear();
+            ui->paswrd->setFocus();
+        }
+        else{
+            g_backUp.UserInfoEdit(ui->IDNumEdit->text(),ui->phoneEdit->text(),
+                                  ui->EnglishEdit->text(),ui->paswrd->text(),
+                                  ui->usrName->text());
+            SetInformBox("信息修改成功！");
+            close();
+            userInfo r;
+            r.showValue();
+            r.exec();
+        }
     }
 
 }
@@ -110,6 +127,24 @@ bool userInfoEdit::IsEmpty(){
     if(ui->EnglishEdit->text().isEmpty()){
         SetWarningBox("英语资历不能为空！");
         return true;
+    }
+    else if(ui->usrName->text().isEmpty()){
+        SetWarningBox("用户名不能为空！");
+        return true;
+    }
+    else if(ui->paswrd->text().isEmpty()){
+        SetWarningBox("密码不能为空！");
+        return true;
+    }
+    else if(ui->confrmpaswrd->text().isEmpty()){
+        SetWarningBox("确认密码不能为空!");
+        return true;
+    }
+    else if(!ui->IDNumEdit->text().isEmpty()){
+        if(ui->IDNumEdit->text().size()!=18){
+            SetWarningBox("身份证号格式不正确！");
+            return true;
+        }
     }
     return false;
 }

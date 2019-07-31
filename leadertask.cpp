@@ -362,7 +362,7 @@ void leaderTask::Show203(int i){
     QTextBrowser *Task=new QTextBrowser;
     Task->setText(m_taskList[i].GetTask());
     Task->setStyleSheet(m_BrowserStyle);
-    (m_table[i])->setWindowTitle("分配任务");
+    (m_table[i])->setWindowTitle("分配任务：（任务和截止日期均为空白表示未被选为译者）");
     //设置表头
     QStringList header;
     header<<"用户名"<<"英语资历"<<"积分"<<"任务"<<"任务截止日期（年-月-日）";

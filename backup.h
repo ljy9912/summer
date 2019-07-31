@@ -47,7 +47,7 @@ public:
 
     void Register(QString passwordvalue, QString nameValue, QString phoneValue,
                   QString IDNum, QString English);
-    void UserInfoEdit(QString IDValue, QString PhoneValue, QString EnglishValue);
+    void UserInfoEdit(QString IDValue, QString PhoneValue, QString EnglishValue, QString PassWord, QString Name);
     void TaskPublishEdit(taskPublisher myTask, int iTaskClass, QString intro, QString title, QString NewTask, int iTime, int iLeaderYear, int iLeaderMonth, int iLeaderDay, double dMoney);
     void Prolong_102(int iAdd,taskPublisher myTask);
     void Prolong_203(int iAdd,taskLeader myTask);
