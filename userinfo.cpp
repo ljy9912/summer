@@ -24,7 +24,7 @@ userInfo::userInfo(QWidget *parent) :
 userInfo::~userInfo()
 {
     delete ui;
-    ui=NULL;
+    ui=nullptr;
 }
 
 /*************************************************************************
@@ -72,7 +72,7 @@ void userInfo::on_editBtn_clicked()
 void userInfo::on_moneyBtn_clicked()
 {
     QInputDialog dialog;
-    dialog.setStyleSheet("background:white;font:12pt,\"等线\";");
+    dialog.setStyleSheet("background:white;font:12pt,\"等线\";color:white;");
     dialog.setTextValue("请输入充值数");
     dialog.setWindowTitle("充值");
     double add=dialog.getDouble(this,"充值","请输入充值数");

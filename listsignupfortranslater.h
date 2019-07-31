@@ -11,11 +11,11 @@ public:
     ~listSignUpForTranslater();
     listSignUpForTranslater& operator =(const QList<signUpForTranslater> &myList);
     listSignUpForTranslater& operator =(const listSignUpForTranslater& myList);
-    void Update(signUpForTranslater myTask);
-    int SearchInList(signUpForTranslater myTask);
+    void Update(signUpForTranslater myUser);
+    int SearchInList(signUpForTranslater myUser);
     int SearchInList(int iID);
-    void InsertIntoList(signUpForTranslater myTask);
-    QList <signUpForTranslater> SearchTranslaterForTask(taskLeader myTask);
+    void InsertIntoList(signUpForTranslater myUser);
+    QList <signUpForTranslater> SearchTranslaterForTask(taskLeader myUser);
     void Delete(int iIDTask);
 
     bool UserExists(QString iIDUser,int iIDTask);

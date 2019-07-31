@@ -14,6 +14,7 @@
 #include "sqlquery.h"
 #include <QTableWidget>
 #include <QScrollBar>
+#include <QHeaderView>
 
 
 
@@ -74,6 +75,10 @@ void tasksPublished::ShowValue(){
             ShowValue102(i);
             break;
         case 201:
+            (item+i)->setIcon(QIcon(":/images/plan.svg"));
+            (item+i)->setText(tr("<负责人正在制定翻译计划！>%1")
+                              .arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+            ui->listWidget->insertItem(i,(item+i));
             ShowValue201(i);
             break;
         case 202:
@@ -82,23 +87,33 @@ void tasksPublished::ShowValue(){
         case 203:
 
             (item+i)->setIcon(QIcon(":/images/jinhangzhong.svg"));
-            (item+i)->setText(tr("<翻译任务进行中>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+            (item+i)->setText(tr("<负责人正在选择译者分配任务>%1")
+                              .arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
             ui->listWidget->insertItem(i,(item+i));
-            ShowValue203(i);
+            ShowValue201(i);
+            break;
+        case 301:
+        case 302:
+            (item+i)->setIcon(QIcon(":/images/jinhangzhong.svg"));
+            (item+i)->setText(tr("<翻译任务进行中>%1")
+                              .arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+            ShowValue301(i);
             break;
         case 401:
 
             (item+i)->setIcon(QIcon(":/images/confirm.svg"));
-            (item+i)->setText(tr("<发布者确认中>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+            (item+i)->setText(tr("<发布者确认中>%1")
+                              .arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
             ui->listWidget->insertItem(i,(item+i));
-            ShowValue203(i);
+            ShowValue301(i);
             break;
         case 402:
 
             (item+i)->setIcon(QIcon(":/images/Done.svg"));
-            (item+i)->setText(tr("<任务已完成>%1").arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
+            (item+i)->setText(tr("<任务已完成>%1")
+                              .arg(g_backUp.m_listTaskPublisher.m_List[i].GetTitle()));
             ui->listWidget->insertItem(i,(item+i));
-            ShowValue203(i);
+            ShowValue301(i);
             break;
         }
     }
@@ -247,9 +262,7 @@ void tasksPublished::ShowValue201(int i){
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
     //在listWidget中添加新的item
     QListWidgetItem* item=new QListWidgetItem;
-    item->setIcon(QIcon(":/images/plan.svg"));
-    item->setText(tr("<负责人正在制定翻译计划！>%1").arg(myTask.GetTitle()));
-    ui->listWidget->insertItem(i,item);
+
     //声明需要的widget
     QWidget *window=new QWidget();
     QLabel *taskClass;
@@ -379,7 +392,7 @@ void tasksPublished::ShowValue202(int i){
     connect((m_applyBtn+i),SIGNAL(pressed()),this,SLOT(GetPage202()));
 }
 
-void tasksPublished::ShowValue203(int i){
+void tasksPublished::ShowValue301(int i){
     //左边listwidget上面的任务描述信息
     taskPublisher myTask=g_backUp.m_listTaskPublisher.m_List[i];
     //使用tabwidget，第一页显示任务的所有信息，第二页显示负责人和译者
@@ -546,7 +559,7 @@ void tasksPublished::OnClicked101check(int i){
         }
         else{
             SetInformBox("报名成功！");
-            //后台执行负责人报名操作
+            //后台执行审核人报名操作
             g_backUp.SignUpForChecker(i);
             close();
             tasksPublished r;

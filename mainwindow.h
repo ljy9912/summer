@@ -38,6 +38,8 @@ private slots:
 
     void on_Checker_clicked();
 
+    void SetStyle();
+
 private:
 
     Ui::MainWindow *ui;

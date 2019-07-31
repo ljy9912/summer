@@ -20,7 +20,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
 LoginDialog::~LoginDialog()
 {
     delete ui;
-    ui=NULL;
+    ui=nullptr;
 }
 
 /*************************************************************************
@@ -89,6 +89,14 @@ void LoginDialog::on_exitBtn_clicked()
 
 }
 
+/*************************************************************************
+【函数名称】SetStyle
+【函数功能】设置页面的样式表
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.29
+【更改记录】
+*************************************************************************/
 void LoginDialog::SetStyle(){
     m_BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
             color: white;   border-radius: 10px; \
@@ -112,6 +120,14 @@ void LoginDialog::SetStyle(){
     setAttribute(Qt::WA_TranslucentBackground,true);
 }
 
+/*************************************************************************
+【函数名称】SetWarningBox
+【函数功能】显示警告的MessageBox
+【参数】QString Text
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.31
+【更改记录】
+*************************************************************************/
 void LoginDialog::SetWarningBox(QString Text){
     QMessageBox message(this);
     message.setIconPixmap(QPixmap(":/images/warning.svg"));
@@ -125,6 +141,14 @@ void LoginDialog::SetWarningBox(QString Text){
     message.exec();
 }
 
+/*************************************************************************
+【函数名称】SetCanclBox
+【函数功能】显示点击取消之后的QMessageBox
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.12
+【更改记录】
+*************************************************************************/
 void LoginDialog::SetCanclBox(){
     QMessageBox msgbx;
     msgbx.setText("你确定要退出吗？这会使编辑的文本清空。");
@@ -145,6 +169,14 @@ void LoginDialog::SetCanclBox(){
     msgbx.exec();
 }
 
+/*************************************************************************
+【函数名称】IsEmpty
+【函数功能】判断用户的输入是否有空
+【参数】无
+【返回值】bool
+【开发者及日期】李佳芸 2019.7.30
+【更改记录】
+*************************************************************************/
 bool LoginDialog::IsEmpty(){
     if(ui->usrLineEdit->text().isEmpty()){
         SetWarningBox("用户名不能为空！");
@@ -154,7 +186,14 @@ bool LoginDialog::IsEmpty(){
     }
 }
 
-
+/*************************************************************************
+【函数名称】on_exitBtn_2_clicked
+【函数功能】当点击退出按钮之后，存储所有数据
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.12
+【更改记录】
+*************************************************************************/
 void LoginDialog::on_exitBtn_2_clicked()
 {
     SqlQuery query;

@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="backup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="checkertask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="leadertask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listmessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listsignupforchecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listsignupforleader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listsignupfortranslater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listtaskleader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listtaskpublisher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listtasktranslater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listuser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logindialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="message.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="publishertask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="register.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="registerconfirm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="signupforchecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="signupforleader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="signupfortranslater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlquery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="task.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskleader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tasknew.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskpublish.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskpublishedit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskpublisher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskspublished.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tasktranslater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="translatertask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="user.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userinfoedit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="backup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="checkertask.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="leadertask.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="listmessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listsignupforchecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listsignupforleader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listsignupfortranslater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listtaskleader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listtaskpublisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listtasktranslater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listuser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="logindialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="messagebox.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="publishertask.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="register.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="registerconfirm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="signupforchecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="signupforleader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="signupfortranslater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlquery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="taskleader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="tasknew.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="taskpublish.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="taskpublishedit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="taskpublisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="taskspublished.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="tasktranslater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="translatertask.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="user.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="userinfo.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="userinfoedit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="ui_checkertask.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_leadertask.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_logindialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_mainwindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_messagebox.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_publishertask.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_register.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_registerconfirm.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_tasknew.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_taskpublish.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_taskpublishedit.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_taskspublished.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_translatertask.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_userinfo.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_userinfoedit.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="checkertask.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="leadertask.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="logindialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="messagebox.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="publishertask.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="register.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="registerconfirm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="tasknew.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="taskpublish.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="taskpublishedit.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="taskspublished.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="translatertask.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="userinfo.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="userinfoedit.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\images\Done.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\YUAN-circle-fillblack.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\arrowdown.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\arrowdown.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\baomingblue.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\baomingwhite.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\book.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\check-circle.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\checkertask.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\choose.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\choose1.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\comment.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\confirm.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\confirm.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\copyright.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\deleteblack.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\edit.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\editblack.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\icon_cancle.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\icon_cancle.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\iconsz1.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\information.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\jinhangzhong.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\leadertask.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\log-in.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\log-in.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\log-inwhite.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\login.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\login.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\login.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\mainwindow.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\message.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\messageblack.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\messagebox.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\plan.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\publishertask.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="resource\qss.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="resource\background\register.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\registerconfrm.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\style.qss">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\task.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\taskconfrm.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\tasknew.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\taskpublishedit.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\taskspublished.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\time.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\translatertask.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\userinfo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\background\userinfoedit.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\warning-circle.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\warning-circlewhite.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\warning.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\images\YUAN-circle-fillblack.svg" />
+    <None Include="resource\images\check-circle.svg" />
+    <None Include="resource\images\copyright.svg" />
+    <None Include="resource\images\deleteblack.svg" />
+    <None Include="resource\images\editblack.svg" />
+    <None Include="resource\images\message.svg" />
+    <None Include="resource\images\messageblack.svg" />
+    <None Include="resource\images\warning-circle.svg" />
+    <None Include="resource\images\warning-circlewhite.svg" />
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\images\YUAN-circle-fillblack.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\check-circle.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\copyright.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\deleteblack.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\editblack.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\message.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\messageblack.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\warning-circle.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="resource\images\warning-circlewhite.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

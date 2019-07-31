@@ -8,6 +8,7 @@
 #include <QScrollBar>
 #include <QMessageBox>
 #include "sqlquery.h"
+#include <QHeaderView>
 
 /*************************************************************************
 【函数名称】CheckerTask

@@ -17,9 +17,8 @@ class Register : public QDialog
     Q_OBJECT
 
 public:
-    explicit Register(QWidget *parent = 0);
+    explicit Register(QWidget *parent = nullptr);
     ~Register();
-    bool IsEmpty();
 
     
 private slots:
@@ -38,7 +37,7 @@ private:
     void SetCanclBox();
     QString m_BtnStyle1;
     void SetWarningBox(QString text);
-
+    bool IsEmpty();
 };
 
 #endif // REGISTER_H

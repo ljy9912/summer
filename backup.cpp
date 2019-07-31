@@ -68,10 +68,12 @@ BackUp& BackUp::operator =(const BackUp& myBackUp){
 【更改记录】
 *************************************************************************/
 void BackUp::SignUpForLeader(int i){
+    //得到id并对生成新的signUpForLeader对象插入list中
     int idtask=m_listTaskPublisher.m_List[i].GetID();
     int idthis=m_listSignUpForLeader.m_List.last().GetIDThis()+1;
     signUpForLeader leader(m_User,idtask,idthis);
     m_listSignUpForLeader.m_List.append(leader);
+    //发消息确认
     QDateTime time=QDateTime::currentDateTime();
     Message myMessage(m_listMessage.GetID());
     myMessage.EditTitle("报名负责人成功！");
@@ -170,6 +172,7 @@ void BackUp::CheckDateSnupfrLeader(){
                                    .arg(time.toString()));
             newMessage.EditUser(m_listTaskPublisher.m_List[i].GetPublisher());
             m_listMessage.m_List.append(newMessage);
+            //更改任务状态为发布者选择负责人
             m_listTaskPublisher.m_List[i].EditFlag(102);
         }
     }
@@ -210,6 +213,7 @@ void BackUp::CheckDateSnupfrTranslater(){
             m_listTaskLeader.m_List[i].EditFlag(203);
             int iNum=m_listTaskPublisher.SearchInList(m_listTaskLeader.
                                                       m_List[i].GetID());
+            //更改任务状态为
             m_listTaskPublisher.m_List[iNum].EditFlag(203);
         }
     }
@@ -443,7 +447,7 @@ void BackUp::SubmitResultDone(taskTranslater myTask, QString myResult){
 void BackUp::SubmitCommentDone(taskTranslater myTask, QString newComment){
     //存储译者提交的评价
     myTask.AddComment(newComment);
-    myTask.EditCommentEditting(NULL);
+    myTask.EditCommentEditting(nullptr);
     //更改任务状态使得评价在译者处显示
     myTask.EditFlagToLeader(2);
     //将更改的信息写入内存

@@ -20,7 +20,7 @@ class leaderTask : public QDialog
     Q_OBJECT
 
 public:
-    explicit leaderTask(QWidget *parent = 0);
+    explicit leaderTask(QWidget *parent = nullptr);
     ~leaderTask();
     void ShowValue();
     void Show201(int i);
@@ -42,6 +42,8 @@ private slots:
     void on_Main_clicked();
 
     void on_exitBtn_clicked();
+    void Close();
+    void Close2();
 
 public:
     void OnClicked_201(int i);
@@ -86,6 +88,9 @@ private:
     void SetTabStyle(QTabWidget* tab);
     void SetInformBox(QString text);
     void SetWarningBox(QString Text);
+    void SetWarningBox2(QString text);
+    void SetWarningBox3(QString text);
+
 };
 
 #endif // LEADERTASK_H

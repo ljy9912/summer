@@ -16,6 +16,7 @@
 #include <QScrollBar>
 #include <QListWidgetItem>
 #include <QSpacerItem>
+#include <QHeaderView>
 
 
 
@@ -30,27 +31,27 @@ publisherTask::publisherTask(QWidget *parent) :
 publisherTask::~publisherTask()
 {
     delete ui;
-    ui=NULL;
+    ui=nullptr;
     delete[] m_nameedit;
-    m_nameedit=NULL;
+    m_nameedit=nullptr;
     delete[] m_confrmBtn;
-    m_confrmBtn=NULL;
+    m_confrmBtn=nullptr;
     delete[] m_table;
-    m_table=NULL;
+    m_table=nullptr;
     delete[] m_leaderMoney;
-    m_leaderMoney=NULL;
+    m_leaderMoney=nullptr;
     delete[] m_prolongBtn;
-    m_prolongBtn=NULL;
+    m_prolongBtn=nullptr;
     delete[] m_TaskTranslaterList;
-    m_TaskTranslaterList=NULL;
+    m_TaskTranslaterList=nullptr;
     delete[] m_CheckerMoney;
-    m_CheckerMoney=NULL;
+    m_CheckerMoney=nullptr;
     delete[] m_CheckerEdit;
-    m_CheckerEdit=NULL;
+    m_CheckerEdit=nullptr;
     delete[] m_leaderList;
-    m_leaderList=NULL;
+    m_leaderList=nullptr;
     delete[] m_CheckerList;
-    m_CheckerList=NULL;
+    m_CheckerList=nullptr;
 }
 
 /*************************************************************************
@@ -114,7 +115,7 @@ void publisherTask::Show101(int i){
     m_leaderList[i]=g_backUp.m_listSignUpForLeader.SearchLeaderForTask(m_taskList[i].GetID());
     QWidget *window1=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
-    QLabel *label=new QLabel(tr("已报名负责人："));
+    QLabel *label=new QLabel(tr("已报名负责人：（表格列宽可以自由调整噢！）"));
     label->setStyleSheet(m_LabelStyle);
     QTableWidget *table=new QTableWidget(m_leaderList[i].size(),3);
     SetTableStyle(table);
@@ -140,7 +141,7 @@ void publisherTask::Show101(int i){
     QWidget* window2=new QWidget;
     QVBoxLayout* layout2=new QVBoxLayout;
     m_CheckerList[i]=g_backUp.m_listSignUpForChecker.SearchCheckerForTask(m_taskList[i].GetID());
-    QLabel* label2=new QLabel("已报名审核人：");
+    QLabel* label2=new QLabel("已报名审核人：（表格列宽可以自由调整噢！）");
     label2->setStyleSheet(m_LabelStyle);
     QTableWidget* table2=new QTableWidget(m_CheckerList[i].size(),3);
     SetTableStyle(table2);
@@ -185,7 +186,7 @@ void publisherTask::Show102(int i){
     m_leaderList[i]=g_backUp.m_listSignUpForLeader.SearchLeaderForTask(m_taskList[i].GetID());
     QWidget *window1=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
-    QLabel *label=new QLabel(tr("已报名负责人："));
+    QLabel *label=new QLabel(tr("已报名负责人：（表格列宽可以自由调整噢！）"));
     label->setStyleSheet(m_LabelStyle);
     QTableWidget *table=new QTableWidget(m_leaderList[i].size(),3);
     SetTableStyle(table);
@@ -218,7 +219,7 @@ void publisherTask::Show102(int i){
     m_CheckerList[i]=g_backUp.m_listSignUpForChecker.SearchCheckerForTask(m_taskList[i].GetID());
     QWidget *window2=new QWidget;
     QVBoxLayout *layout2=new QVBoxLayout();
-    QLabel *label2=new QLabel(tr("已报名审核人："));
+    QLabel *label2=new QLabel(tr("已报名审核人：（表格列宽可以自由调整噢！）"));
     label2->setStyleSheet(m_LabelStyle);
     QTableWidget *table2=new QTableWidget(m_CheckerList[i].size(),3);
     SetTableStyle(table2);
@@ -291,9 +292,9 @@ void publisherTask::Show401(int i){
     myTask->setStyleSheet(m_BrowserStyle);
     QTextBrowser *myResult=new QTextBrowser;
     myResult->setStyleSheet(m_TextEditStyle);
-    QLabel *inform1=new QLabel(tr("负责人酬金："));
+    QLabel *inform1=new QLabel(tr("负责人酬金：（元）"));
     inform1->setStyleSheet(m_LabelStyle);
-    QLabel* inform2=new QLabel("审核人酬金：");
+    QLabel* inform2=new QLabel("审核人酬金：（元）");
     inform2->setStyleSheet(m_LabelStyle);
     int iIDTask=m_taskList[i].GetID();
     for(int j=0;j<g_backUp.m_listTaskLeader.m_List.size();j++){
@@ -327,7 +328,7 @@ void publisherTask::Show401(int i){
     checker->addSpacing(200);
     QWidget *window2=new QWidget;
     QVBoxLayout *layout2=new QVBoxLayout();
-    QLabel *inform3=new QLabel(tr("译者："));
+    QLabel *inform3=new QLabel(tr("译者：（表格列宽可以自由调整噢！）"));
     inform3->setStyleSheet(m_LabelStyle);
     m_TaskTranslaterList[i]=g_backUp.m_listTaskTranslater
             .SearchTaskForTranslater(m_taskList[i].GetID());
@@ -339,7 +340,7 @@ void publisherTask::Show401(int i){
     (m_table+i)->horizontalHeader()->setStretchLastSection(true);
     (m_table+i)->verticalHeader()->setDefaultSectionSize(200); //设置行高
     QStringList header;
-    header<<"用户名"<<"译文"<<"成果"<<"酬金";
+    header<<"用户名"<<"译文"<<"成果"<<"酬金（元）";
     (m_table+i)->setHorizontalHeaderLabels(header);
     for(int j=0;j<m_TaskTranslaterList[i].size();j++){
         (m_table+i)->setItem(j,0,new QTableWidgetItem(QString::number(m_TaskTranslaterList[i][j].GetID())));
@@ -428,29 +429,34 @@ void publisherTask::ShowDefault(int i){
 void publisherTask::OnClicked102confrm(int i){
     QString iIdLeader=m_nameedit[i].text().trimmed();
     QString iIDChecker=m_CheckerEdit[i].text().trimmed();
-    if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[i].GetID())&&
-            g_backUp.m_listSignUpForChecker.UserExists(iIDChecker,m_taskList[i].GetID())){
-        if(iIdLeader!=iIDChecker){
-            SetInformBox("选择负责人和审核人成功！");
-            g_backUp.SelectLeaderDone(m_taskList[i],iIdLeader,iIDChecker);
+    if(m_nameedit->text().isEmpty()){
+        SetWarningBox("负责人不能为空！");
+    }
+    else{
+        if(g_backUp.m_listSignUpForLeader.UserExists(iIdLeader,m_taskList[i].GetID())&&
+                g_backUp.m_listSignUpForChecker.UserExists(iIDChecker,m_taskList[i].GetID())){
+            if(iIdLeader!=iIDChecker){
+                SetInformBox("选择负责人和审核人成功！");
+                g_backUp.SelectLeaderDone(m_taskList[i],iIdLeader,iIDChecker);
 
-            close();
-            publisherTask r;
-            r.ShowValue();
-            r.exec();
+                close();
+                publisherTask r;
+                r.ShowValue();
+                r.exec();
+            }
+            else{
+                SetWarningBox("负责人和审核人不能相同！");
+                m_nameedit[i].clear();
+                m_nameedit[i].setFocus();
+                m_CheckerEdit[i].clear();
+            }
         }
         else{
-            SetWarningBox("负责人和审核人不能相同！");
+            SetWarningBox("表中无此用户！");
             m_nameedit[i].clear();
             m_nameedit[i].setFocus();
             m_CheckerEdit[i].clear();
         }
-    }
-    else{
-        SetWarningBox("表中无此用户！");
-        m_nameedit[i].clear();
-        m_nameedit[i].setFocus();
-        m_CheckerEdit[i].clear();
     }
 }
 
@@ -507,7 +513,8 @@ void publisherTask::OnClicked401(int i){
             moneySum+=((m_leaderMoney+i)->text().toDouble());
             moneySum+=((m_CheckerMoney+i)->text().toDouble());
             for(int j=0;j<m_TaskTranslaterList[i].size();j++){
-                if((m_table+i)->item(j,3)!=NULL&&(m_table+i)->item(j,3)->text()!=""){
+                if((m_table+i)->item(j,3)!=nullptr&&
+                        (m_table+i)->item(j,3)->text()!=""){
                      moneySum+=(m_table+i)->item(j,3)->text().toDouble();
                 }
                 else{

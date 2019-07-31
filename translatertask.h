@@ -59,6 +59,10 @@ private:
     void SetInformBox(QString text);
 
     void SetStyle();
+    void SetWarningBox2(QString Text);
+    void SetWarningBox3(QString Text);
+    void Close();
+    void Close2();
 };
 
 #endif // TRANSLATERTASK_H

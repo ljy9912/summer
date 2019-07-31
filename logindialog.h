@@ -22,9 +22,8 @@ private:
 
 
 public:
-    explicit LoginDialog(QWidget *parent = 0);
+    explicit LoginDialog(QWidget *parent = nullptr);
     ~LoginDialog();
-    void EditBackUp(BackUp myBackUp);
 
 private slots:
     void on_loginBtn_clicked();

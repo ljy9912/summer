@@ -18,7 +18,7 @@ class publisherTask : public QDialog
     Q_OBJECT
 
 public:
-    explicit publisherTask(QWidget *parent = 0);
+    explicit publisherTask(QWidget *parent = nullptr);
     ~publisherTask();
     void ShowValue();
 
@@ -27,10 +27,12 @@ public:
     void Show401(int i);
     void ShowDefault(int i);
 
-private slots:
     void OnClicked102confrm(int i);
     void OnClicked102prolong(int i);
     void OnClicked401(int i);
+
+private slots:
+
 
     void GetPage102confrm();
     void GetPage102prolong();

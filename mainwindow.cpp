@@ -23,39 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setMaximumSize(1920,1080);
-    setMinimumSize(1920,1080);
-    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    QString BtnStyle2="QPushButton{background-color:#607D8B;\
-            color: white;   border-radius: 10px; \
-            border-style: outset;}"
-           "QPushButton:hover{background-color:#198fb6; color: white;}"
-          "QPushButton:pressed{background-color:#3F51B5;\
-                           border-style: inset; }";
-    ui->exitBtn->setStyleSheet(BtnStyle2);
-    ui->MessageBox->setStyleSheet(BtnStyle1);
-    ui->myTableBtn->setStyleSheet(BtnStyle1);
-    ui->myTaskBtn->setStyleSheet(BtnStyle1);
-    ui->pushButton->setStyleSheet(BtnStyle1);
-    ui->getTask->setStyleSheet(BtnStyle1);
-    ui->Publish->setStyleSheet(BtnStyle1);
-    ui->publisher->setStyleSheet(BtnStyle1);
-    ui->Checker->setStyleSheet(BtnStyle1);
-    QDesktopWidget *deskdop = QApplication::desktop();
-    move((deskdop->width() - this->width())/2, (deskdop->height() - this->height())/2);
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground,true);
+    SetStyle();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    ui=NULL;
+    ui=nullptr;
 }
 
 /*************************************************************************
@@ -106,6 +80,14 @@ void MainWindow::on_getTask_clicked()
     r.exec();
 }
 
+/*************************************************************************
+【函数名称】on_myTaskBtn_clicked
+【函数功能】 在按下myTaskBtn点击之后，打开translaterTask页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.12
+【更改记录】
+*************************************************************************/
 void MainWindow::on_myTaskBtn_clicked()
 {
     close();
@@ -114,6 +96,14 @@ void MainWindow::on_myTaskBtn_clicked()
     r.exec();
 }
 
+/*************************************************************************
+【函数名称】on_myTableBtn_clicked
+【函数功能】在按下myTableBtn按钮之后，关闭主页面并显示leaderTask页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.12
+【更改记录】
+*************************************************************************/
 void MainWindow::on_myTableBtn_clicked()
 {
     close();
@@ -170,4 +160,32 @@ void MainWindow::on_Checker_clicked()
     CheckerTask r;
     r.ShowValue();
     r.exec();
+}
+
+void MainWindow::SetStyle(){
+    QString BtnStyle1="QPushButton{background-color:rgb(0, 188, 212);\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    QString BtnStyle2="QPushButton{background-color:#607D8B;\
+            color: white;   border-radius: 10px; \
+            border-style: outset;}"
+           "QPushButton:hover{background-color:#198fb6; color: white;}"
+          "QPushButton:pressed{background-color:#3F51B5;\
+                           border-style: inset; }";
+    ui->exitBtn->setStyleSheet(BtnStyle2);
+    ui->MessageBox->setStyleSheet(BtnStyle1);
+    ui->myTableBtn->setStyleSheet(BtnStyle1);
+    ui->myTaskBtn->setStyleSheet(BtnStyle1);
+    ui->pushButton->setStyleSheet(BtnStyle1);
+    ui->getTask->setStyleSheet(BtnStyle1);
+    ui->Publish->setStyleSheet(BtnStyle1);
+    ui->publisher->setStyleSheet(BtnStyle1);
+    ui->Checker->setStyleSheet(BtnStyle1);
+    QDesktopWidget *deskdop = QApplication::desktop();
+    move((deskdop->width() - this->width())/2, (deskdop->height() - this->height())/2);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground,true);
 }

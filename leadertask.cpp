@@ -15,6 +15,7 @@
 #include <QDate>
 #include <QInputDialog>
 #include <QScrollBar>
+#include <QHeaderView>
 
 /*************************************************************************
 【函数名称】leaderTask
@@ -43,49 +44,49 @@ leaderTask::leaderTask(QWidget *parent) :
 leaderTask::~leaderTask()
 {
     delete ui;
-    ui=NULL;
+    ui=nullptr;
     delete[] m_yearEdit;
-    m_yearEdit=NULL;
+    m_yearEdit=nullptr;
     delete[] m_monthEdit;
-    m_monthEdit=NULL;
+    m_monthEdit=nullptr;
     delete[] m_dayEdit;
-    m_dayEdit=NULL;
+    m_dayEdit=nullptr;
     for(int i=0;i<m_taskList.size();i++){
         delete[] *(m_confrmBtn+i);
-        *(m_confrmBtn+i)=NULL;
+        *(m_confrmBtn+i)=nullptr;
     }
     delete[] m_confrmBtn;
-    m_confrmBtn=NULL;
+    m_confrmBtn=nullptr;
     for(int i=0;i<m_taskList.size();i++){
         delete[] *(m_saveBtn+i);
-        *(m_saveBtn+i)=NULL;
+        *(m_saveBtn+i)=nullptr;
     }
     delete[] m_saveBtn;
-    m_saveBtn=NULL;
+    m_saveBtn=nullptr;
     for(int i=0;i<m_taskList.size();i++){
         delete[] *(m_endBtn+i);
-        *(m_endBtn+i)=NULL;
+        *(m_endBtn+i)=nullptr;
     }
     delete[] m_endBtn;
-    m_endBtn=NULL;
+    m_endBtn=nullptr;
     for(int i=0;i<m_taskList.size();i++){
         delete[] *(m_table+i);
-        *(m_table+i)=NULL;
+        *(m_table+i)=nullptr;
     }
     delete[] m_table;
-    m_table=NULL;
+    m_table=nullptr;
     for(int i=0;i<m_taskList.size();i++){
         delete[] *(m_NewComment+i);
-        *(m_NewComment+i)=NULL;
+        *(m_NewComment+i)=nullptr;
     }
     delete[] m_NewComment;
-    m_NewComment=NULL;
+    m_NewComment=nullptr;
     delete[] m_myResult;
-    m_myResult=NULL;
+    m_myResult=nullptr;
     delete[]m_translaterTaskList;
-    m_translaterTaskList=NULL;
+    m_translaterTaskList=nullptr;
     delete[]m_translaterList;
-    m_translaterList=NULL;
+    m_translaterList=nullptr;
 }
 
 
@@ -147,7 +148,9 @@ void leaderTask::Show201(int i){
     m_iPage=i;
     m_confrmBtn[i]=new QPushButton(tr("确定"));
     //在页面左边的listWidget中添加新的item
-    QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/time.svg"),tr("<设定译者招募结束日期>%1").arg(m_taskList[i].GetTitle()));
+    QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/time.svg")
+                                              ,tr("<设定译者招募结束日期>%1")
+                                              .arg(m_taskList[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
     //声明需要的页面的控件
     QWidget *window=new QWidget();
@@ -298,15 +301,17 @@ void leaderTask::OnClicked_201(int i){
 void leaderTask::Show202(int i){
     //向listWidget中插入新的item
     QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/baomingblue.svg")
-                                              ,tr("<译者报名火热进行中>%1").arg(m_taskList[i].GetTitle()));
+                                              ,tr("<译者报名火热进行中>%1")
+                                              .arg(m_taskList[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
     //开辟需要的控件的空间
-    m_translaterList[i]=g_backUp.m_listSignUpForTranslater.SearchTranslaterForTask(m_taskList[i]);
+    m_translaterList[i]=g_backUp.m_listSignUpForTranslater
+            .SearchTranslaterForTask(m_taskList[i]);
     m_table[i]=new QTableWidget(m_translaterList[i].size(),3);
     SetTableStyle(m_table[i]);
     QWidget *window=new QWidget;
     QVBoxLayout *layout=new QVBoxLayout();
-    QLabel *label=new QLabel(tr("已报名译者："));
+    QLabel *label=new QLabel(tr("已报名译者：（表格列宽可以自由调整噢！）"));
     label->setStyleSheet(m_LabelStyle);
     //设置表格的性质为不可编辑
     m_table[i]->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -344,7 +349,8 @@ void leaderTask::Show203(int i){
                                               .arg(m_taskList[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
     //声明要用到的控件
-    m_translaterList[i]=g_backUp.m_listSignUpForTranslater.SearchTranslaterForTask(m_taskList[i]);
+    m_translaterList[i]=g_backUp.m_listSignUpForTranslater
+            .SearchTranslaterForTask(m_taskList[i]);
     m_table[i]=new QTableWidget(m_translaterList[i].size(),5);
     SetTableStyle(m_table[i]);
     QWidget *window=new QWidget;
@@ -450,13 +456,13 @@ void leaderTask::OnClicked_203confrm(int i){
     int iFlag=0;
     for(int j=0;j<m_translaterList[i].size();j++){
         //对表格的每一行，即每一个译者，生成一个译者的任务对象并且加入List当中
-        int iEndYear;
-        int iEndMonth;
-        int iEndDay;
-        if(m_table[i]->item(j,3)!=NULL||(m_table[i]->item(j,3)
+        int iEndYear = 0;
+        int iEndMonth = 0;
+        int iEndDay = 0;
+        if(m_table[i]->item(j,3)!=nullptr||(m_table[i]->item(j,3)
                                          &&m_table[i]->item(j,3)->text()!=tr(""))){
             iFlag=2;
-            if(m_table[i]->item(j,4)!=NULL||(m_table[i]->item(j,4)
+            if(m_table[i]->item(j,4)!=nullptr||(m_table[i]->item(j,4)
                                              &&m_table[i]->item(j,4)->text()!=tr(""))){
                 //检验输入的日期是否合法
                 QString EndDate=m_table[i]->item(j,4)->text();
@@ -556,13 +562,8 @@ void leaderTask::OnClicked_203prolong(int i){
 void leaderTask::Show301(int i){
     m_iPage=i;
     //筛选已经提交的文章或已经修改并且提交的文章
-    for(int j=0;j<g_backUp.m_listTaskTranslater.m_List.size();j++){
-        if(g_backUp.m_listTaskTranslater.m_List[j].GetIDTask()==m_taskList[i].GetID()
-                &&(g_backUp.m_listTaskTranslater.m_List[j].GetFlagToLeader()==1||
-                   g_backUp.m_listTaskTranslater.m_List[j].GetFlagToLeader()==3)){
-            m_translaterTaskList[i].append(g_backUp.m_listTaskTranslater.m_List[j]);
-        }
-    }
+    m_translaterTaskList[i]=g_backUp.m_listTaskTranslater
+            .SearchTaskForTranslater_flag13(m_taskList[i].GetID());
     if(!m_translaterTaskList[i].isEmpty()){
         QListWidgetItem* item=new QListWidgetItem(QIcon(":/images/comment.svg"),
                                                   tr("<译者的翻译出炉！请点评！>%1")
@@ -810,7 +811,8 @@ void leaderTask::Show302(int i){
                                               .arg(m_taskList[i].GetTitle()));
     ui->listWidget->insertItem(i,item);
     //寻找所有i任务的子任务
-    m_translaterTaskList[i]=g_backUp.m_listTaskTranslater.SearchTaskForTranslater(m_taskList[i].GetID());
+    m_translaterTaskList[i]=g_backUp.m_listTaskTranslater
+            .SearchTaskForTranslater(m_taskList[i].GetID());
     //定义页面所需的控件
     QLabel *inform1=new QLabel(tr("所有译者的翻译均已通过，请整合译文！"));
     inform1->setStyleSheet(m_LabelStyle);
@@ -955,9 +957,16 @@ void leaderTask::OnClicked_302confrm(int i){
 *************************************************************************/
 void leaderTask::on_Main_clicked()
 {
-    close();
-    MainWindow r;
-    r.exec();
+    int iNum=0;
+    if(ui->listWidget->currentRow()>=0){
+        iNum=ui->listWidget->currentRow();
+    }
+    else{
+        iNum=0;
+    }
+    if(m_taskList[iNum].GetFlag()==301||m_taskList[iNum].GetFlag()==302){
+        SetWarningBox2("编辑尚未保存，确认退出？");
+    }
 }
 
 /*************************************************************************
@@ -1105,6 +1114,57 @@ void leaderTask::SetInformBox(QString Text){
 }
 
 /*************************************************************************
+【函数名称】SetWarningBox2
+【函数功能】在用户点击退出时，询问是否退出，因为信息尚未保存
+【参数】QString Text
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.31
+【更改记录】
+*************************************************************************/
+void leaderTask::SetWarningBox2(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    QPushButton* noBtn=new QPushButton("取消");
+    noBtn->setStyleSheet(m_BtnStyle1);
+    noBtn->setFixedSize(171,51);
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.addButton(noBtn,QMessageBox::ActionRole);
+    message.exec();
+    connect(ysBtn,SIGNAL(clicked),this,SLOT(Close()));
+}
+
+/*************************************************************************
+【函数名称】SetWarningBox3
+【函数功能】在用户点击退出时，询问是否退出，因为信息尚未保存
+【参数】QString Text
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.31
+【更改记录】
+*************************************************************************/
+void leaderTask::SetWarningBox3(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    QPushButton* noBtn=new QPushButton("取消");
+    noBtn->setStyleSheet(m_BtnStyle1);
+    noBtn->setFixedSize(171,51);
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.addButton(noBtn,QMessageBox::ActionRole);
+    message.exec();
+    connect(ysBtn,SIGNAL(clicked),this,SLOT(Close2()));
+}
+/*************************************************************************
 【函数名称】on_exitBtn_clicked
 【函数功能】用户按下退出键后保存进度退出
 【参数】无
@@ -1114,6 +1174,42 @@ void leaderTask::SetInformBox(QString Text){
 *************************************************************************/
 void leaderTask::on_exitBtn_clicked()
 {
+    int iNum=0;
+    if(ui->listWidget->currentRow()>=0){
+        iNum=ui->listWidget->currentRow();
+    }
+    else{
+        iNum=0;
+    }
+    if(m_taskList[iNum].GetFlag()==301||m_taskList[iNum].GetFlag()==302){
+        SetWarningBox3("编辑尚未保存，确认退出？");
+    }
+
+}
+
+/*************************************************************************
+【函数名称】Close
+【函数功能】如果用户确认切换页面，跳转至主页面
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.31
+【更改记录】
+*************************************************************************/
+void leaderTask::Close(){
+    close();
+    MainWindow r;
+    r.exec();
+}
+
+/*************************************************************************
+【函数名称】Close2
+【函数功能】如果用户确认退出，保存当前进度并退出
+【参数】无
+【返回值】 无
+【开发者及日期】李佳芸 2019.7.23
+【更改记录】
+*************************************************************************/
+void leaderTask::Close2(){
     SqlQuery query;
     query.saveUser(g_backUp.m_listUser.m_List);
     query.saveTasks(g_backUp.m_listTaskPublisher.m_List);

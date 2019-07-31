@@ -18,7 +18,7 @@ class tasksPublished : public QDialog
     Q_OBJECT
 
 public:
-    explicit tasksPublished(QWidget *parent = 0);
+    explicit tasksPublished(QWidget *parent = nullptr);
     ~tasksPublished();
 
     void ShowValue();
@@ -26,7 +26,7 @@ public:
     void ShowValue102(int i);
     void ShowValue201(int i);
     void ShowValue202(int i);
-    void ShowValue203(int i);
+    void ShowValue301(int i);
 
     void OnClicked101apply(int i);
     void OnClicked101check(int i);

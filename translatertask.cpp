@@ -11,6 +11,7 @@
 #include "sqlquery.h"
 #include <QListWidgetItem>
 #include <QScrollBar>
+#include <QHeaderView>
 
 
 
@@ -33,13 +34,13 @@ translaterTask::translaterTask(QWidget *parent) :
 translaterTask::~translaterTask()
 {
     delete ui;
-    ui=NULL;
+    ui=nullptr;
     delete m_confrmBtn;
-    m_confrmBtn=NULL;
+    m_confrmBtn=nullptr;
     delete m_saveBtn;
-    m_saveBtn=NULL;
+    m_saveBtn=nullptr;
     delete m_result;
-    m_result=NULL;
+    m_result=nullptr;
 
 }
 
@@ -214,6 +215,16 @@ void translaterTask::ShowValue(){
 *************************************************************************/
 void translaterTask::on_Main_clicked()
 {
+    int iNum=0;
+    if(ui->listWidget->currentRow()>=0){
+        iNum=ui->listWidget->currentRow();
+    }
+    else{
+        iNum=0;
+    }
+    if(m_taskList[iNum].GetFlag()==301){
+        SetWarningBox2("编辑尚未保存，确认退出？");
+    }
     close();
     MainWindow r;
     r.exec();
@@ -379,6 +390,72 @@ void translaterTask::SetInformBox(QString Text){
 
 void translaterTask::on_pushButton_clicked()
 {
+    int iNum=0;
+    if(ui->listWidget->currentRow()>=0){
+        iNum=ui->listWidget->currentRow();
+    }
+    else{
+        iNum=0;
+    }
+    if(m_taskList[iNum].GetFlag()==301){
+        SetWarningBox3("编辑尚未保存，确认退出？");
+    }
+    SqlQuery query;
+    query.saveUser(g_backUp.m_listUser.m_List);
+    query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
+    query.saveSignUpForLeader(g_backUp.m_listSignUpForLeader.m_List);
+    query.saveSignUpForTranslater(g_backUp.m_listSignUpForTranslater.m_List);
+    query.saveTaskLeader(g_backUp.m_listTaskLeader.m_List);
+    query.saveTaskTranslater(g_backUp.m_listTaskTranslater.m_List);
+    query.saveMessage(g_backUp.m_listMessage.m_List);
+    query.saveSignUpForChecker(g_backUp.m_listSignUpForChecker.m_List);
+    close();
+    exit(0);
+}
+
+void translaterTask::SetWarningBox2(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    QPushButton* noBtn=new QPushButton("取消");
+    noBtn->setStyleSheet(m_BtnStyle1);
+    noBtn->setFixedSize(171,51);
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.addButton(noBtn,QMessageBox::ActionRole);
+    message.exec();
+    connect(ysBtn,SIGNAL(clicked),this,SLOT(Close()));
+}
+
+void translaterTask::SetWarningBox3(QString Text){
+    QMessageBox message(this);
+    message.setIconPixmap(QPixmap(":/images/warning.svg"));
+    message.setStyleSheet("font:12pt,\"等线\";background:white;");
+    message.setText(Text);
+    message.setWindowTitle("警告");
+    QPushButton* ysBtn=new QPushButton("确定");
+    QPushButton* noBtn=new QPushButton("取消");
+    noBtn->setStyleSheet(m_BtnStyle1);
+    noBtn->setFixedSize(171,51);
+    ysBtn->setStyleSheet(m_BtnStyle1);
+    ysBtn->setFixedSize(171,51);
+    message.addButton(ysBtn,QMessageBox::AcceptRole);
+    message.addButton(noBtn,QMessageBox::ActionRole);
+    message.exec();
+    connect(ysBtn,SIGNAL(clicked),this,SLOT(Close2()));
+}
+
+void translaterTask::Close(){
+    close();
+    MainWindow r;
+    r.exec();
+}
+
+void translaterTask::Close2(){
     SqlQuery query;
     query.saveUser(g_backUp.m_listUser.m_List);
     query.saveTasks(g_backUp.m_listTaskPublisher.m_List);
